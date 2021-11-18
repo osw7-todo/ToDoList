@@ -53,10 +53,16 @@ export default function App() {
         setNewTask(text);
     };
 
+    var now = new Date();
+    var month = now.getMonth();
+    var date = now.getDate();
+
     return (
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="light-content" style={barStyles.statusbar}/>
-            <Text style={textStyles.title}>TODO List</Text>
+            <Text style={textStyles.title}> TODO List </Text>
+            <IconButton type={images.menubar}/>
+            <Text style={textStyles.title}> {month}/{date} </Text>
             <Input value={newTask} onChangeText={_handleTextChange}
             onSubmitEditing={_addTask} onBlur={_onBlur} />
             <ScrollView width = {width-20}>
