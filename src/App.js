@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {StatusBar, SafeAreaView, Text, Dimensions, ScrollView} from 'react-native';
-import {viewStyles, textStyles, barStyles} from './styles';
+import {StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
+import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles} from './styles';
 import Input from './components/Input';
 import { images } from './images';
 import IconButton from './components/IconButton';
@@ -18,7 +18,7 @@ export default function App() {
     });
 
     const _addTask = () => {
-        alert(`Add: ${newTask}`);
+        alert('Add: ${newTask}');
         const ID = Date.now().toString();
         const newTaskObject = {
             [ID]: {id: ID, text: newTask, completed: false},
@@ -61,16 +61,22 @@ export default function App() {
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="light-content" style={barStyles.statusbar}/>
             <Text style={textStyles.title}> TODO List </Text>
-            <IconButton type={images.menubar}/>
-            <Text style={textStyles.title}> {month}/{date} </Text>
-            <Input value={newTask} onChangeText={_handleTextChange}
-            onSubmitEditing={_addTask} onBlur={_onBlur} />
-            <ScrollView width = {width-20}>
-                {Object.values(tasks).reverse().map(item=> (
-                    <Task key={item.id} item={item} deleteTask={_deleteTask}
-                    toggleTask={_toggleTask} updateTask={_updateTask} />
-                ))}
-            </ScrollView>
+    
+            <View style={topbarStyles.topbar}>
+                <IconButton type={images.menubar}/>
+                <Text style={textStyles.title}> {month}/{date} </Text>
+                <Text style={textStyles.title}> Today </Text>
+            </View>
+
+            <View style={cardStyles.card}> 
+                <Input value={newTask} onChangeText={_handleTextChange} onSubmitEditing={_addTask} onBlur={_onBlur} />
+                <ScrollView width = {width-20}>
+                    {Object.values(tasks).reverse().map(item=> (
+                        <Task key={item.id} item={item} deleteTask={_deleteTask}
+                        toggleTask={_toggleTask} updateTask={_updateTask} />
+                    ))} 
+                </ScrollView>
+            </View>
         </SafeAreaView>
     );
 };
