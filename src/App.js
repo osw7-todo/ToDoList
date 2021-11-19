@@ -13,8 +13,8 @@ export default function App() {
     const [newTask, setNewTask] = useState('');
 
     const[tasks, setTasks] = useState({
-        '1' : {id: '1', text: "Todo item #1", completed: false},
-        '2' : {id: '2', text: "Todo item #2", completed: true},
+        /*'1' : {id: '1', text: "Todo item #1", completed: false},
+        '2' : {id: '2', text: "Todo item #2", completed: true},*/
     });
 
     const _addTask = () => {
@@ -54,7 +54,7 @@ export default function App() {
     };
 
     var now = new Date();
-    var month = now.getMonth();
+    var month = now.getMonth() + 1;
     var date = now.getDate();
 
     return (
