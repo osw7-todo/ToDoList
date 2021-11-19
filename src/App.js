@@ -18,7 +18,7 @@ export default function App() {
     });
 
     const _addTask = () => {
-        alert('Add: ${newTask}');
+        alert(`Add: ${newTask}`);
         const ID = Date.now().toString();
         const newTaskObject = {
             [ID]: {id: ID, text: newTask, completed: false},
