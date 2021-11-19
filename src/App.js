@@ -13,12 +13,12 @@ export default function App() {
     const [newTask, setNewTask] = useState('');
 
     const[tasks, setTasks] = useState({
-        '1' : {id: '1', text: "Todo item #1", completed: false},
-        '2' : {id: '2', text: "Todo item #2", completed: true},
+        /*'1' : {id: '1', text: "Todo item #1", completed: false},
+        '2' : {id: '2', text: "Todo item #2", completed: true},*/
     });
 
     const _addTask = () => {
-        alert('Add: ${newTask}');
+        alert(`Add: ${newTask}`);
         const ID = Date.now().toString();
         const newTaskObject = {
             [ID]: {id: ID, text: newTask, completed: false},
@@ -53,10 +53,16 @@ export default function App() {
         setNewTask(text);
     };
 
+    var now = new Date();
+    var month = now.getMonth() + 1;
+    var date = now.getDate();
+
     return (
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="light-content" style={barStyles.statusbar}/>
-            <Text style={textStyles.title}>TODO List</Text>
+            <Text style={textStyles.title}> TODO List </Text>
+            <IconButton type={images.menubar}/>
+            <Text style={textStyles.title}> {month}/{date} </Text>
             <Input value={newTask} onChangeText={_handleTextChange}
             onSubmitEditing={_addTask} onBlur={_onBlur} />
             <ScrollView width = {width-20}>
