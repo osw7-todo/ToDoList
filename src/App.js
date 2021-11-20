@@ -58,10 +58,7 @@ export default function App() {
     var date = now.getDate();
 
     return (
-        <SafeAreaView style={viewStyles.container}>
-            <StatusBar barStyle="light-content" style={barStyles.statusbar}/>
-            <Text style={textStyles.title}> TODO List </Text>
-    
+        <SafeAreaView style={viewStyles.container}>    
             <View style={topbarStyles.topbar}>
                 <IconButton type={images.menubar}/>
                 <Text style={textStyles.title}> {month}/{date} </Text>
