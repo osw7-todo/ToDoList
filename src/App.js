@@ -18,7 +18,7 @@ export default function App() {
     });
 
     const _addTask = () => {
-        alert('Add: ${newTask}');
+        alert(`Add: ${newTask}`);
         const ID = Date.now().toString();
         const newTaskObject = {
             [ID]: {id: ID, text: newTask, completed: false},
@@ -45,6 +45,11 @@ export default function App() {
         setTasks(currentTasks);
     };
 
+    const _setDueDate = item => {
+        const currentTasks = Object.assign({}, tasks);
+        setTasks(currentTasks);
+    };
+
     const _onBlur = () => {
         setNewTask('');
     };
@@ -58,7 +63,8 @@ export default function App() {
     var date = now.getDate();
 
     return (
-        <SafeAreaView style={viewStyles.container}>    
+        <SafeAreaView style={viewStyles.container}>
+            <StatusBar barStyle="light-content" style={barStyles.statusbar}/>    
             <View style={topbarStyles.topbar}>
                 <IconButton type={images.menubar}/>
                 <Text style={textStyles.title}> {month}/{date} </Text>
@@ -70,7 +76,8 @@ export default function App() {
                 <ScrollView width = {width-20}>
                     {Object.values(tasks).reverse().map(item=> (
                         <Task key={item.id} item={item} deleteTask={_deleteTask}
-                        toggleTask={_toggleTask} updateTask={_updateTask} />
+                        toggleTask={_toggleTask} updateTask={_updateTask}
+                        setDueDate={_setDueDate}/>
                     ))} 
                 </ScrollView>
             </View>

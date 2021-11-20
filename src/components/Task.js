@@ -6,7 +6,7 @@ import IconButton from './IconButton';
 import {images} from '../images';
 import Input from './Input';
 
-const Task = ({ item, deleteTask, toggleTask, updateTask }) => {
+const Task = ({ item, deleteTask, toggleTask, updateTask, setDueDate }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [text, setText] = useState(item.text);
     const _handleUpdateButtonPress = () => {
@@ -37,10 +37,12 @@ const Task = ({ item, deleteTask, toggleTask, updateTask }) => {
             {color: (item.completed? theme.done : theme.text)},
             {textDecorationLine: (item.completed? 'line-through' : 'none')}]}>
             {item.text}</Text>
-        {item.completed || <IconButton type = {images.update}
-        onPressOut={_handleUpdateButtonPress}/>}
-        <IconButton type={images.delete} id={item.id} onPressOut={deleteTask}
-        completed={item.completed}/>
+            {item.completed || <IconButton type = {images.update}
+            onPressOut={_handleUpdateButtonPress}/>}
+            <IconButton type={images.delete} id={item.id} onPressOut={deleteTask}
+            completed={item.completed}/>
+            <IconButton type={images.duedate} id={item.id} onPressOut={setDueDate}
+            completed={item.completed}/>
         </View>
     );
 };
