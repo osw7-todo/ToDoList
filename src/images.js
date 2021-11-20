@@ -3,7 +3,7 @@ import CheckedBox from '../assets/checked-box.png';
 import Delete from '../assets/delete-button.png';
 import Edit from '../assets/edit-button.png';
 import Menu from '../assets/menu-icon.png';
-import Back from '../assets/back-icon.png'
+import DueDate from '../assets/due-date.png';
 
 export const images = {
     uncompleted: UncheckedBox,
@@ -11,5 +11,5 @@ export const images = {
     delete: Delete,
     update: Edit,
     menubar: Menu,
-    goback: Back,
+    duedate: DueDate,
 };
