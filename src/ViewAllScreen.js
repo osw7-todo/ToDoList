@@ -7,7 +7,7 @@ import IconButton from './components/IconButton';
 import Task from './components/Task';
 import { NavigationContainer } from '@react-navigation/native';
 
-export default function MainScreen({navigation}) {
+export default function ViewAll({navigation}) {
     
     const width = Dimensions.get('window').width;
     const [newTask, setNewTask] = useState('');

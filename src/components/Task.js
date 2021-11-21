@@ -31,7 +31,7 @@ const Task = ({ item, deleteTask, toggleTask, updateTask, setDueDate }) => {
         onBlur={_onBlur} />
     ) : (
         <View style={taskStyle.container}>
-            <IconButton type={item.completed ? images.uncompleted : images.uncompleted}
+            <IconButton type={item.completed ? images.completed : images.uncompleted}
             id = {item.id} onPressOut = {toggleTask} completed={item.completed} />
             <Text style={[taskStyle.contents,
             {color: (item.completed? theme.done : theme.text)},
