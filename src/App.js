@@ -42,7 +42,7 @@ function BottomTab(){
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="MAIN">
+      <Stack.Navigator>
         <Stack.Screen name="TAB" component={BottomTab} 
            options={{headerShown:false, 
            style: {elevation: 0, shadowOffset: {width: 0, height: 0}}, //remove line for Android, iOS
