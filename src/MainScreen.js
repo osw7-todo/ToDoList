@@ -40,18 +40,21 @@ export default function MainScreen({navigation}) {
             [ID]: {id: ID, text: newTask, completed: false},
         };
         setNewTask('');
-        //setTasks({...tasks, ...newTaskObject});
-        _saveTasks({...tasks, ...newTaskObject});
+        setTasks({...tasks, ...newTaskObject});
+        //_saveTasks({...tasks, ...newTaskObject});
 
         Object.values(tasks).reverse().map(item=> (
             <ViewAll key={item.id} item={item}/>
             )
         )
-        
         /*
-        const currentTasks = Object.assign({}, tasks);
-        console.log(currentTasks);
+        console.log(newTaskObject[ID]);
+        const currentTasks = Object.assign({}, newTaskObject[ID]);
+        console.log(currentTasks.id);
 
+        console.log(newTaskObject[ID]);
+        const currentTasks = newTaskObject[ID].id;
+        console.log(currentTasks);
 
         //같은 id를 가진 tasks가 전달되어야 함.
         //navigation.navigate('ViewAll', {all : tasks}) //넘어 가긴 했는데.. 전달이 안 됨!!
