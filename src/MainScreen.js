@@ -67,7 +67,7 @@ export default function MainScreen({navigation}) {
             </View>
 
             <View style={cardStyles.card}> 
-                <Button  title= 'select' onPress={()=>navigation.navigate('SELECT')} style={[textStyles.title, {alignItems:'flex-end'}]} /> 
+                <Button  title= 'select' onPress={()=>navigation.navigate('SELECT')}/> 
                 
                 <Input value={newTask} onChangeText={_handleTextChange} onSubmitEditing={_addTask} onBlur={_onBlur} />
                 
