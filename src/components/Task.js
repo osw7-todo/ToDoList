@@ -31,7 +31,7 @@ const Task = ({ item, deleteTask, toggleTask, updateTask, setDueDate }) => {
         onBlur={_onBlur} />
     ) : (
         <View style={taskStyle.container}>
-            <IconButton type={item.completed ? images.uncompleted : images.uncompleted}
+            <IconButton type={item.completed ? images.completed : images.uncompleted} //edit
             id = {item.id} onPressOut = {toggleTask} completed={item.completed} />
             <Text style={[taskStyle.contents,
             {color: (item.completed? theme.done : theme.text)},
@@ -53,7 +53,7 @@ const taskStyle = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: theme.itemBackground,
         borderRadius: 10,
-        padding: 5,
+        padding: 5, //padding, margin 모두 3으로 하는 게 더 깔끔...한가..?
         marginTop: 3,
         marginLeft: 0,
     },

@@ -1,3 +1,16 @@
+<<<<<<< HEAD
+import React, { Component } from 'react';
+import { View, Text, Button} from 'react-native';
+
+export default class SelectScreen extends Component {
+  render() {
+    return (
+      <View>
+        <Text style={{fontSize:30}}>여기에 체크박스랑 task.text 데려와야해요</Text>
+      </View>
+    );
+  }
+=======
 import React, { useState, Component } from 'react';
 import {Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
 import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles} from './styles';
@@ -97,4 +110,5 @@ export default function SelectScreen() {
             </View>
         </SafeAreaView>
     );
+>>>>>>> 2acc1688a6a0611ce11f5d4dfb5bc9d1561e40e3
 }

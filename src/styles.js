@@ -34,8 +34,7 @@ export const cardStyles = StyleSheet.create({
         alignItems: 'center',
         flex: 1,
         borderRadius: 10,
-        marginLeft: 10,
-        marginRight: 10, 
+        margin: 10 //edit margin for ViewAllScreen
     },
 });
 
