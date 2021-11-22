@@ -73,7 +73,7 @@ export default function ViewAll({navigation, item}) {
         setNewTask(text);
     };
 
-    return ( //똑같은.. tasks를 집어넣기만 하면.. 해결..... 인데... 
+    return ( //똑같은 tasks를 받아 집어넣기만 하면 해결
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="light-content" style={barStyles.statusbar}/> 
 

@@ -42,17 +42,32 @@ function BottomTab(){
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="MAIN">
         <Stack.Screen name="TAB" component={BottomTab} 
            options={{headerShown:false, 
            style: {elevation: 0, shadowOffset: {width: 0, height: 0}}, //remove line for Android, iOS
            }}/>
+        {/*Main_Screen*/}
         <Stack.Screen name="MAIN" component={MainScreen} 
           options={{ headerShown: false}}/>
+        {/*Select_Screen*/}
         <Stack.Screen name="SELECT" component={SelectScreen} 
           options={{
-            title: 'SELECT & DELETE'
-        }}/>
+            title: 'SELECT & DELETE',
+            cardstyle: {backgroundColor: theme.background},
+            headerStyle: {
+              backgroundColor: theme.background
+            },
+            headerTitleStyle: {
+              fontSize: 25,
+              color: theme.main,
+            },
+            headerTitleAlign: 'center',
+            headerBackTitleVisible: true,
+            headerBackTitle:' ',
+            headerTintColor: theme.main,
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

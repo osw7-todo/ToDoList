@@ -1,13 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
-import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles, bottombarStyles} from './styles';
+import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles} from './styles';
 import Input from './components/Input';
 import { images } from './images';
 import IconButton from './components/IconButton';
 import Task from './components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
-import ViewAll from './ViewAllScreen';
 
 export default function MainScreen({navigation}) {
     
@@ -42,11 +41,7 @@ export default function MainScreen({navigation}) {
         setNewTask('');
         setTasks({...tasks, ...newTaskObject});
         //_saveTasks({...tasks, ...newTaskObject});
-
-        Object.values(tasks).reverse().map(item=> (
-            <ViewAll key={item.id} item={item}/>
-            )
-        )
+        
         /*
         console.log(newTaskObject[ID]);
         const currentTasks = Object.assign({}, newTaskObject[ID]);
@@ -91,13 +86,6 @@ export default function MainScreen({navigation}) {
     const _handleTextChange = text => {
         setNewTask(text);
     };
-
-    /*
-    const _goView = () => {
-        navigation.navigate('ViewAll', {id: 12, name:"go"})
-    }
-    */
-
     var now = new Date();
     var month = now.getMonth() + 1;
     var date = now.getDate();
@@ -122,7 +110,7 @@ export default function MainScreen({navigation}) {
                 
                 <ScrollView width = {width-20}>
                     {Object.values(tasks).reverse().map(item=> (
-                        /*Task tag이용해서 Task로 data집어넣음!! */
+                        /*Task tag이용해서 Task로 */
                         <Task key={item.id} item={item} deleteTask={_deleteTask} toggleTask={_toggleTask} updateTask={_updateTask} setDueDate={_setDueDate}/>
                     ))}
                 </ScrollView>
