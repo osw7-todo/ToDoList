@@ -38,22 +38,19 @@ export default function MainScreen({navigation}) {
         const newTaskObject = {
             [ID]: {id: ID, text: newTask, completed: false},
         };
+
         setNewTask('');
-        setTasks({...tasks, ...newTaskObject});
-        //_saveTasks({...tasks, ...newTaskObject});
-        
+        //setTasks({...tasks, ...newTaskObject});
+        _saveTasks({...tasks, ...newTaskObject});
+
+        //navigation.navigate('TAB',{screen:'ViewAll', params: tasks});
+        //navigation.push('ViewAll',  tasks);
         /*
-        console.log(newTaskObject[ID]);
-        const currentTasks = Object.assign({}, newTaskObject[ID]);
-        console.log(currentTasks.id);
-
-        console.log(newTaskObject[ID]);
-        const currentTasks = newTaskObject[ID].id;
-        console.log(currentTasks);
-
-        //같은 id를 가진 tasks가 전달되어야 함.
-        //navigation.navigate('ViewAll', {all : tasks}) //넘어 가긴 했는데.. 전달이 안 됨!!
+        Object.values(tasks).reverse().map(function(item){
+            console.log(item);
+            navigation.navigate('TAB',{screen:'ViewAll', params: item})});
         */
+        
     }
 
     const _deleteTask = id => {
@@ -110,7 +107,6 @@ export default function MainScreen({navigation}) {
                 
                 <ScrollView width = {width-20}>
                     {Object.values(tasks).reverse().map(item=> (
-                        /*Task tag이용해서 Task로 */
                         <Task key={item.id} item={item} deleteTask={_deleteTask} toggleTask={_toggleTask} updateTask={_updateTask} setDueDate={_setDueDate}/>
                     ))}
                 </ScrollView>
