@@ -1,15 +1,48 @@
 import React, {useState, useEffect} from 'react';
 import {Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
 import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles, bottombarStyles} from './styles';
-import Input from './components/Input';
 import { images } from './images';
 import IconButton from './components/IconButton';
 import Task from './components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 
-export default function ViewAll({navigation, item}) {   
+export default function ViewAll({navigation, route}) {   
+
     const width = Dimensions.get('window').width;
+
+    const [isReady, setIsReady] = useState(false);
+    const [tasks, setTasks] = useState({ //
+        /*'1' : {id: '1', text: "Todo item #1", completed: false},
+        '2' : {id: '2', text: "Todo item #2", completed: true},*/
+    });
+
+    /*
+    const item = route.params;
+    console.log("===",item);
+
+    Object.values(route.params).reverse().map(function(item){
+        console.log(".....",item.id);
+        const ID = item.id;
+        const newTaskObject = {
+        [ID]: {id: ID, text: item.text, completed: item.completed},
+        };
+    });
+    */
+
+    /*
+    //tasks = route.params;
+    Object.values(route.params).reverse().map(function(item){
+        const ID = item.id;
+        const newTaskObject = {
+            [ID]: {id: ID, text: item.text, completed: item.completed},
+        };
+
+        //setTasks({...tasks, ...newTaskObject});
+        _saveTasks({...tasks, ...newTaskObject});
+    })
+    //console.log(data);
+    */
 
     const _saveTasks = async tasks => {
         try {
@@ -24,23 +57,6 @@ export default function ViewAll({navigation, item}) {
         const loadedTasks = await AsyncStorage.getItem('tasks');
         setTasks(JSON.parse(loadedTasks || '{}'));
     };
-
-    const [tasks, setTasks] = useState({});
-    _saveTasks({...tasks, ...setTasks});
-
-    /*
-    const _addTask = route => {
-        alert(`Add: hey`);
-        const ID = route.id;
-        const newTaskObject = {
-            [ID]: {id: route.id, text: route.text, completed: route.completed},
-        };
-        setNewTask('');
-        setTasks({...tasks, ...newTaskObject });
-
-        //navigation.navigate('ViewAll', {[tasks] : [tasks]})
-    }
-    */
 
     const _deleteTask = id => {
         const currentTasks = Object.assign({}, tasks);
@@ -73,19 +89,23 @@ export default function ViewAll({navigation, item}) {
         setNewTask(text);
     };
 
-    return ( //똑같은 tasks를 받아 집어넣기만 하면 해결
+    return  isReady? (
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="light-content" style={barStyles.statusbar}/> 
 
-            
             <View style={cardStyles.card}>  
                 <Button  title= 'select' onPress={()=>navigation.navigate('SELECT')} style={[textStyles.title, {alignItems:'flex-end'}]} /> 
                 <ScrollView width = {width-20} onLoad={(route)=>_addTask(route.params)}>
                     {Object.values(tasks).reverse().map(item=> (
-                        <Task key={item.id} item={item} deleteTask={_deleteTask} toggleTask={_toggleTask} updateTask={_updateTask}/>
-                    ))} 
+                        <Task key={item.id} item={item} deleteTask={_deleteTask} toggleTask={_toggleTask} updateTask={_updateTask} setDueDate={_setDueDate}/>
+                    ))}
                 </ScrollView>
             </View>
         </SafeAreaView>
+    )   :   (
+        <AppLoading
+            startAsync = {_loadTasks}
+            onFinish={()=>setIsReady(true)}
+            onError={console.error}/>
     );
 };
