@@ -1,24 +1,29 @@
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DrawerActions} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Image } from 'react-native';
-import {theme} from './theme';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { Image, Dimensions } from 'react-native';
+import { theme } from './theme';
 
 import MainScreen from './MainScreen';
-import SelectScreen from './SelectScreen';
+import SelectScreen from './screens/SelectScreen';
 import ViewAll from './ViewAllScreen';
+import Completed from './screens/CompletedScreen';
+import Uncompleted from './screens/UncompletedScreen'; 
+import Daily from './screens/DailyScreen';
+import Monthly from './screens/monthlyScreen';
+import CompletionRate from './screens/CompletionRateScreen';
 
 //change screen using navigation stack&tab
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
-
-//onPress={()=>NavigationContainer.push()}
+const Tab = createBottomTabNavigator(); 
+const Drawer = createDrawerNavigator();
 
 //BottomTab
 function BottomTab(){
   return(
-    <Tab.Navigator initalRouteName="TAB" drawerPosition="bottom">
+    <Tab.Navigator initalRouteName="MAIN" drawerPosition="bottom">
         <Tab.Screen name="ViewAll" component={ViewAll} 
         options={{headerShown:false, //delete headear
         tabBarInactiveBackgroundColor:theme.background,
@@ -28,8 +33,8 @@ function BottomTab(){
           const image = focused ? require('../assets/list.png') : require('../assets/list.png')
           return (<Image source={image} style={{width:30, height:24}}/>)
         }}}/> 
-        <Tab.Screen name="Home" component={MainScreen}
-        options={{headerShown:false, 
+        <Tab.Screen name="MAIN" component={MainScreen}
+        options={{ headerShown:false,
         tabBarInactiveBackgroundColor:theme.background, 
         tabBarActiveBackgroundColor:theme.background,
         tabBarActiveTintColor:"#778bdd",
@@ -41,19 +46,172 @@ function BottomTab(){
   )
 }
 
+
+/*
+function completed({ navigation }) {
+  return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Button title="completed" />
+      </View>
+  );
+}
+*/
+
+function MenuBar() {
+  var now = new Date();
+  var month = now.getMonth() + 1;
+  var today = now.getDate();
+
+  return(
+          <Drawer.Navigator initialRouteName="MAIN">
+              <Drawer.Screen 
+                  name="main" 
+                  component={MainScreen}           
+                  options={{
+                    title: "main", 
+                    /*이 title 자리에 해당 날짜 넣고 싶은데, 이 값이 drawer 젤 윗칸 이름에 그대로 들어가기도하고, 
+                    {month}/{today}를 title에 넣는 방법을 모르겠음 */
+                    headerStyle: {
+                      backgroundColor: theme.background
+                    },
+                    headerTitleStyle: {
+                      fontSize: 35,
+                      color: theme.main,
+                    },
+                    headerTitleAlign: 'center',
+                    headerTintColor: theme.main,
+                  }}
+              />
+
+              <Drawer.Screen 
+                  name="all" 
+                  component={ViewAll} 
+                  options={{
+                    headerStyle: {
+                      backgroundColor: theme.background
+                    },
+                    headerTitleStyle: {
+                      fontSize: 35,
+                      color: theme.main,
+                    },
+                    headerTitleAlign: 'center',
+                    headerTintColor: theme.main,
+                  }}
+              />
+
+              <Drawer.Screen 
+                  name="completed" 
+                  component={Completed} 
+                  options={{
+                    headerStyle: {
+                      backgroundColor: theme.background
+                    },
+                    headerTitleStyle: {
+                      fontSize: 35,
+                      color: theme.main,
+                    },
+                    headerTitleAlign: 'center',
+                    headerTintColor: theme.main,
+                  }}
+              />
+
+              <Drawer.Screen 
+                  name="uncompleted" 
+                  component={Uncompleted} 
+                  options={{
+                    headerStyle: {
+                      backgroundColor: theme.background
+                    },
+                    headerTitleStyle: {
+                      fontSize: 35,
+                      color: theme.main,
+                    },
+                    headerTitleAlign: 'center',
+                    headerTintColor: theme.main,
+                  }}
+              />
+
+              <Drawer.Screen 
+                  name="daily" 
+                  component={Daily} 
+                  options={{
+                    headerStyle: {
+                      backgroundColor: theme.background
+                    },
+                    headerTitleStyle: {
+                      fontSize: 35,
+                      color: theme.main,
+                    },
+                    headerTitleAlign: 'center',
+                    headerTintColor: theme.main,
+                  }}
+              />
+
+              <Drawer.Screen 
+                  name="monthly" 
+                  component={Monthly} 
+                  options={{
+                    headerStyle: {
+                      backgroundColor: theme.background
+                    },
+                    headerTitleStyle: {
+                      fontSize: 35,
+                      color: theme.main,
+                    },
+                    headerTitleAlign: 'center',
+                    headerTintColor: theme.main,
+                  }}
+              />
+
+              <Drawer.Screen 
+                  name="completion rate" 
+                  component={CompletionRate} 
+                  options={{
+                    headerStyle: {
+                      backgroundColor: theme.background
+                    },
+                    headerTitleStyle: {
+                      fontSize: 30,
+                      color: theme.main,
+                    },
+                    headerTitleAlign: 'center',
+                    headerTintColor: theme.main,
+                  }}
+              />
+          </Drawer.Navigator>
+  );
+}
+
 function App() {
+  /*
+   * Stack.Navigator 목록에, 1) MenuBar 2) Tab 3) SELECT 있는 것.
+   * 이때 형식이 1) Drawer, 2)Tab bar 3)은 그냥 screen.
+   */
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="TAB" component={BottomTab} 
-           options={{headerShown:false, 
-           style: {elevation: 0, shadowOffset: {width: 0, height: 0}}, //remove line for Android, iOS
-           }}/>
-        {/*Main_Screen*/}
-        <Stack.Screen name="MAIN" component={MainScreen} 
-          options={{ headerShown: false}}/>
-        {/*Select_Screen*/}
-        <Stack.Screen name="SELECT" component={SelectScreen} 
+        <Stack.Screen 
+          name="Main" 
+          component={MenuBar} 
+          options={{
+            headerShown:false,
+           }}
+        />
+
+        <Stack.Screen 
+          name="Tab" 
+          component={BottomTab} 
+          options={{
+            headerShown:false, 
+            style: {elevation: 0, shadowOffset: {width: 0, height: 0}}, //remove line for Android, iOS
+           }}
+        />
+        
+        {/* <Stack.Screen name="MAIN" component={MainScreen} options={{ headerShown: false}}/> */}
+
+        <Stack.Screen 
+          name="SELECT" 
+          component={SelectScreen} 
           options={{
             title: 'SELECT & DELETE',
             cardstyle: {backgroundColor: theme.background},
