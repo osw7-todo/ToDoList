@@ -18,6 +18,13 @@ export default function MainScreen({navigation}) {
         '2' : {id: '2', text: "Todo item #2", completed: true},*/
     });
 
+    React.useEffect(()=>{
+        const reload = navigation.addListener('tabPress',(e)=>{
+            setIsReady(false)
+        });
+        return reload;
+    },[navigation]);
+
     const _saveTasks = async tasks => {
         try {
             await AsyncStorage.setItem('tasks',JSON.stringify(tasks));
@@ -41,16 +48,7 @@ export default function MainScreen({navigation}) {
 
         setNewTask('');
         //setTasks({...tasks, ...newTaskObject});
-        _saveTasks({...tasks, ...newTaskObject});
-
-        //navigation.navigate('TAB',{screen:'ViewAll', params: tasks});
-        //navigation.push('ViewAll',  tasks);
-        /*
-        Object.values(tasks).reverse().map(function(item){
-            console.log(item);
-            navigation.navigate('TAB',{screen:'ViewAll', params: item})});
-        */
-        
+        _saveTasks({...tasks, ...newTaskObject});        
     }
 
     const _deleteTask = id => {
