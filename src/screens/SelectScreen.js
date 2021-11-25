@@ -1,10 +1,10 @@
 import React, { useState, Component } from 'react';
 import {Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
-import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles} from './styles';
-import Input from './components/Input';
-import { images } from './images';
-import IconButton from './components/IconButton';
-import Task from './components/Task';
+import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles} from '../styles';
+import Input from '../components/Input';
+import { images } from '../images';
+import IconButton from '../components/IconButton';
+import Task from '../components/Task';
 
 export default function SelectScreen() {
     //Issue

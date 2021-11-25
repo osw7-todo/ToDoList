@@ -115,7 +115,8 @@ export default function MainScreen({navigation}) {
             <StatusBar barStyle="light-content" style={barStyles.statusbar}/>    
 
             <View style={topbarStyles.topbar}>
-                <IconButton type={images.menubar}/> 
+                <IconButton type={images.menubar} onPress={() => navigation.openDrawer()}/> 
+                {/*cf) navigation.closeDrawer(), navigation.toggleDrawer()*/}
                 <Text style={textStyles.title}> {month}/{today} </Text>
                 <Text style={textStyles.title}> Today </Text>
             </View>
