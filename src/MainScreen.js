@@ -10,12 +10,12 @@ import AppLoading from 'expo-app-loading';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 /*햄버거 바*/
-import Navbar from './Navbar';
+import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import All from './pages/all';
+import all from './pages/all';
 import completed from './pages/completed';
-import Not_completed from './pages/not_completed';
-import Daily from './pages/daily';
+import not_completed from './pages/not_completed';
+import daily from './pages/daily';
 
 export default function MainScreen({navigation}) {
     
@@ -115,8 +115,20 @@ export default function MainScreen({navigation}) {
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="light-content" style={barStyles.statusbar}/>    
             
+            {/*햄버거바 코드*/}
+            <Router>
+                <Navbar />
+                <Switch>
+                    <Route path="/" exact component={Home} />
+                    <Route path="./pages/all" exact component={all} />
+                    <Route path="./pages/completed" component={completed} />
+                    <Route path="./pages/not_completed" component={not_completed} />
+                    <Route path="./pages/daily" component={daily} />
+                </Switch>
+            </Router>
+
             <View style={topbarStyles.topbar}>
-                <IconButton type={images.menubar}/>
+                <IconButton type={images.menubar}/> {/*햄버거바 코드 추가해야함*/}
                 <Text style={textStyles.title}> {month}/{today} </Text>
                 <Text style={textStyles.title}> Today </Text>
             </View>
