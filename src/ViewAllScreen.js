@@ -8,19 +8,26 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 
 export default function ViewAll({navigation, route}) {   
-
     const width = Dimensions.get('window').width;
 
     const [isReady, setIsReady] = useState(false);
+    const [newTask, setNewTask] = useState('');
     const [tasks, setTasks] = useState({ //
         /*'1' : {id: '1', text: "Todo item #1", completed: false},
         '2' : {id: '2', text: "Todo item #2", completed: true},*/
     });
 
-    /*
-    const item = route.params;
-    console.log("===",item);
+    React.useEffect(()=>{
+        const reload = navigation.addListener('tabPress',(e)=>{
+            setIsReady(false)
+        });
+        return reload;
+    },[navigation]);
 
+    //const item = route.params;
+    //console.log("===",item);
+
+    /*
     Object.values(route.params).reverse().map(function(item){
         console.log(".....",item.id);
         const ID = item.id;
