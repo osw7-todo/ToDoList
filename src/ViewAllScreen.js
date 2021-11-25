@@ -6,6 +6,7 @@ import IconButton from './components/IconButton';
 import Task from './components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function ViewAll({navigation, route}) {   
     const width = Dimensions.get('window').width;
@@ -16,6 +17,10 @@ export default function ViewAll({navigation, route}) {
         /*'1' : {id: '1', text: "Todo item #1", completed: false},
         '2' : {id: '2', text: "Todo item #2", completed: true},*/
     });
+
+    const [date, setDate] = useState(new Date());
+    const [mode, setMode] = useState('date');
+    const [show, setShow] = useState(false);
 
     React.useEffect(()=>{
         const reload = navigation.addListener('tabPress',(e)=>{
@@ -50,6 +55,24 @@ export default function ViewAll({navigation, route}) {
     })
     //console.log(data);
     */
+
+    const onChange = (id, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShow(Platform.OS === 'Android');
+        setDate(currentDate);
+        id.duedate = currentDate;
+        var formattedDate = (currentDate.getMonth() + 1) + "/" + currentDate.getDate();
+        alert(`Due: ${formattedDate}`);
+      };
+
+    const showMode = (currentMode) => {
+        setShow(true);
+        setMode(currentMode);
+      };
+    
+      const showDatepicker = () => {
+        showMode('date');
+      };
 
     const _saveTasks = async tasks => {
         try {
@@ -86,6 +109,7 @@ export default function ViewAll({navigation, route}) {
 
     const _setDueDate = item => {
         const currentTasks = Object.assign({}, tasks);
+        showDatepicker();
         setTasks(currentTasks);
     };
 
@@ -107,6 +131,15 @@ export default function ViewAll({navigation, route}) {
                         <Task key={item.id} item={item} deleteTask={_deleteTask} toggleTask={_toggleTask} updateTask={_updateTask} setDueDate={_setDueDate}/>
                     ))}
                 </ScrollView>
+                {show && (
+                <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={date}
+                display="default"
+                onChange = {onChange}
+                />
+                )}
             </View>
         </SafeAreaView>
     )   :   (

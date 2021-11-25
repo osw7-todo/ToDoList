@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
+import {Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View, Alert} from 'react-native';
 import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles} from './styles';
 import Input from './components/Input';
 import { images } from './images';
@@ -38,6 +38,15 @@ export default function MainScreen({navigation}) {
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
 
+    const onChange = (id, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShow(Platform.OS === 'Android');
+        setDate(currentDate);
+        id.duedate = currentDate;
+        var formattedDate = (currentDate.getMonth() + 1) + "/" + currentDate.getDate();
+        alert(`Due: ${formattedDate}`);
+      };
+
     const showMode = (currentMode) => {
         setShow(true);
         setMode(currentMode);
@@ -65,7 +74,7 @@ export default function MainScreen({navigation}) {
         alert(`Add: ${newTask}`);
         const ID = Date.now().toString();
         const newTaskObject = {
-            [ID]: {id: ID, text: newTask, completed: false},
+            [ID]: {id: ID, text: newTask, completed: false, startdate: date, duedate: null},
         };
 
         setNewTask('');
@@ -141,18 +150,20 @@ export default function MainScreen({navigation}) {
                 
                 <ScrollView width = {width-20}>
                     {Object.values(tasks).reverse().map(item=> (
-                        <Task key={item.id} item={item} deleteTask={_deleteTask} toggleTask={_toggleTask} updateTask={_updateTask} setDueDate={_setDueDate}/>
+                        <Task key={item.id} item={item} deleteTask={_deleteTask} toggleTask={_toggleTask}
+                        updateTask={_updateTask} setDueDate={_setDueDate}
+                        />
                     ))}
                 </ScrollView>
                 {show && (
-                <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode={mode}
-                is24Hour={true}
-                display="default"
-                />
-      )}
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        value={date}
+                        mode={date}
+                        display="default"
+                        onChange = {onChange}
+                    />
+                )}
             </View>
         </SafeAreaView>
     )   :   (
