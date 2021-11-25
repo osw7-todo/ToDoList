@@ -3,7 +3,7 @@ import CheckedBox from '../assets/checked-box.png';
 import Delete from '../assets/delete-button.png';
 import Edit from '../assets/edit-button.png';
 import Menu from '../assets/menu-icon.png';
-import DueDate from '../assets/due-date.png';
+//import DueDate from '../assets/due-date.png';
 import List from '../assets/list.png';
 
 export const images = {
@@ -12,6 +12,6 @@ export const images = {
     delete: Delete,
     update: Edit,
     menubar: Menu,
-    duedate: DueDate,
+    //duedate: DueDate,
     list : List,
 };
