@@ -7,6 +7,7 @@ import IconButton from './components/IconButton';
 import Task from './components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function MainScreen({navigation}) {
     
@@ -17,6 +18,19 @@ export default function MainScreen({navigation}) {
         /*'1' : {id: '1', text: "Todo item #1", completed: false},
         '2' : {id: '2', text: "Todo item #2", completed: true},*/
     });
+
+    const [date, setDate] = useState(new Date());
+    const [mode, setMode] = useState('date');
+    const [show, setShow] = useState(false);
+
+    const showMode = (currentMode) => {
+        setShow(true);
+        setMode(currentMode);
+      };
+    
+      const showDatepicker = () => {
+        showMode('date');
+      };
 
     const _saveTasks = async tasks => {
         try {
@@ -38,22 +52,19 @@ export default function MainScreen({navigation}) {
         const newTaskObject = {
             [ID]: {id: ID, text: newTask, completed: false},
         };
+
         setNewTask('');
-        setTasks({...tasks, ...newTaskObject});
-        //_saveTasks({...tasks, ...newTaskObject});
-        
+        //setTasks({...tasks, ...newTaskObject});
+        _saveTasks({...tasks, ...newTaskObject});
+
+        //navigation.navigate('TAB',{screen:'ViewAll', params: tasks});
+        //navigation.push('ViewAll',  tasks);
         /*
-        console.log(newTaskObject[ID]);
-        const currentTasks = Object.assign({}, newTaskObject[ID]);
-        console.log(currentTasks.id);
-
-        console.log(newTaskObject[ID]);
-        const currentTasks = newTaskObject[ID].id;
-        console.log(currentTasks);
-
-        //같은 id를 가진 tasks가 전달되어야 함.
-        //navigation.navigate('ViewAll', {all : tasks}) //넘어 가긴 했는데.. 전달이 안 됨!!
+        Object.values(tasks).reverse().map(function(item){
+            console.log(item);
+            navigation.navigate('TAB',{screen:'ViewAll', params: item})});
         */
+        
     }
 
     const _deleteTask = id => {
@@ -75,9 +86,11 @@ export default function MainScreen({navigation}) {
         _saveTasks(currentTasks);
     };
 
-    const _setDueDate = item => {
+    const _setDueDate = id=> {
         const currentTasks = Object.assign({}, tasks);
-        setTasks(currentTasks);
+        showDatepicker();
+        //setTasks(currentTasks);
+        _saveTasks(currentTasks);
     };
 
     const _onBlur = () => {
@@ -88,7 +101,7 @@ export default function MainScreen({navigation}) {
     };
     var now = new Date();
     var month = now.getMonth() + 1;
-    var date = now.getDate();
+    var today = now.getDate();
 
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
@@ -96,7 +109,7 @@ export default function MainScreen({navigation}) {
             
             <View style={topbarStyles.topbar}>
                 <IconButton type={images.menubar}/>
-                <Text style={textStyles.title}> {month}/{date} </Text>
+                <Text style={textStyles.title}> {month}/{today} </Text>
                 <Text style={textStyles.title}> Today </Text>
             </View>
 
@@ -110,10 +123,18 @@ export default function MainScreen({navigation}) {
                 
                 <ScrollView width = {width-20}>
                     {Object.values(tasks).reverse().map(item=> (
-                        /*Task tag이용해서 Task로 */
                         <Task key={item.id} item={item} deleteTask={_deleteTask} toggleTask={_toggleTask} updateTask={_updateTask} setDueDate={_setDueDate}/>
                     ))}
                 </ScrollView>
+                {show && (
+                <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={mode}
+                is24Hour={true}
+                display="default"
+                />
+      )}
             </View>
         </SafeAreaView>
     )   :   (

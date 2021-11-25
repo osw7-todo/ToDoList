@@ -26,7 +26,8 @@
     "react-native-web": "0.17.1",
     "react-route": "^1.0.3",
     "styled-components": "^5.3.3",
-    "undefined": "@react-native-async\u0002storage/async-storage"
+    "undefined": "@react-native-async\u0002storage/async-storage",
+    "@react-native-community/datetimepicker": "3.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

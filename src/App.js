@@ -13,11 +13,13 @@ import ViewAll from './ViewAllScreen';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+//onPress={()=>NavigationContainer.push()}
+
 //BottomTab
 function BottomTab(){
   return(
     <Tab.Navigator initalRouteName="TAB" drawerPosition="bottom">
-        <Tab.Screen name="ViewAll" component={ViewAll}
+        <Tab.Screen name="ViewAll" component={ViewAll} 
         options={{headerShown:false, //delete headear
         tabBarInactiveBackgroundColor:theme.background,
         tabBarActiveBackgroundColor:theme.background,
