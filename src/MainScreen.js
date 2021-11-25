@@ -25,6 +25,7 @@ export default function MainScreen({navigation}) {
         });
         return reload;
     },[navigation]);
+    
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
