@@ -113,9 +113,9 @@ export default function MainScreen({navigation}) {
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="light-content" style={barStyles.statusbar}/>    
-            
+
             <View style={topbarStyles.topbar}>
-                <IconButton type={images.menubar}/>
+                <IconButton type={images.menubar}/> 
                 <Text style={textStyles.title}> {month}/{today} </Text>
                 <Text style={textStyles.title}> Today </Text>
             </View>

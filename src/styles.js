@@ -8,7 +8,7 @@ export const viewStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
     },
-});
+}); 
 
 export const textStyles = StyleSheet.create({
     title: {
