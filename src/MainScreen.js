@@ -9,6 +9,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+/*햄버거 바*/
+import Navbar from './Navbar';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import All from './pages/all';
+import completed from './pages/completed';
+import Not_completed from './pages/not_completed';
+import Daily from './pages/daily';
+
 export default function MainScreen({navigation}) {
     
     const width = Dimensions.get('window').width; //set window size
