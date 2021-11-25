@@ -7,6 +7,7 @@ import IconButton from './components/IconButton';
 import Task from './components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function MainScreen({navigation}) {
     
@@ -24,6 +25,18 @@ export default function MainScreen({navigation}) {
         });
         return reload;
     },[navigation]);
+    const [date, setDate] = useState(new Date());
+    const [mode, setMode] = useState('date');
+    const [show, setShow] = useState(false);
+
+    const showMode = (currentMode) => {
+        setShow(true);
+        setMode(currentMode);
+      };
+    
+      const showDatepicker = () => {
+        showMode('date');
+      };
 
     const _saveTasks = async tasks => {
         try {
@@ -70,9 +83,11 @@ export default function MainScreen({navigation}) {
         _saveTasks(currentTasks);
     };
 
-    const _setDueDate = item => {
+    const _setDueDate = id=> {
         const currentTasks = Object.assign({}, tasks);
-        setTasks(currentTasks);
+        showDatepicker();
+        //setTasks(currentTasks);
+        _saveTasks(currentTasks);
     };
 
     const _onBlur = () => {
@@ -83,7 +98,7 @@ export default function MainScreen({navigation}) {
     };
     var now = new Date();
     var month = now.getMonth() + 1;
-    var date = now.getDate();
+    var today = now.getDate();
 
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
@@ -91,7 +106,7 @@ export default function MainScreen({navigation}) {
             
             <View style={topbarStyles.topbar}>
                 <IconButton type={images.menubar}/>
-                <Text style={textStyles.title}> {month}/{date} </Text>
+                <Text style={textStyles.title}> {month}/{today} </Text>
                 <Text style={textStyles.title}> Today </Text>
             </View>
 
@@ -108,6 +123,15 @@ export default function MainScreen({navigation}) {
                         <Task key={item.id} item={item} deleteTask={_deleteTask} toggleTask={_toggleTask} updateTask={_updateTask} setDueDate={_setDueDate}/>
                     ))}
                 </ScrollView>
+                {show && (
+                <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={mode}
+                is24Hour={true}
+                display="default"
+                />
+      )}
             </View>
         </SafeAreaView>
     )   :   (
