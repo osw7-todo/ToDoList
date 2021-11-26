@@ -23,10 +23,10 @@ export default function ViewAll({navigation, route}) {
     const [show, setShow] = useState(false);
 
     React.useEffect(()=>{
-        const reload = navigation.addListener('tabPress',(e)=>{
+        const reloadTab = navigation.addListener('focus',(e)=>{
             setIsReady(false)
         });
-        return reload;
+        return reloadTab;
     },[navigation]);
 
     //const item = route.params;
@@ -119,6 +119,10 @@ export default function ViewAll({navigation, route}) {
     const _handleTextChange = text => {
         setNewTask(text);
     };
+
+    var now = new Date();
+    var month = now.getMonth() + 1;
+    var today = now.getDate();
 
     return  isReady? (
         <SafeAreaView style={viewStyles.container}>

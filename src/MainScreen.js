@@ -20,7 +20,7 @@ export default function MainScreen({navigation}) {
     });
 
     React.useEffect(()=>{
-        const reload = navigation.addListener('tabPress',(e)=>{
+        const reload = navigation.addListener('focus',(e)=>{
             setIsReady(false)
         });
         return reload;
