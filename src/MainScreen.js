@@ -110,6 +110,7 @@ export default function MainScreen({navigation}) {
     var month = now.getMonth() + 1;
     var today = now.getDate();
 
+
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="light-content" style={barStyles.statusbar}/>    
@@ -129,13 +130,14 @@ export default function MainScreen({navigation}) {
                     navigation.navigate('ViewAllScreen', {all : tasks})}}*/
                 />
                 
-                <ScrollView width = {width-20}>
+                <View width = {width-20}>
                     {Object.values(tasks).reverse().map(item=> (
                         <Task key={item.id} item={item} deleteTask={_deleteTask} toggleTask={_toggleTask}
                         updateTask={_updateTask} setDueDate={_setDueDate}
                         />
                     ))}
-                </ScrollView>
+                    
+                </View>
                 {show && (
                     <DateTimePicker
                         testID="dateTimePicker"
