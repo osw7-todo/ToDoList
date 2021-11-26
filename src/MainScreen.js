@@ -110,6 +110,7 @@ export default function MainScreen({navigation}) {
     var month = now.getMonth() + 1;
     var today = now.getDate();
 
+
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="light-content" style={barStyles.statusbar}/>    
@@ -135,6 +136,7 @@ export default function MainScreen({navigation}) {
                         updateTask={_updateTask} setDueDate={_setDueDate}
                         />
                     ))}
+                    
                 </ScrollView>
                 {show && (
                     <DateTimePicker
