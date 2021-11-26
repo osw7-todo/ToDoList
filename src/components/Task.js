@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import IconButton from './IconButton';
 import {images} from '../images';
 import Input from './Input';
-import { SwipeListView } from 'react-native-swipe-list-view';
+import Swipeable from 'react-native-gesture-handler/Swipeable'
+//import {SwipeListView} from 'react-native-swipe-list-view'
 
 const Task = ({ item, deleteTask, toggleTask, updateTask, setDueDate }) => {
     const [isEditing, setIsEditing] = useState(false);
@@ -31,14 +32,34 @@ const Task = ({ item, deleteTask, toggleTask, updateTask, setDueDate }) => {
         .fill('')
         .map((_, i) => ({key: `${i}`, text: `${item.text}`}));
 
+
     return isEditing ? (
         <Input value={text} onChangeText={text => setText(text)}
         onSubmitEditing={_onSubmitEditing}
         onBlur={_onBlur} />
     ) : (
-        <SwipeListView
+        <Swipeable
+        renderRightActions={() =>
+            <View style={taskStyle.hiddenContainer}>
+            <IconButton type={images.delete} id={item.id} onPressOut={deleteTask}
+            completed={item.completed}/>
+            {item.completed || <IconButton type = {images.update}
+            onPressOut={_handleUpdateButtonPress}/>}
+            <Button title='DUE' onPress={setDueDate}/>
+            </View>}>
+        <View style={taskStyle.container}>
+            <IconButton type={item.completed ? images.completed : images.uncompleted} //edit
+            id = {item.id} onPressOut = {toggleTask} completed={item.completed} />
+            <Text style={[taskStyle.contents,
+            {color: (item.completed? theme.done : theme.text)},
+            {textDecorationLine: (item.completed? 'line-through' : 'none')}]}>
+            {item.text}</Text>
+        </View>
+        </Swipeable>
+       /* SwipeListView 이용하는 방법
+       <SwipeListView 
         data={datalist}
-        renderItem={() => (
+        renderItem={(data, rowMap) => (
             <View style={taskStyle.container}>
             <IconButton type={item.completed ? images.completed : images.uncompleted} //edit
             id = {item.id} onPressOut = {toggleTask} completed={item.completed} />
@@ -48,7 +69,7 @@ const Task = ({ item, deleteTask, toggleTask, updateTask, setDueDate }) => {
             {item.text}</Text>
             </View>
           )}
-          renderHiddenItem={() => (
+          renderHiddenItem={(data, rowMap) => (
             <View style={taskStyle.hiddenContainer}>
             <IconButton type={images.delete} id={item.id} onPressOut={deleteTask}
             completed={item.completed}/>
@@ -58,8 +79,8 @@ const Task = ({ item, deleteTask, toggleTask, updateTask, setDueDate }) => {
             </View>
           )}
           disableRightSwipe
-          leftOpenValue={100}
-        />
+          leftOpenValue={80}
+        />*/
         
         /*<View style={taskStyle.container}>
             <IconButton type={item.completed ? images.completed : images.uncompleted} //edit

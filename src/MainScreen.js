@@ -130,14 +130,14 @@ export default function MainScreen({navigation}) {
                     navigation.navigate('ViewAllScreen', {all : tasks})}}*/
                 />
                 
-                <View width = {width-20}>
+                <ScrollView width = {width-20}>
                     {Object.values(tasks).reverse().map(item=> (
                         <Task key={item.id} item={item} deleteTask={_deleteTask} toggleTask={_toggleTask}
                         updateTask={_updateTask} setDueDate={_setDueDate}
                         />
                     ))}
                     
-                </View>
+                </ScrollView>
                 {show && (
                     <DateTimePicker
                         testID="dateTimePicker"
