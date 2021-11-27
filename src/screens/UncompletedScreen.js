@@ -125,7 +125,7 @@ export default function Uncompleted({navigation, route}) {
                 <Button  title= 'select' onPress={()=>navigation.navigate('SELECT')} style={[textStyles.title, {alignItems:'flex-end'}]} /> 
                 <ScrollView width = {width-20} onLoad={(route)=>_addTask(route.params)}>
                     {Object.values(tasks).reverse().filter((filterItem)=>{
-                        if(filterItem.completed == true){
+                        if(filterItem.completed == false){
                             return filterItem
                         } 
                     }).map(item=> (
