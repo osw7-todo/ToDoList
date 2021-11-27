@@ -63,7 +63,7 @@ export default function MainScreen({navigation}) {
     };
 
     const _addTask = () => {
-        alert(`Add: ${newTask}`);
+        //alert(`Add: ${newTask}`);
         const ID = Date.now().toString();
         const newTaskObject = {
             [ID]: {id: ID, text: newTask, completed: false, startdate: date, duedate: null},
@@ -125,10 +125,7 @@ export default function MainScreen({navigation}) {
             <View style={cardStyles.card}> 
                 <Button  title= 'select' onPress={()=>navigation.navigate('SELECT')} style={[textStyles.title, {alignItems:'flex-end'}]} /> 
                 
-                <Input value={newTask} onChangeText={_handleTextChange} onSubmitEditing={_addTask} onBlur={_onBlur}
-                /*onPress={()=>{
-                    navigation.navigate('ViewAllScreen', {all : tasks})}}*/
-                />
+                <Input value={newTask} onChangeText={_handleTextChange} onSubmitEditing={_addTask} onBlur={_onBlur}/>
                 
                 <ScrollView width = {width-20}>
                     {Object.values(tasks).reverse().map(item=> (
