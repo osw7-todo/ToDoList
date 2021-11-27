@@ -104,7 +104,7 @@ const taskStyle = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: theme.itemBackground,
         borderRadius: 10,
-        padding: 5, //padding, margin 모두 3으로 하는 게 더 깔끔...한가..?
+        padding: 5, 
         marginTop: 3,
         marginLeft: 0,
     },
@@ -113,7 +113,7 @@ const taskStyle = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: theme.itemBackground,
         borderRadius: 10,
-        padding: 5, //padding, margin 모두 3으로 하는 게 더 깔끔...한가..?
+        padding: 5, 
         marginTop: 3,
         marginLeft: 0,
     },

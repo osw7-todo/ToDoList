@@ -120,11 +120,14 @@ export default function ViewAll({navigation, route}) {
     var month = now.getMonth() + 1;
     var today = now.getDate();
 
+    {/*const image = focused ? require('../assets/due-date.png') : require('../assets/due-date.png') */}
+    //when onPress IconButton, show searchbar
     return  isReady? (
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="light-content" style={barStyles.statusbar}/> 
             
             <View style={cardStyles.card}> 
+                <IconButton type={images.searchI}/>
                 <Search value={searchText} onChangeText={text => {setSearchText(text)}}/>
                 <Button  title= 'select' onPress={()=>navigation.navigate('SELECT')} style={[textStyles.title, {alignItems:'flex-end'}]} /> 
                 <ScrollView width = {width-20} onLoad={(route)=>_addTask(route.params)}>
