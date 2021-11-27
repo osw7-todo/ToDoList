@@ -7,6 +7,7 @@ import Task from './components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Search from './components/Search';
 
 export default function ViewAll({navigation, route}) {   
     const width = Dimensions.get('window').width;
@@ -17,6 +18,8 @@ export default function ViewAll({navigation, route}) {
         /*'1' : {id: '1', text: "Todo item #1", completed: false},
         '2' : {id: '2', text: "Todo item #2", completed: true},*/
     });
+
+    const [searchText, setSearchText] = useState('');
 
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -113,13 +116,6 @@ export default function ViewAll({navigation, route}) {
         setTasks(currentTasks);
     };
 
-    const _onBlur = () => {
-        setNewTask('');
-    };
-    const _handleTextChange = text => {
-        setNewTask(text);
-    };
-
     var now = new Date();
     var month = now.getMonth() + 1;
     var today = now.getDate();
@@ -127,11 +123,18 @@ export default function ViewAll({navigation, route}) {
     return  isReady? (
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="light-content" style={barStyles.statusbar}/> 
-
-            <View style={cardStyles.card}>  
+            
+            <View style={cardStyles.card}> 
+                <Search value={searchText} onChangeText={text => {setSearchText(text)}}/>
                 <Button  title= 'select' onPress={()=>navigation.navigate('SELECT')} style={[textStyles.title, {alignItems:'flex-end'}]} /> 
                 <ScrollView width = {width-20} onLoad={(route)=>_addTask(route.params)}>
-                    {Object.values(tasks).reverse().map(item=> (
+                    {Object.values(tasks).reverse().filter((filterItem)=>{
+                        if(searchText ==""){
+                            return filterItem
+                        } else if (filterItem.text.toLowerCase().includes(searchText.toLowerCase())){
+                            return filterItem
+                        }
+                    }).map(item=> (
                         <Task key={item.id} item={item} deleteTask={_deleteTask} toggleTask={_toggleTask} updateTask={_updateTask} setDueDate={_setDueDate}/>
                     ))}
                 </ScrollView>
