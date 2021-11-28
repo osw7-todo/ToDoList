@@ -16,6 +16,20 @@ const Input = ({value, onChangeText, onSubmitEditing, onBlur}) => {
     );
 };
 
+/*const CategoryInput = ({value, onChangeText, onSubmitEditing, onBlur}) => {
+    return(
+        <TextInput style={inputStyle.textInput}
+            placeholder="+ Add a category"
+            placeholderTextColor= {theme.main}
+            maxLength={20}
+            keyboardAppearance="dark"
+            value={value} onChangeText={onChangeText}
+            onSubmitEditing={onSubmitEditing}
+            onBlur={onBlur}>
+        </TextInput>
+    );
+};*/
+
 const inputStyle = StyleSheet.create({
     textInput: {
         fontSize: 25,
@@ -32,3 +46,4 @@ const inputStyle = StyleSheet.create({
 });
 
 export default Input;
+//export default CategoryInput;
