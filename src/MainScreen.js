@@ -18,6 +18,7 @@ export default function MainScreen({navigation}) {
         /*'1' : {id: '1', text: "Todo item #1", completed: false},
         '2' : {id: '2', text: "Todo item #2", completed: true},*/
     });
+    const [date, setDate] = useState(new Date());
 
     React.useEffect(()=>{
         const reload = navigation.addListener('focus',(e)=>{
@@ -26,28 +27,6 @@ export default function MainScreen({navigation}) {
         return reload;
     },[navigation]);
     
-    const [date, setDate] = useState(new Date());
-    const [mode, setMode] = useState('date');
-    const [show, setShow] = useState(false);
-
-    const onChange = (id, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShow(Platform.OS === 'Android');
-        setDate(currentDate);
-        id.duedate = currentDate;
-        var formattedDate = (currentDate.getMonth() + 1) + "/" + currentDate.getDate();
-        alert(`Due: ${formattedDate}`);
-      };
-
-    const showMode = (currentMode) => {
-        setShow(true);
-        setMode(currentMode);
-      };
-    
-      const showDatepicker = () => {
-        showMode('date');
-      };
-
     const _saveTasks = async tasks => {
         try {
             await AsyncStorage.setItem('tasks',JSON.stringify(tasks));
@@ -66,7 +45,8 @@ export default function MainScreen({navigation}) {
         //alert(`Add: ${newTask}`);
         const ID = Date.now().toString();
         const newTaskObject = {
-            [ID]: {id: ID, text: newTask, completed: false, startdate: date, duedate: null},
+            [ID]: {id: ID, text: newTask, completed: false, startdate: date,
+                duedate: date, category: "all"},
         };
 
         setNewTask('');
@@ -93,12 +73,60 @@ export default function MainScreen({navigation}) {
         _saveTasks(currentTasks);
     };
 
-    const _setDueDate = id=> {
+    const _editTask = item => {
+       // const currentTasks = Object.assign({}, tasks);
+        const editScreen = navigation.navigate('EDIT');
+        return editScreen;
+    }
+
+
+   
+
+      const _setDueDate = id=> {
         const currentTasks = Object.assign({}, tasks);
         showDatepicker();
         //setTasks(currentTasks);
         _saveTasks(currentTasks);
     };
+
+
+
+    const _pickCategory = id => {
+        const currentTasks = Object.assign({}, tasks);
+        _saveTasks(currentTasks);
+    }
+
+
+    const [newCategory, setNewCategory] = React.useState('');
+    const [categories, setCategories] = React.useState({
+        /*  '1' : {id: '1', text: "Category #1"},
+          '2' : {id: '2', text: "Category #2"}, */
+      });
+      
+    const _addCategory = () => {
+        const ID = Date.now().toString();
+        const newCategoryObject = {
+            [ID]: {id: ID, text: newCategory},
+        };
+    
+        setNewCategory('');
+        //setTasks({...tasks, ...newTaskObject});
+        _saveCategories({...categories, ...newCategoryObject});
+    }
+    
+      const _saveCategories = async categories => {
+        try {
+            await AsyncStorage.setItem('categories',JSON.stringify(categories));
+            setCategories(categories);
+        } catch (e) {
+            console.error(e);
+        }
+      };
+
+
+
+
+
 
     const _onBlur = () => {
         setNewTask('');
@@ -109,7 +137,6 @@ export default function MainScreen({navigation}) {
     var now = new Date();
     var month = now.getMonth() + 1;
     var today = now.getDate();
-
 
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
@@ -129,21 +156,14 @@ export default function MainScreen({navigation}) {
                 
                 <ScrollView width = {width-20}>
                     {Object.values(tasks).reverse().map(item=> (
-                        <Task key={item.id} item={item} deleteTask={_deleteTask} toggleTask={_toggleTask}
-                        updateTask={_updateTask} setDueDate={_setDueDate}
-                        />
+                        <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}
+                        updateTask={_updateTask} setDueDate={_setDueDate} pickCategory={_pickCategory}
+                        />                   
+
                     ))}
                     
+                    
                 </ScrollView>
-                {show && (
-                    <DateTimePicker
-                        testID="dateTimePicker"
-                        value={date}
-                        mode={date}
-                        display="default"
-                        onChange = {onChange}
-                    />
-                )}
             </View>
         </SafeAreaView>
     )   :   (

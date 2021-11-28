@@ -8,9 +8,11 @@ import Input from './Input';
 import Swipeable from 'react-native-gesture-handler/Swipeable'
 //import {SwipeListView} from 'react-native-swipe-list-view'
 
-const Task = ({ item, deleteTask, toggleTask, updateTask, setDueDate }) => {
+const Task = ({ item, deleteTask, toggleTask, updateTask, setDueDate, pickCategory, editTask}) => {
     const [isEditing, setIsEditing] = useState(false);
     const [text, setText] = useState(item.text);
+
+
     const _handleUpdateButtonPress = () => {
         setIsEditing(true);
     };
@@ -28,9 +30,11 @@ const Task = ({ item, deleteTask, toggleTask, updateTask, setDueDate }) => {
         }
     };
 
-    const datalist = Array(1)
+      
+
+    /*const datalist = Array(1)
         .fill('')
-        .map((_, i) => ({key: `${i}`, text: `${item.text}`}));
+        .map((_, i) => ({key: `${i}`, text: `${item.text}`})); */
 
 
     return isEditing ? (
@@ -43,9 +47,8 @@ const Task = ({ item, deleteTask, toggleTask, updateTask, setDueDate }) => {
             <View style={taskStyle.hiddenContainer}>
             <IconButton type={images.delete} id={item.id} onPressOut={deleteTask}
             completed={item.completed}/>
-            {item.completed || <IconButton type = {images.update}
-            onPressOut={_handleUpdateButtonPress}/>}
-            <Button title='DUE' onPress={setDueDate}/>
+            {item.completed || <IconButton type={images.update}
+            onPressOut={editTask}/>}
             </View>}>
         <View style={taskStyle.container}>
             <IconButton type={item.completed ? images.completed : images.uncompleted} //edit
@@ -81,20 +84,6 @@ const Task = ({ item, deleteTask, toggleTask, updateTask, setDueDate }) => {
           disableRightSwipe
           leftOpenValue={80}
         />*/
-        
-        /*<View style={taskStyle.container}>
-            <IconButton type={item.completed ? images.completed : images.uncompleted} //edit
-            id = {item.id} onPressOut = {toggleTask} completed={item.completed} />
-            <Text style={[taskStyle.contents,
-            {color: (item.completed? theme.done : theme.text)},
-            {textDecorationLine: (item.completed? 'line-through' : 'none')}]}>
-            {item.text}</Text>
-            {item.completed || <IconButton type = {images.update}
-            onPressOut={_handleUpdateButtonPress}/>}
-            <IconButton type={images.delete} id={item.id} onPressOut={deleteTask}
-            completed={item.completed}/>
-            <Button title='DUE' onPress={setDueDate}/>
-        </View>*/
     );
 };
 

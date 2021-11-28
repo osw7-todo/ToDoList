@@ -6,6 +6,7 @@ import Menu from '../assets/menu-icon.png';
 //import DueDate from '../assets/due-date.png';
 import List from '../assets/list.png';
 import SearchIcon from '../assets/search-icon.png';
+import CategoryIcon from'../assets/categories.png';
 
 export const images = {
     uncompleted: UncheckedBox,
@@ -16,4 +17,5 @@ export const images = {
     //duedate: DueDate,
     list : List,
     searchI : SearchIcon,
+    category: CategoryIcon,
 };

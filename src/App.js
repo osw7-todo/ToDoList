@@ -2,12 +2,14 @@ import * as React from 'react';
 import { NavigationContainer, DrawerActions} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Image, Dimensions } from 'react-native';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
+import { Image, Dimensions, View } from 'react-native';
 import { theme } from './theme';
+import Category from './components/Category';
 
 import MainScreen from './MainScreen';
 import SelectScreen from './screens/SelectScreen';
+import EditScreen from './screens/EditScreen';
 import ViewAll from './ViewAllScreen';
 import Completed from './screens/CompletedScreen';
 import Uncompleted from './screens/UncompletedScreen'; 
@@ -61,6 +63,10 @@ function MenuBar() {
   var now = new Date();
   var month = now.getMonth() + 1;
   var today = now.getDate();
+
+  const [newCategory, setNewCategory] = React.useState('');
+  const [categories, setCategories] = React.useState({});
+  
 
   return(
           <Drawer.Navigator initialRouteName="MAIN">
@@ -178,15 +184,37 @@ function MenuBar() {
                     headerTintColor: theme.main,
                   }}
               />
+
+              {Object.values(categories).map(item=>{
+                <Drawer.Screen
+                name={item.text}
+                component={<Category key={item.id} item={item}/>}
+                options={{
+                  headerStyle: {
+                  backgroundColor: theme.background
+                },
+                headerTitleStyle: {
+                  fontSize: 30,
+                  color: theme.main,
+                },
+                headerTitleAlign: 'center',
+                headerTintColor: theme.main,
+              }}
+              />
+            })}
           </Drawer.Navigator>
   );
 }
+
 
 function App() {
   /*
    * Stack.Navigator 목록에, 1) MenuBar 2) Tab 3) SELECT 있는 것.
    * 이때 형식이 1) Drawer, 2)Tab bar 3)은 그냥 screen.
    */
+
+  const[tasks, setTasks] = React.useState({});
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -214,6 +242,26 @@ function App() {
           component={SelectScreen} 
           options={{
             title: 'SELECT & DELETE',
+            cardstyle: {backgroundColor: theme.background},
+            headerStyle: {
+              backgroundColor: theme.background
+            },
+            headerTitleStyle: {
+              fontSize: 25,
+              color: theme.main,
+            },
+            headerTitleAlign: 'center',
+            headerBackTitleVisible: true,
+            headerBackTitle:' ',
+            headerTintColor: theme.main,
+          }}
+        />
+        
+        <Stack.Screen 
+          name="EDIT"
+          component={EditScreen}
+          options={{
+            title: 'EDIT',
             cardstyle: {backgroundColor: theme.background},
             headerStyle: {
               backgroundColor: theme.background
