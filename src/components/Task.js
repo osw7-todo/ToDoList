@@ -93,7 +93,7 @@ const taskStyle = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: theme.itemBackground,
         borderRadius: 10,
-        padding: 5, 
+        padding: 3, 
         marginTop: 3,
         marginLeft: 0,
     },
@@ -102,14 +102,14 @@ const taskStyle = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: theme.itemBackground,
         borderRadius: 10,
-        padding: 5, 
+        padding: 3, 
         marginTop: 3,
         marginLeft: 0,
     },
 
     contents: {
         flex: 1,
-        fontSize: 24,
+        fontSize: 20,
         color: theme.text,
     },
 });

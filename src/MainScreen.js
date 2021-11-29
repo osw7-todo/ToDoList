@@ -142,12 +142,7 @@ export default function MainScreen({navigation}) {
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="light-content" style={barStyles.statusbar}/>    
 
-            <View style={topbarStyles.topbar}>
-                <IconButton type={images.menubar} onPress={() => navigation.openDrawer()}/> 
-                {/*cf) navigation.closeDrawer(), navigation.toggleDrawer()*/}
-                <Text style={textStyles.title}> {month}/{today} </Text>
-                <Text style={textStyles.title}> Today </Text>
-            </View>
+            {/* 여기에 헤더 추가할거면 추가*/}
 
             <View style={cardStyles.card}> 
                 <Button  title= 'select' onPress={()=>navigation.navigate('SELECT')} style={[textStyles.title, {alignItems:'flex-end'}]} /> 
