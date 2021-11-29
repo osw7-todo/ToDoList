@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View, Alert} from 'react-native';
-import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles} from './styles';
+import {viewStyles, textStyles, barStyles, cardStyles, rowStyles} from './styles';
 import Input from './components/Input';
 import { images } from './images';
 import IconButton from './components/IconButton';
@@ -144,9 +144,11 @@ export default function MainScreen({navigation}) {
 
             {/* 여기에 헤더 추가할거면 추가*/}
 
-            <View style={cardStyles.card}> 
-                <Button  title= 'select' onPress={()=>navigation.navigate('SELECT')} style={[textStyles.title, {alignItems:'flex-end'}]} /> 
-                
+            <View style={cardStyles.card}>
+                <View style={rowStyles.context}> 
+                    <Text style={[textStyles.title, {fontSize:30}]}> {month}/{today} </Text>
+                    <Button  title= 'select' onPress={()=>navigation.navigate('SELECT')} style={[textStyles.title, {alignItems:'flex-end'}]} /> 
+                </View>
                 <Input value={newTask} onChangeText={_handleTextChange} onSubmitEditing={_addTask} onBlur={_onBlur}/>
                 
                 <ScrollView width = {width-20}>
@@ -156,8 +158,6 @@ export default function MainScreen({navigation}) {
                         />                   
 
                     ))}
-                    
-                    
                 </ScrollView>
             </View>
         </SafeAreaView>

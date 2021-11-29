@@ -10,7 +10,7 @@ import AppLoading from 'expo-app-loading';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Search from '../components/Search';
 
-export default function ViewAll({navigation, route}) {   
+export default function All_Select({navigation, route}) {   
     const width = Dimensions.get('window').width;
 
     const [isReady, setIsReady] = useState(false);
@@ -90,53 +90,83 @@ export default function ViewAll({navigation, route}) {
         setTasks(currentTasks);
     };
 
-     /*=== 체크박스 전체 단일 개체 선택 ===*/
-    const handleSingleCheck = (checked, id) => {
-        if (checked) {
-        setCheckItems([...checkItems, id]);
-        } else {
-        // 체크 해제
-        setCheckItems(checkItems.filter((el) => el !== id));
-        }
-    };
+    const CheckBox = () => {
+        const [checkedList, setCheckedLists] = useState([]);
+      
+        // 전체 체크 클릭 시 발생하는 함수
+        const onCheckedAll = useCallback(
+          (checked) => {
+            if (checked) {
+              const checkedListArray = [];
+      
+              dataLists.forEach((list) => checkedListArray.push(list));
+      
+              setCheckedLists(checkedListArray);
+            } else {
+              setCheckedLists([]);
+            }
+          },
+          [dataLists]
+        );
+      
+        // 개별 체크 클릭 시 발생하는 함수
+        const onCheckedElement = useCallback(
+          (checked, list) => {
+            if (checked) {
+              setCheckedLists([...checkedList, list]);
+            } else {
+              setCheckedLists(checkedList.filter((el) => el !== list));
+            }
+          },
+          [checkedList]
+        );
+      };
 
-    /*=== 체크박스 전체 선택 ===*/
-    const handleAllCheck = (checked) => {
-        if (checked) {
-        console.log("wow");
-        const idArray = [];
-        // 전체 체크 박스가 체크 되면 id를 가진 모든 elements를 배열에 넣어주어서,
-        // 전체 체크 박스 체크
-        posts.forEach((el) => idArray.push(el.id));
-        setCheckItems(idArray);
-        }
-
-        // 반대의 경우 전체 체크 박스 체크 삭제
-        else {
-        setCheckItems([]);
-        }
-    };
 
     {/*const image = focused ? require('../assets/due-date.png') : require('../assets/due-date.png') */}
     //when onPress IconButton, show searchbar
     return  isReady? (
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="dark-content" style={barStyles.statusbar}/> 
-            
+           
+        
             <View style={cardStyles.card}> 
                 <ScrollView width = {width-20} onLoad={(route)=>_addTask(route.params)}>
+                {/* 전체선택 checkbox */}
+                <input
+                    type="checkbox"
+                    onChange={(e) => onCheckedAll(e.target.checked)}
+                    checked={
+                    checkedList.length === 0
+                        ? false
+                        : checkedList.length === dataLists.length
+                        ? true
+                        : false
+                    }
+                />
+                    {/* 리스트 나열 */}
                     {Object.values(tasks).reverse().filter((filterItem)=>{
                         return filterItem
                     }).map(item=> (
                         <View style={taskStyle.container}>
-                            
-                            <Text style={[taskStyle.contents,
+                            {/* checkbox */}
+                            <input
+                                key={item.id}
+                                type="checkbox"
+                                onChange={(e) => onCheckedElement(e.target.checked, list)}
+                                checked={checkedList.includes(list) ? true : false}
+                                />
+                            {/* 할 일 text */}
+                            <Text 
+                            style={[taskStyle.contents,
                             {color: (item.completed? theme.done : theme.text)},
-                            {textDecorationLine: (item.completed? 'line-through' : 'none')}]}>
-                            {item.text}</Text>
+                            {textDecorationLine: (item.completed? 'line-through' : 'none')}]}
+                            key={item.id} >
+                            {item.text} </Text>
                         </View>
                     ))}
                 </ScrollView>
+       
                 <View style={{flexDirection: 'row'}}>
                     {/*아이콘 양끝 정렬 구현안됨. flex-start(end)써도 왜 적용이 안되는지 잘 모르겠음*/}
                     <IconButton type={images.uncompleted} style={{justifyContent: 'felx-start'}} />
