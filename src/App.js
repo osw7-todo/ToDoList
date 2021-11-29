@@ -5,7 +5,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Image, Dimensions, View } from 'react-native';
 import { theme } from './theme';
-import Category from './components/Category';
 
 import MainScreen from './MainScreen';
 import SelectScreen from './screens/SelectScreen';
@@ -16,6 +15,7 @@ import Uncompleted from './screens/UncompletedScreen';
 import Daily from './screens/DailyScreen';
 import Monthly from './screens/monthlyScreen';
 import CompletionRate from './screens/CompletionRateScreen';
+import CATEGORY from './screens/CategoryScreen';
 
 //change screen using navigation stack&tab
 const Stack = createStackNavigator();
@@ -74,7 +74,7 @@ function MenuBar() {
                   name="main" 
                   component={MainScreen}           
                   options={{
-                    title: "main", 
+                    title: "main",
                     /*이 title 자리에 해당 날짜 넣고 싶은데, 이 값이 drawer 젤 윗칸 이름에 그대로 들어가기도하고, 
                     {month}/{today}를 title에 넣는 방법을 모르겠음 */
                     headerStyle: {
@@ -137,6 +137,22 @@ function MenuBar() {
                   }}
               />
 
+              <Drawer.Screen 
+                  name="category" 
+                  component={CATEGORY} 
+                  options={{
+                    headerStyle: {
+                      backgroundColor: theme.background
+                    },
+                    headerTitleStyle: {
+                      fontSize: 35,
+                      color: theme.main,
+                    },
+                    headerTitleAlign: 'center',
+                    headerTintColor: theme.main,
+                  }}
+              />  
+              
               <Drawer.Screen 
                   name="daily" 
                   component={Daily} 
