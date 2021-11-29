@@ -138,12 +138,12 @@ export default function CompletionRate({navigation, route}) {
 
   return  isReady? (
       <SafeAreaView style={viewStyles.container}>
-          <StatusBar barStyle="light-content" style={barStyles.statusbar}/> 
+          <StatusBar barStyle="dark-content" style={barStyles.statusbar}/> 
           
           <View style={cardStyles.card}>
               <ScrollView width = {width-20} onLoad={(route)=>_addTask(route.params)}>
-                <Text style={generalTextStyles.text}> 전체 {Object.values(tasks).length}개 중에</Text>
-                <Text style={generalTextStyles.text}> {doneTasks.length}개 완료</Text>
+                <Text style={generalTextStyles.text}> [All] </Text>
+                <Text style={generalTextStyles.text}> done: {doneTasks.length}   /   total:{Object.values(tasks).length} </Text>
                 <Text style={generalTextStyles.text}> completion rate: {(doneTasks.length/Object.values(tasks).length * 100).toFixed(2)}% </Text>
               </ScrollView>
               {show && (

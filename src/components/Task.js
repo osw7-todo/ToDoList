@@ -106,7 +106,6 @@ const taskStyle = StyleSheet.create({
         marginTop: 3,
         marginLeft: 0,
     },
-
     contents: {
         flex: 1,
         fontSize: 20,

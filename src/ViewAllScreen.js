@@ -124,7 +124,7 @@ export default function ViewAll({navigation, route}) {
     //when onPress IconButton, show searchbar
     return  isReady? (
         <SafeAreaView style={viewStyles.container}>
-            <StatusBar barStyle="light-content" style={barStyles.statusbar}/> 
+            <StatusBar barStyle="dark-content" style={barStyles.statusbar}/> 
             
             <View style={cardStyles.card}> 
                 <IconButton type={images.searchI}/>

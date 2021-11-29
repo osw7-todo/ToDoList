@@ -51,10 +51,8 @@ export const topbarStyles = StyleSheet.create({
 /*일반 글씨 스타일 추가*/
 export const  generalTextStyles = StyleSheet.create({
     text: {
-        fontSize: 30,
-        fontWeight: '600',
-        alignItems: 'flex-start',
-        marginTop: 0,
-        marginLeft: 0,
+        flex: 1,
+        fontSize: 20,
+        color: theme.text,
     },
 });
