@@ -47,3 +47,14 @@ export const topbarStyles = StyleSheet.create({
         marginLeft:0,
     },
 });
+
+/*일반 글씨 스타일 추가*/
+export const  generalTextStyles = StyleSheet.create({
+    text: {
+        fontSize: 30,
+        fontWeight: '600',
+        alignItems: 'flex-start',
+        marginTop: 0,
+        marginLeft: 0,
+    },
+});
