@@ -10,7 +10,7 @@ import Category from './components/Category';
 import MainScreen from './MainScreen';
 import SelectScreen from './screens/SelectScreen';
 import EditScreen from './screens/EditScreen';
-import ViewAll from './ViewAllScreen';
+import ViewAll from './screens/ViewAllScreen';
 import Completed from './screens/CompletedScreen';
 import Uncompleted from './screens/UncompletedScreen'; 
 import Daily from './screens/DailyScreen';

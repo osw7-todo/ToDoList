@@ -140,7 +140,7 @@ export default function MainScreen({navigation}) {
 
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
-            <StatusBar barStyle="light-content" style={barStyles.statusbar}/>    
+            <StatusBar barStyle="dark-content" style={barStyles.statusbar}/>    
 
             {/* 여기에 헤더 추가할거면 추가*/}
 
