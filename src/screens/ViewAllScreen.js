@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
-import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles, bottombarStyles} from './styles';
-import { images } from './images';
-import IconButton from './components/IconButton';
-import Task from './components/Task';
+import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles, bottombarStyles} from '../styles';
+import { images } from '../images';
+import IconButton from '../components/IconButton';
+import Task from '../components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Search from './components/Search';
+import Search from '../components/Search';
 
 export default function ViewAll({navigation, route}) {   
     const width = Dimensions.get('window').width;
