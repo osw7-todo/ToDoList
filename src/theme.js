@@ -1,7 +1,7 @@
 export const theme = {
-    background: '#101010', //black
-    itemBackground: '#313131', //blackgray
-    main: '#778bdd', //bluepurple
-    text: '#cfcfcf', //whitegray
-    done: '#616161' //gray, check line
+    background: '#D8E0F2', //gray#BFBFBF
+    itemBackground: '#DBDBDB', //light gray#C5DAEA
+    main: '#083359', //black
+    text: '#707070', //whitegray
+    done: '#707070' //gray, check line
 };

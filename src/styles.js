@@ -30,7 +30,7 @@ export const barStyles = StyleSheet.create({
 /*card view 스타일 추가*/
 export const cardStyles = StyleSheet.create({
     card: {
-        backgroundColor: '#585858',
+        backgroundColor: '#FFFFFF',
         alignItems: 'center',
         flex: 1,
         borderRadius: 10,
