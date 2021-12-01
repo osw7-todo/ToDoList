@@ -19,6 +19,12 @@ export const textStyles = StyleSheet.create({
         marginTop: 0,
         marginLeft: 0,
     },
+    contents: {
+        textAlign: 'left',
+        fontSize: 20,
+        color: theme.main,
+        marginBottom: 5,
+    },
 });
 
 export const barStyles = StyleSheet.create({

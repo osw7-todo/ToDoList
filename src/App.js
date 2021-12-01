@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Image, Dimensions, View } from 'react-native';
 import { theme } from './theme';
+import Category from './components/Category'
 
 import MainScreen from './MainScreen';
 import SelectScreen from './screens/SelectScreen';

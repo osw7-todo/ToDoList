@@ -10,6 +10,7 @@ export const Category = item => {
     return (
         <View>
             <Text>{item.text}</Text>
+            
         </View>
     )
 }
