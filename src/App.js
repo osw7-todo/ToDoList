@@ -2,9 +2,10 @@ import * as React from 'react';
 import { NavigationContainer, DrawerActions} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { Image, Dimensions, View } from 'react-native';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList, DrawerView } from '@react-navigation/drawer';
+import {Text, Image, Dimensions, View, SafeAreaView} from 'react-native';
 import { theme } from './theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Category from './components/Category'
 
 import MainScreen from './MainScreen';
@@ -16,7 +17,9 @@ import Uncompleted from './screens/UncompletedScreen';
 import Daily from './screens/DailyScreen';
 import Monthly from './screens/monthlyScreen';
 import CompletionRate from './screens/CompletionRateScreen';
-import CATEGORY from './screens/CategoryScreen';
+import CategoryScreen from './screens/CategoryScreen';
+import SelectedCategoryScreen from './screens/SelectedCategoryScreen'
+//import { SafeAreaView } from 'react-native-safe-area-context';
 
 //change screen using navigation stack&tab
 const Stack = createStackNavigator();
@@ -65,12 +68,26 @@ function MenuBar() {
   var month = now.getMonth() + 1;
   var today = now.getDate();
 
-  const [newCategory, setNewCategory] = React.useState('');
-  const [categories, setCategories] = React.useState({});
+
+  function CustomDrawerContent(props) {
+    return (
+      <SafeAreaView style={{flex: 1}} forceInset={{top: "always", horizontal: "never"}}>
+      <DrawerContentScrollView {...props}>
+        <DrawerItemList {...props} />
+      </DrawerContentScrollView>
+      <View>
+        <DrawerItem label={() => <Text style={{ color: 'black' }}>Category Settings</Text>}
+          onPress={() => props.navigation.navigate('category')}
+        />
+      </View>
+      </SafeAreaView>
+    );
+  };
+  
   
 
-  return(
-          <Drawer.Navigator initialRouteName="MAIN">
+  return (
+          <Drawer.Navigator initialRouteName="MAIN" drawerContent={props => <CustomDrawerContent {...props}/>}>
               <Drawer.Screen 
                   name="main" 
                   component={MainScreen}           
@@ -139,8 +156,8 @@ function MenuBar() {
               />
 
               <Drawer.Screen 
-                  name="category" 
-                  component={CATEGORY} 
+                  name="categories" 
+                  component={CategoryScreen} 
                   options={{
                     headerStyle: {
                       backgroundColor: theme.background
@@ -202,10 +219,10 @@ function MenuBar() {
                   }}
               />
 
-              {Object.values(categories).map(item=>{
+              {/*Object.values(categories).map(item=>{
                 <Drawer.Screen
                 name={item.text}
-                component={<Category key={item.id} item={item}/>}
+                component={CategoryScreen}
                 options={{
                   headerStyle: {
                   backgroundColor: theme.background
@@ -218,7 +235,7 @@ function MenuBar() {
                 headerTintColor: theme.main,
               }}
               />
-            })}
+            })*/}
           </Drawer.Navigator>
   );
 }
@@ -279,6 +296,26 @@ function App() {
           component={EditScreen}
           options={{
             title: 'EDIT',
+            cardstyle: {backgroundColor: theme.background},
+            headerStyle: {
+              backgroundColor: theme.background
+            },
+            headerTitleStyle: {
+              fontSize: 25,
+              color: theme.main,
+            },
+            headerTitleAlign: 'center',
+            headerBackTitleVisible: true,
+            headerBackTitle:' ',
+            headerTintColor: theme.main,
+          }}
+        />
+        
+        <Stack.Screen 
+          name="CATEGORY"
+          component={SelectedCategoryScreen}
+          options={{
+            title: 'CATEGORY',
             cardstyle: {backgroundColor: theme.background},
             headerStyle: {
               backgroundColor: theme.background
