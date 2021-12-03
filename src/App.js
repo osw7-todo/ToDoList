@@ -67,27 +67,11 @@ function MenuBar() {
   var now = new Date();
   var month = now.getMonth() + 1;
   var today = now.getDate();
-
-
-  function CustomDrawerContent(props) {
-    return (
-      <SafeAreaView style={{flex: 1}} forceInset={{top: "always", horizontal: "never"}}>
-      <DrawerContentScrollView {...props}>
-        <DrawerItemList {...props} />
-      </DrawerContentScrollView>
-      <View>
-        <DrawerItem label={() => <Text style={{ color: 'black' }}>Category Settings</Text>}
-          onPress={() => props.navigation.navigate('category')}
-        />
-      </View>
-      </SafeAreaView>
-    );
-  };
   
   
 
   return (
-          <Drawer.Navigator initialRouteName="MAIN" drawerContent={props => <CustomDrawerContent {...props}/>}>
+          <Drawer.Navigator initialRouteName="MAIN">
               <Drawer.Screen 
                   name="main" 
                   component={MainScreen}           

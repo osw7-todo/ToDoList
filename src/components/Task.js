@@ -55,7 +55,7 @@ const Task = ({ item, deleteTask, toggleTask, updateTask, editTask}) => {
             id = {item.id} onPressOut = {toggleTask} completed={item.completed} />
             <Text style={[taskStyle.contents,
             {color: (item.completed? theme.done : theme.text)},
-            {textDecorationLine: (item.completed? 'line-through' : 'none')}]} id={item.id}>
+            {textDecorationLine: (item.completed? 'line-through' : 'none')}]}>
             {item.text}</Text>
         </View>
         </Swipeable>
