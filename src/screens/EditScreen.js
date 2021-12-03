@@ -58,8 +58,8 @@ export default function EditScreen({navigation, route}){
         setShow(Platform.OS === 'Android');
         setDate(currentDate);
         var formattedDate = (currentDate.getMonth() + 1) + "/" + currentDate.getDate();
-        selectedTask.duedate = formattedDate;
         alert(`Due: ${formattedDate}`);
+        selectedTask.duedate = formattedDate;
       };
 
     const showMode = (currentMode) => {
@@ -78,19 +78,15 @@ export default function EditScreen({navigation, route}){
           /*  '1' : {id: '1', text: "Category #1"},
             '2' : {id: '2', text: "Category #2"}, */
         });
-        
-      const _addCategory = () => {
-          const ID = Date.now().toString();
-          const newCategoryObject = {
-              [ID]: {id: ID, text: newCategory},
-          };
-      
-          setNewCategory('');
-          //setTasks({...tasks, ...newTaskObject});
-          _saveCategories({...categories, ...newCategoryObject});
-      }
-      
-        const _saveCategories = async categories => {
+
+        useEffect(()=>{
+          const reloadTab = navigation.addListener('focus',(e)=>{
+              setIsReady(false)
+          });
+          return reloadTab;
+        },[navigation]);
+  
+      const _saveCategories = async categories => {
           try {
               await AsyncStorage.setItem('categories',JSON.stringify(categories));
               setCategories(categories);
@@ -98,11 +94,16 @@ export default function EditScreen({navigation, route}){
               console.error(e);
           }
         };
+      
+      const _loadCategories = async () => {
+          const loadedCategories = await AsyncStorage.getItem('categories');
+          setCategories(JSON.parse(loadedCategories || '{}'));
+      };
 
 
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
-          <StatusBar barStyle="dark-content" style={barStyles.statusbar}/>
+          <StatusBar barStyle="light-content" style={barStyles.statusbar}/>
             <ScrollView width={width-20} onLoad={()=>route.params}>
             <Text style={textStyles.contents}>
             Select a Category
@@ -110,7 +111,7 @@ export default function EditScreen({navigation, route}){
             <RNPickerSelect onValueChange={(value) => console.log(value)}
             items=
             {Object.values(categories).map(item=>
-                [{ label: item.text, value: item.id },]
+                [{ label: item.text, value: item.id},]
                 )}
             />
             <EditTask key={taskID} item={selectedTask} duedate={selectedTask.duedate} updateTask={_updateTask}/>
@@ -130,7 +131,7 @@ export default function EditScreen({navigation, route}){
         </SafeAreaView>
     ) : (
       <AppLoading
-      startAsync = {_loadTasks}
+      startAsync = {_loadTasks, _loadCategories}
       onFinish={()=>setIsReady(true)}
       onError={console.error}/>
     );
@@ -173,7 +174,7 @@ const EditTask = ({item, updateTask, setDueDate}) => {
       </View>
   );
 
-}
+};
 
 const taskStyle = StyleSheet.create({
   container: {

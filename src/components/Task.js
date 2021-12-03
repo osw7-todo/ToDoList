@@ -8,7 +8,7 @@ import Input from './Input';
 import Swipeable from 'react-native-gesture-handler/Swipeable'
 //import {SwipeListView} from 'react-native-swipe-list-view'
 
-const Task = ({ item, deleteTask, toggleTask, updateTask, setDueDate, editTask}) => {
+const Task = ({ item, deleteTask, toggleTask, updateTask, editTask}) => {
     const [isEditing, setIsEditing] = useState(false);
     const [text, setText] = useState(item.text);
 

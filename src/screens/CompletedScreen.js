@@ -56,24 +56,6 @@ export default function Completed({navigation, route}) {
     //console.log(data);
     */
 
-    const onChange = (id, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShow(Platform.OS === 'Android');
-        setDate(currentDate);
-        id.duedate = currentDate;
-        var formattedDate = (currentDate.getMonth() + 1) + "/" + currentDate.getDate();
-        alert(`Due: ${formattedDate}`);
-      };
-
-    const showMode = (currentMode) => {
-        setShow(true);
-        setMode(currentMode);
-      };
-    
-      const showDatepicker = () => {
-        showMode('date');
-      };
-
     const _saveTasks = async tasks => {
         try {
             await AsyncStorage.setItem('tasks',JSON.stringify(tasks));
@@ -106,6 +88,12 @@ export default function Completed({navigation, route}) {
         //setTasks(currentTasks);
         _saveTasks(currentTasks);
     };
+    const _editTask = id => {
+        const currentTasks = Object.assign({}, tasks);
+        const editScreen = navigation.navigate('EDIT', {selectedTask: currentTasks[id], taskID: id});
+        return editScreen;
+    };
+
 
     const _setDueDate = item => {
         const currentTasks = Object.assign({}, tasks);
@@ -129,18 +117,10 @@ export default function Completed({navigation, route}) {
                             return filterItem
                         } 
                     }).map(item=> (
-                        <Task key={item.id} item={item} deleteTask={_deleteTask} toggleTask={_toggleTask} updateTask={_updateTask} setDueDate={_setDueDate}/>
+                        <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}
+                        updateTask={_updateTask} setDueDate={_setDueDate}/>
                     ))}
                 </ScrollView>
-                {show && (
-                <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode={date}
-                display="default"
-                onChange = {onChange}
-                />
-                )}
             </View>
         </SafeAreaView>
     )   :   (
