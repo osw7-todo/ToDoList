@@ -43,7 +43,7 @@ export default function EditScreen({navigation, route}){
 
 
     const _updateTask = item => {
-      navigation.setParams({selectedTask: item});
+      navigation.setParams({selectedTask: item,});
       //setTasks(currentTasks);
       _saveTasks(selectedTask);
   };
@@ -53,13 +53,14 @@ export default function EditScreen({navigation, route}){
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
 
-    const onChange = (id, selectedDate) => {
-        const currentDate = selectedDate || date;
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || JSON.parse(selectedTask.duedate);
         setShow(Platform.OS === 'Android');
         setDate(currentDate);
-        var formattedDate = (currentDate.getMonth() + 1) + "/" + currentDate.getDate();
-        alert(`Due: ${formattedDate}`);
-        selectedTask.duedate = formattedDate;
+        //var formattedDate = (currentDate.getMonth() + 1) + "/" + (currentDate.getDate());
+        alert(`Due: ${currentDate}`);
+        selectedTask.duedate = JSON.stringify(currentDate);
+        setIsReady(false);
       };
 
     const showMode = (currentMode) => {
@@ -100,10 +101,13 @@ export default function EditScreen({navigation, route}){
           setCategories(JSON.parse(loadedCategories || '{}'));
       };
 
+      //var due = new Date(JSON.parse(selectedTask.duedate));
+
+
 
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
-          <StatusBar barStyle="light-content" style={barStyles.statusbar}/>
+          <StatusBar barStyle="dark-content" style={barStyles.statusbar}/>
             <ScrollView width={width-20} onLoad={()=>route.params}>
             <Text style={textStyles.contents}>
             Select a Category
@@ -116,7 +120,8 @@ export default function EditScreen({navigation, route}){
             />
             <EditTask key={taskID} item={selectedTask} duedate={selectedTask.duedate} updateTask={_updateTask}/>
             <Text style={textStyles.contents}>
-              Due: {selectedTask.duedate}
+             {/*Due: {due.getMonth() + 1} / {due.getDate()}    원래 깔끔하게 형식 바꿔서 출력하고 싶었는데 JSON.parse 한 번 더 한 것 때문에 오류남*/}
+             Due: {selectedTask.duedate}
             </Text>
             <Button title="Set Due Date" onPress={showDatepicker}/>
             {show && <DateTimePicker
@@ -127,7 +132,13 @@ export default function EditScreen({navigation, route}){
             onChange = {onChange}
             />}
             </ScrollView>
-            <Button title="Save" onPress={()=> navigation.goBack()}/>
+            <Button title="Save" onPress={() =>{
+              navigation.navigate({
+                name: 'main',
+                params: {task: selectedTask, id: taskID},
+                merge: true,
+              })
+            }}/>
         </SafeAreaView>
     ) : (
       <AppLoading
@@ -136,7 +147,6 @@ export default function EditScreen({navigation, route}){
       onError={console.error}/>
     );
 };
-
 
 
 const EditTask = ({item, updateTask, setDueDate}) => {

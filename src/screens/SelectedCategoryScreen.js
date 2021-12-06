@@ -62,7 +62,7 @@ export default function SelectedCategoryScreen({navigation, route}){
             <Text>{selectedCategory}</Text>
             <ScrollView width={width-20} onLoad={()=>route.params}>
             {Object.values(tasks).reverse().filter((filterItem)=>{
-                        if(filterItem.category == selectedCategory){
+                        if(filterItem.category == categoryID){
                             return filterItem
                         } 
                     }).map(item=> (
