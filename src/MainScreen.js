@@ -15,7 +15,6 @@ export default function MainScreen({navigation, route}) {
         /*'1' : {id: '1', text: "Todo item #1", completed: false},
         '2' : {id: '2', text: "Todo item #2", completed: true},*/
     });
-    const [date, setDate] = useState(new Date());
 
     React.useEffect(()=>{
         const reload = navigation.addListener('focus',(e)=>{
@@ -23,6 +22,14 @@ export default function MainScreen({navigation, route}) {
         });
         return reload;
     },[navigation]);
+
+    React.useEffect(() => {
+        if(route.params?.task, route.params?.id){
+            const currentTasks = Object.assign({}, tasks);
+            currentTasks[route.params?.id] = route.params?.task;
+            _saveTasks(currentTasks);
+        }
+    }, [route.params?.task, route.params?.id]);
     
     const _saveTasks = async tasks => {
         try {
@@ -41,10 +48,10 @@ export default function MainScreen({navigation, route}) {
     const _addTask = () => {
         //alert(`Add: ${newTask}`);
         const ID = Date.now().toString();
-        var today = ((date.getMonth() + 1) + "/" + (date.getDate())).toString;
+        const date = new Date();
         const newTaskObject = {
-            [ID]: {id: ID, text: newTask, completed: false, startdate: today,
-                duedate: today, category: "null"},
+            [ID]: {id: ID, text: newTask, completed: false, startdate: JSON.stringify(date),
+                duedate: JSON.stringify(date), category: "null"},
         };
         console.log(ID);
 
@@ -77,16 +84,6 @@ export default function MainScreen({navigation, route}) {
         const editScreen = navigation.navigate('EDIT', {selectedTask: currentTasks[id], taskID: id});
         return editScreen;
     };
-    
-
-   
-
-      const _setDueDate = id=> {
-        const currentTasks = Object.assign({}, tasks);
-        showDatepicker();
-        //setTasks(currentTasks);
-        _saveTasks(currentTasks);
-    };
 
 
 
@@ -102,7 +99,7 @@ export default function MainScreen({navigation, route}) {
 
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
-            <StatusBar barStyle="light-content" style={barStyles.statusbar}/>    
+            <StatusBar barStyle="dark-content" style={barStyles.statusbar}/>    
 
             {/* 여기에 헤더 추가할거면 추가*/}
 
@@ -116,7 +113,7 @@ export default function MainScreen({navigation, route}) {
                 <ScrollView width = {width-20}>
                     {Object.values(tasks).reverse().map(item=> (
                         <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}
-                        updateTask={_updateTask} setDueDate={_setDueDate}
+                        updateTask={_updateTask}
                         />                   
 
                     ))}

@@ -85,7 +85,7 @@ function CategoryScreen({navigation, route}){
 
     return isReady? (
       <SafeAreaView style={viewStyles.container}>
-            <StatusBar barStyle="light-content" style={barStyles.statusbar}/>
+            <StatusBar barStyle="dark-content" style={barStyles.statusbar}/>
             <View style={cardStyles.card}>
               <ScrollView width = {width-20}>
                     {Object.values(categories).map(item=> (
