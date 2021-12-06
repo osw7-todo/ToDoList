@@ -45,17 +45,17 @@ export const cardStyles = StyleSheet.create({
 });
 
 /*앱 상단바 스타일 추가*/
-export const topbarStyles = StyleSheet.create({
-    topbar: {
+export const rowStyles = StyleSheet.create({
+    context: {
         flexDirection: 'row',
-        backgroundColor: theme.background,
+        backgroundColor: '#FFFFFF',
         marginTop: 3,
         marginLeft:0,
     },
 });
 
 /*일반 글씨 스타일 추가*/
-export const  generalTextStyles = StyleSheet.create({
+export const generalTextStyles = StyleSheet.create({
     text: {
         flex: 1,
         fontSize: 20,

@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, Component } from 'react';
 import {StyleSheet, Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
-import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles, bottombarStyles} from '../styles';
+import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles} from '../styles';
 import {theme} from '../theme';
 import { images } from '../images';
 import IconButton from '../components/IconButton';
@@ -8,10 +8,74 @@ import Task from '../components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Search from '../components/Search';
 
-export default function ViewAll({navigation, route}) {   
-    const width = Dimensions.get('window').width;
+export default function SelectScreen({navigation, route}) {
+    //Issue
+    const Issue = () => {
+        const [bChecked, setChecked] = useState(false);
+
+        const checkHandler = ({ target }) => {
+        setChecked(!bChecked);
+        checkedItemHandler(issue.id, target.checked);
+        };
+
+        const allCheckHandler = () => setChecked(isAllChecked);
+
+        useEffect(() => allCheckHandler(), [isAllChecked]);
+
+        return (
+          <Wrapper>
+            <input type="checkbox" checked={bChecked} onChange={(e) => checkHandler(e)} />
+          </Wrapper>
+        );
+    };
+
+    //IssueList
+    const IssueList = ({ item, deleteTask}) => {
+        const issues = [...Array(10).keys()]; // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        
+        /*Check box 개별 선택, 개별 해제*/
+        const [checkedItems, setCheckedItems] = useState(new Set());
+
+        const checkedItemHandler = (id, isChecked) => {
+            if (isChecked) {
+              checkedItems.add(id);
+              setCheckedItems(checkedItems);
+            } else if (!isChecked && checkedItems.has(id)) {
+              checkedItems.delete(id);
+              setCheckedItems(checkedItems);
+            }
+          };
+
+        /*Check box 전체 선택, 전체 해제*/
+        const [isAllChecked, setIsAllChecked] = useState(false);
+
+        const allCheckedHandler = (isChecked) => {
+            if (isChecked) {
+                setCheckedItems(new Set(issues.map(({ id }) => id)));
+                setIsAllChecked(true);
+            } else {
+                checkedItems.clear();
+                setCheckedItems(setCheckedItems);
+                setIsAllChecked(false);
+            }
+        };
+
+        return (
+            <>
+            <Header>
+                <input type="checkbox" />
+            </Header>
+            <List>
+                {issues.map((issue, index) => (
+                <Issue key={index} />
+                ))}
+            </List>
+            </>
+        );
+    };  
+
+       const width = Dimensions.get('window').width;
 
     const [isReady, setIsReady] = useState(false);
     const [newTask, setNewTask] = useState('');
@@ -79,53 +143,34 @@ export default function ViewAll({navigation, route}) {
         setTasks(currentTasks);
     };
 
-     /*=== 체크박스 전체 단일 개체 선택 ===*/
-    const handleSingleCheck = (checked, id) => {
-        if (checked) {
-        setCheckItems([...checkItems, id]);
-        } else {
-        // 체크 해제
-        setCheckItems(checkItems.filter((el) => el !== id));
-        }
-    };
-
-    /*=== 체크박스 전체 선택 ===*/
-    const handleAllCheck = (checked) => {
-        if (checked) {
-        console.log("wow");
-        const idArray = [];
-        // 전체 체크 박스가 체크 되면 id를 가진 모든 elements를 배열에 넣어주어서,
-        // 전체 체크 박스 체크
-        posts.forEach((el) => idArray.push(el.id));
-        setCheckItems(idArray);
-        }
-
-        // 반대의 경우 전체 체크 박스 체크 삭제
-        else {
-        setCheckItems([]);
-        }
-    };
-
-    {/*const image = focused ? require('../assets/due-date.png') : require('../assets/due-date.png') */}
-    //when onPress IconButton, show searchbar
-    return  isReady? (
+    return isReady? (
         <SafeAreaView style={viewStyles.container}>
-            <StatusBar barStyle="dark-content" style={barStyles.statusbar}/> 
+            <StatusBar barStyle="light-content" style={barStyles.statusbar}/>    
             
             <View style={cardStyles.card}> 
-                <ScrollView width = {width-20} onLoad={(route)=>_addTask(route.params)}>
+                <ScrollView width = {width-20}>
                     {Object.values(tasks).reverse().filter((filterItem)=>{
                         return filterItem
                     }).map(item=> (
                         <View style={taskStyle.container}>
-                            
-                            <Text style={[taskStyle.contents,
+                            {/* checkbox */}
+                            <input
+                                key={item.id}
+                                type="checkbox"
+                                onChange={(e) => onCheckedElement(e.target.checked, list)}
+                                checked={checkedList.includes(list) ? true : false}
+                                />
+                            {/* 할 일 text */}
+                            <Text 
+                            style={[taskStyle.contents,
                             {color: (item.completed? theme.done : theme.text)},
-                            {textDecorationLine: (item.completed? 'line-through' : 'none')}]}>
-                            {item.text}</Text>
+                            {textDecorationLine: (item.completed? 'line-through' : 'none')}]}
+                            key={item.id} >
+                            {item.text} </Text>
                         </View>
                     ))}
                 </ScrollView>
+       
                 <View style={{flexDirection: 'row'}}>
                     {/*아이콘 양끝 정렬 구현안됨. flex-start(end)써도 왜 적용이 안되는지 잘 모르겠음*/}
                     <IconButton type={images.uncompleted} style={{justifyContent: 'felx-start'}} />

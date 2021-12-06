@@ -86,7 +86,7 @@ function CategoryScreen({navigation, route}){
     return isReady? (
       <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="light-content" style={barStyles.statusbar}/>
-            <View>
+            <View style={cardStyles.card}>
               <ScrollView width = {width-20}>
                     {Object.values(categories).map(item=> (
                         <Category key={item.id} item={item} deleteCategory={_deleteCategory} updateCategory={_updateCategory} moveToCategory={_moveToCategory}/> 
