@@ -2,14 +2,11 @@ import React, {useState} from 'react';
 import {Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View, Alert} from 'react-native';
 import {viewStyles, textStyles, barStyles, cardStyles, rowStyles} from './styles';
 import Input from './components/Input';
-import { images } from './images';
-import IconButton from './components/IconButton';
 import Task from './components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
-import DateTimePicker from '@react-native-community/datetimepicker';
 
-export default function MainScreen({navigation}) {
+export default function MainScreen({navigation, route}) {
     
     const width = Dimensions.get('window').width; //set window size
     const [isReady, setIsReady] = useState(false);
@@ -22,7 +19,7 @@ export default function MainScreen({navigation}) {
 
     React.useEffect(()=>{
         const reload = navigation.addListener('focus',(e)=>{
-            setIsReady(false)
+            setIsReady(false);
         });
         return reload;
     },[navigation]);
@@ -44,15 +41,17 @@ export default function MainScreen({navigation}) {
     const _addTask = () => {
         //alert(`Add: ${newTask}`);
         const ID = Date.now().toString();
+        var today = ((date.getMonth() + 1) + "/" + (date.getDate())).toString;
         const newTaskObject = {
-            [ID]: {id: ID, text: newTask, completed: false, startdate: date,
-                duedate: date, category: "all"},
+            [ID]: {id: ID, text: newTask, completed: false, startdate: today,
+                duedate: today, category: "null"},
         };
+        console.log(ID);
 
         setNewTask('');
         //setTasks({...tasks, ...newTaskObject});
         _saveTasks({...tasks, ...newTaskObject});        
-    }
+    };
 
     const _deleteTask = id => {
         const currentTasks = Object.assign({}, tasks);
@@ -73,12 +72,12 @@ export default function MainScreen({navigation}) {
         _saveTasks(currentTasks);
     };
 
-    const _editTask = item => {
-       // const currentTasks = Object.assign({}, tasks);
-        const editScreen = navigation.navigate('EDIT');
+    const _editTask = id => {
+        const currentTasks = Object.assign({}, tasks);
+        const editScreen = navigation.navigate('EDIT', {selectedTask: currentTasks[id], taskID: id});
         return editScreen;
-    }
-
+    };
+    
 
    
 
@@ -88,43 +87,6 @@ export default function MainScreen({navigation}) {
         //setTasks(currentTasks);
         _saveTasks(currentTasks);
     };
-
-
-
-    const _pickCategory = id => {
-        const currentTasks = Object.assign({}, tasks);
-        _saveTasks(currentTasks);
-    }
-
-
-    const [newCategory, setNewCategory] = React.useState('');
-    const [categories, setCategories] = React.useState({
-        /*  '1' : {id: '1', text: "Category #1"},
-          '2' : {id: '2', text: "Category #2"}, */
-      });
-      
-    const _addCategory = () => {
-        const ID = Date.now().toString();
-        const newCategoryObject = {
-            [ID]: {id: ID, text: newCategory},
-        };
-    
-        setNewCategory('');
-        //setTasks({...tasks, ...newTaskObject});
-        _saveCategories({...categories, ...newCategoryObject});
-    }
-    
-      const _saveCategories = async categories => {
-        try {
-            await AsyncStorage.setItem('categories',JSON.stringify(categories));
-            setCategories(categories);
-        } catch (e) {
-            console.error(e);
-        }
-      };
-
-
-
 
 
 
@@ -140,7 +102,7 @@ export default function MainScreen({navigation}) {
 
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
-            <StatusBar barStyle="dark-content" style={barStyles.statusbar}/>    
+            <StatusBar barStyle="light-content" style={barStyles.statusbar}/>    
 
             {/* 여기에 헤더 추가할거면 추가*/}
 
@@ -154,7 +116,7 @@ export default function MainScreen({navigation}) {
                 <ScrollView width = {width-20}>
                     {Object.values(tasks).reverse().map(item=> (
                         <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}
-                        updateTask={_updateTask} setDueDate={_setDueDate} pickCategory={_pickCategory}
+                        updateTask={_updateTask} setDueDate={_setDueDate}
                         />                   
 
                     ))}

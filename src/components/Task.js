@@ -8,7 +8,7 @@ import Input from './Input';
 import Swipeable from 'react-native-gesture-handler/Swipeable'
 //import {SwipeListView} from 'react-native-swipe-list-view'
 
-const Task = ({ item, deleteTask, toggleTask, updateTask, setDueDate, pickCategory, editTask}) => {
+const Task = ({ item, deleteTask, toggleTask, updateTask, editTask}) => {
     const [isEditing, setIsEditing] = useState(false);
     const [text, setText] = useState(item.text);
 
@@ -45,10 +45,10 @@ const Task = ({ item, deleteTask, toggleTask, updateTask, setDueDate, pickCatego
         <Swipeable
         renderRightActions={() =>
             <View style={taskStyle.hiddenContainer}>
+            {item.completed || <IconButton type={images.update} id={item.id}
+            onPressOut={editTask}/>}
             <IconButton type={images.delete} id={item.id} onPressOut={deleteTask}
             completed={item.completed}/>
-            {item.completed || <IconButton type={images.update}
-            onPressOut={editTask}/>}
             </View>}>
         <View style={taskStyle.container}>
             <IconButton type={item.completed ? images.completed : images.uncompleted} //edit
@@ -98,7 +98,7 @@ const taskStyle = StyleSheet.create({
         marginLeft: 0,
     },
     hiddenContainer: {
-        flexDirection: 'row-reverse',
+        flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: theme.itemBackground,
         borderRadius: 10,

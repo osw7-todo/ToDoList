@@ -97,23 +97,6 @@ export default function SelectScreen({navigation, route}) {
         return reloadTab;
     },[navigation]);
 
-    const onChange = (id, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShow(Platform.OS === 'Android');
-        setDate(currentDate);
-        id.duedate = currentDate;
-        var formattedDate = (currentDate.getMonth() + 1) + "/" + currentDate.getDate();
-        alert(`Due: ${formattedDate}`);
-      };
-
-    const showMode = (currentMode) => {
-        setShow(true);
-        setMode(currentMode);
-      };
-    
-      const showDatepicker = () => {
-        showMode('date');
-      };
 
     const _saveTasks = async tasks => {
         try {
@@ -146,6 +129,12 @@ export default function SelectScreen({navigation, route}) {
         currentTasks[item.id] = item;
         //setTasks(currentTasks);
         _saveTasks(currentTasks);
+    };
+
+    const _editTask = id => {
+        const currentTasks = Object.assign({}, tasks);
+        const editScreen = navigation.navigate('EDIT', {selectedTask: currentTasks[id], taskID: id});
+        return editScreen;
     };
 
     const _setDueDate = item => {
@@ -187,15 +176,6 @@ export default function SelectScreen({navigation, route}) {
                     <IconButton type={images.uncompleted} style={{justifyContent: 'felx-start'}} />
                     <IconButton type={images.delete} style={{justifyContent: 'felx-end'}}/>
                 </View>
-                {show && (
-                <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode={date}
-                display="default"
-                onChange = {onChange}
-                />
-                )}
             </View>
         </SafeAreaView>
     )   :   (
