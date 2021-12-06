@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, Component } from 'react';
 import {StyleSheet, Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
-import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles, bottombarStyles} from '../styles';
+import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles} from '../styles';
 import {theme} from '../theme';
 import { images } from '../images';
 import IconButton from '../components/IconButton';
@@ -8,10 +8,74 @@ import Task from '../components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Search from '../components/Search';
 
-export default function All_Select({navigation, route}) {   
-    const width = Dimensions.get('window').width;
+export default function SelectScreen({navigation, route}) {
+    //Issue
+    const Issue = () => {
+        const [bChecked, setChecked] = useState(false);
+
+        const checkHandler = ({ target }) => {
+        setChecked(!bChecked);
+        checkedItemHandler(issue.id, target.checked);
+        };
+
+        const allCheckHandler = () => setChecked(isAllChecked);
+
+        useEffect(() => allCheckHandler(), [isAllChecked]);
+
+        return (
+          <Wrapper>
+            <input type="checkbox" checked={bChecked} onChange={(e) => checkHandler(e)} />
+          </Wrapper>
+        );
+    };
+
+    //IssueList
+    const IssueList = ({ item, deleteTask}) => {
+        const issues = [...Array(10).keys()]; // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        
+        /*Check box 개별 선택, 개별 해제*/
+        const [checkedItems, setCheckedItems] = useState(new Set());
+
+        const checkedItemHandler = (id, isChecked) => {
+            if (isChecked) {
+              checkedItems.add(id);
+              setCheckedItems(checkedItems);
+            } else if (!isChecked && checkedItems.has(id)) {
+              checkedItems.delete(id);
+              setCheckedItems(checkedItems);
+            }
+          };
+
+        /*Check box 전체 선택, 전체 해제*/
+        const [isAllChecked, setIsAllChecked] = useState(false);
+
+        const allCheckedHandler = (isChecked) => {
+            if (isChecked) {
+                setCheckedItems(new Set(issues.map(({ id }) => id)));
+                setIsAllChecked(true);
+            } else {
+                checkedItems.clear();
+                setCheckedItems(setCheckedItems);
+                setIsAllChecked(false);
+            }
+        };
+
+        return (
+            <>
+            <Header>
+                <input type="checkbox" />
+            </Header>
+            <List>
+                {issues.map((issue, index) => (
+                <Issue key={index} />
+                ))}
+            </List>
+            </>
+        );
+    };  
+
+       const width = Dimensions.get('window').width;
 
     const [isReady, setIsReady] = useState(false);
     const [newTask, setNewTask] = useState('');
@@ -90,61 +154,12 @@ export default function All_Select({navigation, route}) {
         setTasks(currentTasks);
     };
 
-    const CheckBox = () => {
-        const [checkedList, setCheckedLists] = useState([]);
-      
-        // 전체 체크 클릭 시 발생하는 함수
-        const onCheckedAll = useCallback(
-          (checked) => {
-            if (checked) {
-              const checkedListArray = [];
-      
-              dataLists.forEach((list) => checkedListArray.push(list));
-      
-              setCheckedLists(checkedListArray);
-            } else {
-              setCheckedLists([]);
-            }
-          },
-          [dataLists]
-        );
-      
-        // 개별 체크 클릭 시 발생하는 함수
-        const onCheckedElement = useCallback(
-          (checked, list) => {
-            if (checked) {
-              setCheckedLists([...checkedList, list]);
-            } else {
-              setCheckedLists(checkedList.filter((el) => el !== list));
-            }
-          },
-          [checkedList]
-        );
-      };
-
-
-    {/*const image = focused ? require('../assets/due-date.png') : require('../assets/due-date.png') */}
-    //when onPress IconButton, show searchbar
-    return  isReady? (
+    return isReady? (
         <SafeAreaView style={viewStyles.container}>
-            <StatusBar barStyle="dark-content" style={barStyles.statusbar}/> 
-           
-        
+            <StatusBar barStyle="light-content" style={barStyles.statusbar}/>    
+            
             <View style={cardStyles.card}> 
-                <ScrollView width = {width-20} onLoad={(route)=>_addTask(route.params)}>
-                {/* 전체선택 checkbox */}
-                <input
-                    type="checkbox"
-                    onChange={(e) => onCheckedAll(e.target.checked)}
-                    checked={
-                    checkedList.length === 0
-                        ? false
-                        : checkedList.length === dataLists.length
-                        ? true
-                        : false
-                    }
-                />
-                    {/* 리스트 나열 */}
+                <ScrollView width = {width-20}>
                     {Object.values(tasks).reverse().filter((filterItem)=>{
                         return filterItem
                     }).map(item=> (
