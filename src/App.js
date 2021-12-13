@@ -5,8 +5,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList, DrawerView } from '@react-navigation/drawer';
 import {Text, Image, Dimensions, View, SafeAreaView} from 'react-native';
 import { theme } from './theme';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Category from './components/Category'
+import User from './components/User';
+import UserContext, {UserProvider} from './contexts/User';
 
 import MainScreen from './MainScreen';
 import SelectScreen from './screens/SelectScreen';
@@ -234,6 +235,7 @@ function App() {
   const[tasks, setTasks] = React.useState({});
 
   return (
+    <UserProvider>
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen 
@@ -316,6 +318,7 @@ function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
+    </UserProvider>
   );
 }
 

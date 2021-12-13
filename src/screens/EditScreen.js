@@ -4,12 +4,12 @@ import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles, bottombarSt
 import {theme} from '../theme';
 import { images } from '../images';
 import IconButton from '../components/IconButton';
-import Task from '../components/Task';
 import Input from '../components/Input';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import RNPickerSelect from 'react-native-picker-select';
+import User from '../components/User';
 
 export default function EditScreen({navigation, route}){
     const width = Dimensions.get('window').width;
@@ -57,8 +57,7 @@ export default function EditScreen({navigation, route}){
         const currentDate = selectedDate || JSON.parse(selectedTask.duedate);
         setShow(Platform.OS === 'Android');
         setDate(currentDate);
-        //var formattedDate = (currentDate.getMonth() + 1) + "/" + (currentDate.getDate());
-        alert(`Due: ${currentDate}`);
+        alert(`Due: ${currentDate.getMonth()+1}/${currentDate.getDate()}`);
         selectedTask.duedate = JSON.stringify(currentDate);
         setIsReady(false);
       };
@@ -73,37 +72,11 @@ export default function EditScreen({navigation, route}){
       };
 
 
-/*카테고리 설정*/
-      const [newCategory, setNewCategory] = useState('');
-      const [categories, setCategories] = useState({
-          /*  '1' : {id: '1', text: "Category #1"},
-            '2' : {id: '2', text: "Category #2"}, */
-        });
+      /*카테고리 설정*/
+      const [categories, setCategories] = useState(<User/>);
 
-        useEffect(()=>{
-          const reloadTab = navigation.addListener('focus',(e)=>{
-              setIsReady(false)
-          });
-          return reloadTab;
-        },[navigation]);
-  
-      const _saveCategories = async categories => {
-          try {
-              await AsyncStorage.setItem('categories',JSON.stringify(categories));
-              setCategories(categories);
-          } catch (e) {
-              console.error(e);
-          }
-        };
-      
-      const _loadCategories = async () => {
-          const loadedCategories = await AsyncStorage.getItem('categories');
-          setCategories(JSON.parse(loadedCategories || '{}'));
-      };
 
       //var due = new Date(JSON.parse(selectedTask.duedate));
-
-
 
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
@@ -120,7 +93,7 @@ export default function EditScreen({navigation, route}){
             />
             <EditTask key={taskID} item={selectedTask} duedate={selectedTask.duedate} updateTask={_updateTask}/>
             <Text style={textStyles.contents}>
-             {/*Due: {due.getMonth() + 1} / {due.getDate()}    원래 깔끔하게 형식 바꿔서 출력하고 싶었는데 JSON.parse 한 번 더 한 것 때문에 오류남*/}
+            {/*Due: {due.getMonth() + 1} / {due.getDate()}    원래 깔끔하게 형식 바꿔서 출력하고 싶었는데 JSON.parse 한 번 더 한 것 때문에 오류남*/}
              Due: {selectedTask.duedate}
             </Text>
             <Button title="Set Due Date" onPress={showDatepicker}/>
@@ -142,7 +115,7 @@ export default function EditScreen({navigation, route}){
         </SafeAreaView>
     ) : (
       <AppLoading
-      startAsync = {_loadTasks, _loadCategories}
+      startAsync = {_loadTasks}
       onFinish={()=>setIsReady(true)}
       onError={console.error}/>
     );
