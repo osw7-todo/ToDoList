@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react';
+import React, { useState, Component, useCallback } from 'react';
 import {StyleSheet, Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
 import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles} from '../styles';
 import {theme} from '../theme';
@@ -10,72 +10,7 @@ import AppLoading from 'expo-app-loading';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function SelectScreen({navigation, route}) {
-    //Issue
-    const Issue = () => {
-        const [bChecked, setChecked] = useState(false);
-
-        const checkHandler = ({ target }) => {
-        setChecked(!bChecked);
-        checkedItemHandler(issue.id, target.checked);
-        };
-
-        const allCheckHandler = () => setChecked(isAllChecked);
-
-        useEffect(() => allCheckHandler(), [isAllChecked]);
-
-        return (
-          <Wrapper>
-            <input type="checkbox" checked={bChecked} onChange={(e) => checkHandler(e)} />
-          </Wrapper>
-        );
-    };
-
-    //IssueList
-    const IssueList = ({ item, deleteTask}) => {
-        const issues = [...Array(10).keys()]; // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-        
-        /*Check box 개별 선택, 개별 해제*/
-        const [checkedItems, setCheckedItems] = useState(new Set());
-
-        const checkedItemHandler = (id, isChecked) => {
-            if (isChecked) {
-              checkedItems.add(id);
-              setCheckedItems(checkedItems);
-            } else if (!isChecked && checkedItems.has(id)) {
-              checkedItems.delete(id);
-              setCheckedItems(checkedItems);
-            }
-          };
-
-        /*Check box 전체 선택, 전체 해제*/
-        const [isAllChecked, setIsAllChecked] = useState(false);
-
-        const allCheckedHandler = (isChecked) => {
-            if (isChecked) {
-                setCheckedItems(new Set(issues.map(({ id }) => id)));
-                setIsAllChecked(true);
-            } else {
-                checkedItems.clear();
-                setCheckedItems(setCheckedItems);
-                setIsAllChecked(false);
-            }
-        };
-
-        return (
-            <>
-            <Header>
-                <input type="checkbox" />
-            </Header>
-            <List>
-                {issues.map((issue, index) => (
-                <Issue key={index} />
-                ))}
-            </List>
-            </>
-        );
-    };  
-
-       const width = Dimensions.get('window').width;
+    const width = Dimensions.get('window').width;
 
     const [isReady, setIsReady] = useState(false);
     const [newTask, setNewTask] = useState('');
@@ -143,9 +78,41 @@ export default function SelectScreen({navigation, route}) {
         setTasks(currentTasks);
     };
 
+    /* checkbox 구현방법 2 */
+    const [checkedList, setCheckedLists] = useState([]);
+    const dataLists = Object.values(tasks).reverse(); //dataList에 해당화면에서 넘어온 항목들 저장
+    
+    // 전체 체크 클릭 시 발생하는 함수
+    const onCheckedAll = useCallback(
+        (checked) => {
+        if (checked) {
+            const checkedListArray = [];
+    
+            dataLists.forEach((item) => checkedListArray.push(item));
+    
+            setCheckedLists(checkedListArray);
+        } else {
+            setCheckedLists([]);
+        }
+        },
+        [dataLists]
+    );
+    
+    // 개별 체크 클릭 시 발생하는 함수
+    const onCheckedElement = useCallback(
+        (checked, item) => {
+            if (checked) {
+                setCheckedLists([...checkedList, item]);
+            } else {
+                setCheckedLists(checkedList.filter((el) => el !== item));
+            }
+        },
+        [checkedList]
+    );
+
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
-            <StatusBar barStyle="light-content" style={barStyles.statusbar}/>    
+            <StatusBar barStyle="dark-content" style={barStyles.statusbar}/>    
             
             <View style={cardStyles.card}> 
                 <ScrollView width = {width-20}>
@@ -154,26 +121,37 @@ export default function SelectScreen({navigation, route}) {
                     }).map(item=> (
                         <View style={taskStyle.container}>
                             {/* checkbox */}
-                            <input
+                            {/* <input type = "checkbox"쓰고 싶은데, function이어야한다면서 console error발생...*/}
+                            <IconButton
                                 key={item.id}
-                                type="checkbox"
-                                onChange={(e) => onCheckedElement(e.target.checked, list)}
-                                checked={checkedList.includes(list) ? true : false}
-                                />
+                                type={"images.uncompleted"}
+                                onChange={(e) => onCheckedElement(e.target.checked, item)}
+                                checked={checkedList.includes(item) ? true : false}
+                            />
+    
                             {/* 할 일 text */}
-                            <Text 
-                            style={[taskStyle.contents,
+                            <Text style={[taskStyle.contents,
                             {color: (item.completed? theme.done : theme.text)},
-                            {textDecorationLine: (item.completed? 'line-through' : 'none')}]}
-                            key={item.id} >
-                            {item.text} </Text>
+                            {textDecorationLine: (item.completed? 'line-through' : 'none')}]}>
+                                {item.text} 
+                            </Text>
                         </View>
                     ))}
                 </ScrollView>
        
                 <View style={{flexDirection: 'row'}}>
-                    {/*아이콘 양끝 정렬 구현안됨. flex-start(end)써도 왜 적용이 안되는지 잘 모르겠음*/}
-                    <IconButton type={images.uncompleted} style={{justifyContent: 'felx-start'}} />
+                    {/*전체선택/해제 여부를 입력받는 checkbox*/}
+                    <IconButton
+                        type="images.uncompleted"
+                        onChange={(e) => onCheckedAll(e.target.checked)}
+                        checked={
+                        checkedList.length === 0
+                            ? false
+                            : checkedList.length === dataLists.length
+                            ? true
+                            : false
+                        }
+                    />
                     <IconButton type={images.delete} style={{justifyContent: 'felx-end'}}/>
                 </View>
             </View>
