@@ -226,7 +226,7 @@ function MenuBar() {
 
 function App() {
   /*
-   * Stack.Navigator 목록에, 1) MenuBar 2) Tab 3) SELECT 있는 것.
+   * Stack.Navigator 목록에, 1) MenuBar 2) Tab 3) SELECT 있는 것. (Navigation nested)
    * 이때 형식이 1) Drawer, 2)Tab bar 3)은 그냥 screen.
    */
 

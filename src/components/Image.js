@@ -1,7 +1,7 @@
 import React,{useEffect} from 'react';
 import {Platform, Alert} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
+//import * as Permissions from 'expo-permissions';
 
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
