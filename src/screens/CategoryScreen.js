@@ -16,14 +16,16 @@ import CategoryInput from '../components/CategoryInput';
 import { Category } from '../components/Category';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
+import UserContext, { UserConsumer } from '../contexts/User';
 
 
-function CategoryScreen({navigation, route}){
+function CategoryScreen({navigation}){
   const width = Dimensions.get('window').width;
   const [isReady, setIsReady] = useState(false);
   /*카테고리 설정*/
   const [newCategory, setNewCategory] = useState('');
   const [categories, setCategories] = useState({});
+
 
   useEffect(()=>{
       const reload = navigation.addListener('focus',(e)=>{
@@ -85,17 +87,16 @@ function CategoryScreen({navigation, route}){
 
     return isReady? (
       <SafeAreaView style={viewStyles.container}>
-            <StatusBar barStyle="dark-content" style={barStyles.statusbar}/>
-            <View style={cardStyles.card}>
+        <StatusBar barStyle="dark-content" style={barStyles.statusbar}/>
+          <View style={cardStyles.card}>
               <ScrollView width = {width-20}>
                     {Object.values(categories).map(item=> (
                         <Category key={item.id} item={item} deleteCategory={_deleteCategory} updateCategory={_updateCategory} moveToCategory={_moveToCategory}/> 
                     ))}
-                    <CategoryInput value={newCategory} onChangeText={_handleTextChange} onSubmitEditing={_addCategory} onBlur={_onBlur}/>
-                    
+                  <CategoryInput value={newCategory} onChangeText={_handleTextChange} onSubmitEditing={_addCategory} onBlur={_onBlur}/>
               </ScrollView>
-      </View>
-      </SafeAreaView>  
+          </View>
+      </SafeAreaView>
       
     ) :  (
       <AppLoading
