@@ -11,6 +11,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import RNPickerSelect from 'react-native-picker-select';
 import Categories from '../components/categories';
 import CategoryContext, {CategoryProvider} from '../contexts/categories';
+import {Image} from '../components/Image';
 
 export default function EditScreen({navigation, route}){
     const width = Dimensions.get('window').width;
@@ -79,6 +80,10 @@ export default function EditScreen({navigation, route}){
 
       //var due = new Date(JSON.parse(selectedTask.duedate));
 
+      /*이미지 넣기*/
+     // const[photoUrl, setPhotoUrl] = useState(images.photo);
+
+
     return isReady? (
       <CategoryProvider>
         <SafeAreaView style={viewStyles.container}>
@@ -106,6 +111,10 @@ export default function EditScreen({navigation, route}){
             display="default"
             onChange = {onChange}
             />}
+
+              {/* 이미지 넣기 */}
+            <IconButton type={images.photo} />
+
             </ScrollView>
             <Button title="Save" onPress={() =>{
               navigation.navigate({
