@@ -8,6 +8,7 @@ import List from '../assets/list.png';
 import SearchIcon from '../assets/search-icon.png';
 //import CategoryIcon from'../assets/categories.png';
 import OpenIcon from '../assets/open-icon.png';
+import photo from '../assets/photo.png';
 
 export const images = {
     uncompleted: UncheckedBox,
@@ -19,5 +20,6 @@ export const images = {
     list : List,
     searchI : SearchIcon,
     //category: CategoryIcon,
-    openNew: OpenIcon
+    openNew: OpenIcon,
+    photo: photo
 };
