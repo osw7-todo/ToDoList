@@ -9,8 +9,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import RNPickerSelect from 'react-native-picker-select';
-import User from '../components/User';
-import UserContext, {UserProvider} from '../contexts/User';
+import Categories from '../components/categories';
+import CategoryContext, {CategoryProvider} from '../contexts/categories';
 
 export default function EditScreen({navigation, route}){
     const width = Dimensions.get('window').width;
@@ -74,13 +74,13 @@ export default function EditScreen({navigation, route}){
 
 
       /*카테고리 설정*/
-     // const [categories, setCategories] = useState(<User/>);
+     // const [categories, setCategories] = useState(<Categories/>);
 
 
       //var due = new Date(JSON.parse(selectedTask.duedate));
 
     return isReady? (
-      <UserProvider>
+      <CategoryProvider>
         <SafeAreaView style={viewStyles.container}>
           <StatusBar barStyle="dark-content" style={barStyles.statusbar}/>
             <ScrollView width={width-20} onLoad={()=>route.params}>
@@ -89,7 +89,7 @@ export default function EditScreen({navigation, route}){
             </Text>
             <RNPickerSelect onValueChange={(value) => selectedTask.category = value}
             items=
-            {Object.values(User).map(item=>
+            {Object.values(Categories).map(item=>
                 [{ label: item.text, value: item.id},]
                 )}
             />
@@ -115,7 +115,7 @@ export default function EditScreen({navigation, route}){
               })
             }}/>
         </SafeAreaView>
-        </UserProvider>
+        </CategoryProvider>
     ) : (
       <AppLoading
       startAsync = {_loadTasks}
