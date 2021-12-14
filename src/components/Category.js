@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import IconButton from './IconButton';
 import {images} from '../images';
 import CategoryInput from './CategoryInput';
-import UserContext from '../contexts/User';
 
 export const Category = ({item, deleteCategory, updateCategory, moveToCategory})=> {
 
