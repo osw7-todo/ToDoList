@@ -87,12 +87,12 @@ export default function EditScreen({navigation, route}){
             <Text style={textStyles.contents}>
             Select a Category
             </Text>
-           {/* <RNPickerSelect onValueChange={(value) => console.log(value)}
+            <RNPickerSelect onValueChange={(value) => selectedTask.category = value}
             items=
-            {Object.values(<User/>).map(item=>
+            {Object.values(User).map(item=>
                 [{ label: item.text, value: item.id},]
                 )}
-            /> */}
+            />
             <EditTask key={taskID} item={selectedTask} duedate={selectedTask.duedate} updateTask={_updateTask}/>
             <Text style={textStyles.contents}>
             {/*Due: {due.getMonth() + 1} / {due.getDate()}    원래 깔끔하게 형식 바꿔서 출력하고 싶었는데 JSON.parse 한 번 더 한 것 때문에 오류남*/}

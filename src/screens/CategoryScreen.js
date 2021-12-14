@@ -19,7 +19,7 @@ import AppLoading from 'expo-app-loading';
 import UserContext, { UserConsumer } from '../contexts/User';
 
 
-function CategoryScreen({navigation, route}){
+function CategoryScreen({navigation}){
   const width = Dimensions.get('window').width;
   const [isReady, setIsReady] = useState(false);
   /*카테고리 설정*/
@@ -95,13 +95,8 @@ function CategoryScreen({navigation, route}){
                     ))}
                   <CategoryInput value={newCategory} onChangeText={_handleTextChange} onSubmitEditing={_addCategory} onBlur={_onBlur}/>
               </ScrollView>
-              <UserConsumer>
-              {({dispatch}) => {
-                dispatch(categories);
-              }}
-              </UserConsumer>
           </View>
-      </SafeAreaView>  
+      </SafeAreaView>
       
     ) :  (
       <AppLoading
