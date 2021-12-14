@@ -1,7 +1,7 @@
 import React, {createContext, useState} from 'react';
 
 const UserContext = createContext({
-    user: {categories: {id: null, text: null}},
+    user: {categories: [{id: null, text: null}]},
     dispatch: () => {},
 });
 

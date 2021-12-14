@@ -34,10 +34,6 @@ function CategoryScreen({navigation, route}){
       return reload;
   },[navigation]);
 
-  UserConsumer(({dispatch}) =>{
-    dispatch(categories);
-  })
-
   const _addCategory = () => {
       const ID = Date.now().toString();
       const newCategoryObject = {
@@ -99,6 +95,11 @@ function CategoryScreen({navigation, route}){
                     ))}
                   <CategoryInput value={newCategory} onChangeText={_handleTextChange} onSubmitEditing={_addCategory} onBlur={_onBlur}/>
               </ScrollView>
+              <UserConsumer>
+              {({dispatch}) => {
+                dispatch(categories);
+              }}
+              </UserConsumer>
           </View>
       </SafeAreaView>  
       

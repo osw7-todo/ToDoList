@@ -10,6 +10,7 @@ import AppLoading from 'expo-app-loading';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import RNPickerSelect from 'react-native-picker-select';
 import User from '../components/User';
+import UserContext, {UserProvider} from '../contexts/User';
 
 export default function EditScreen({navigation, route}){
     const width = Dimensions.get('window').width;
@@ -73,24 +74,25 @@ export default function EditScreen({navigation, route}){
 
 
       /*카테고리 설정*/
-      const [categories, setCategories] = useState(<User/>);
+     // const [categories, setCategories] = useState(<User/>);
 
 
       //var due = new Date(JSON.parse(selectedTask.duedate));
 
     return isReady? (
+      <UserProvider>
         <SafeAreaView style={viewStyles.container}>
           <StatusBar barStyle="dark-content" style={barStyles.statusbar}/>
             <ScrollView width={width-20} onLoad={()=>route.params}>
             <Text style={textStyles.contents}>
             Select a Category
             </Text>
-            <RNPickerSelect onValueChange={(value) => console.log(value)}
+           {/* <RNPickerSelect onValueChange={(value) => console.log(value)}
             items=
-            {Object.values(categories).map(item=>
+            {Object.values(<User/>).map(item=>
                 [{ label: item.text, value: item.id},]
                 )}
-            />
+            /> */}
             <EditTask key={taskID} item={selectedTask} duedate={selectedTask.duedate} updateTask={_updateTask}/>
             <Text style={textStyles.contents}>
             {/*Due: {due.getMonth() + 1} / {due.getDate()}    원래 깔끔하게 형식 바꿔서 출력하고 싶었는데 JSON.parse 한 번 더 한 것 때문에 오류남*/}
@@ -113,6 +115,7 @@ export default function EditScreen({navigation, route}){
               })
             }}/>
         </SafeAreaView>
+        </UserProvider>
     ) : (
       <AppLoading
       startAsync = {_loadTasks}
