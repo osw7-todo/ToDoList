@@ -7,6 +7,7 @@ import Task from '../components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import CustomButton from '../components/custombutton';
 
 export default function Uncompleted({navigation, route}) {   
     const width = Dimensions.get('window').width;
@@ -110,7 +111,7 @@ export default function Uncompleted({navigation, route}) {
             <StatusBar barStyle="dark-content" style={barStyles.statusbar}/> 
             
             <View style={cardStyles.card}> 
-                <Button  title= 'select' onPress={()=>navigation.navigate('SELECT')} style={[textStyles.title, {alignItems:'flex-end'}]} /> 
+                <CustomButton text="select" onPress={()=>navigation.navigate('SELECT')}/>  
                 <ScrollView width = {width-20} onLoad={(route)=>_addTask(route.params)}>
                     {Object.values(tasks).reverse().filter((filterItem)=>{
                         if(filterItem.completed == false){
