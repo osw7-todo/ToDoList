@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
+import {TouchableOpacity,StyleSheet, Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
 import {viewStyles, textStyles, barStyles, cardStyles, rowStyles, topbarStyles, bottombarStyles} from '../styles';
 import { images } from '../images';
 import IconButton from '../components/IconButton';
@@ -8,6 +8,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Search from '../components/Search';
+import { theme } from '../theme';
+import CustomButton from '../components/custombutton';
 
 export default function ViewAll({navigation, route}) {   
     const width = Dimensions.get('window').width;
@@ -107,8 +109,12 @@ export default function ViewAll({navigation, route}) {
                     <IconButton type={images.searchI} onPressOut={()=>setShouldShow(!shouldShow)}/>
                     {shouldShow ? <Search value={searchText} onChangeText={text => {setSearchText(text)}}/> : null}
                 </View>
-                <Button  title= 'select' onPress={()=>navigation.navigate('SELECT')} style={[textStyles.title, {alignItems:'flex-end'}]} /> 
-                
+
+                <View style={rowStyles.context}> 
+                    <CustomButton text="share" onPress={()=>{}}/>
+                    <CustomButton text="select" onPress={()=>navigation.navigate('SELECT')} /*style={[textStyles.title, {alignItems:'flex-end'}]}*//> 
+                </View>
+
                 <ScrollView width = {width-20} onLoad={(route)=>_addTask(route.params)}>
                     {Object.values(tasks).reverse().filter((filterItem)=>{
                         if(searchText ==""){

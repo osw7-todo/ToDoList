@@ -5,6 +5,7 @@ import Input from './components/Input';
 import Task from './components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
+import CustomButton from './components/custombutton';
 
 export default function MainScreen({navigation, route}) {
     
@@ -106,7 +107,7 @@ export default function MainScreen({navigation, route}) {
             <View style={cardStyles.card}>
                 <View style={rowStyles.context}> 
                     <Text style={[textStyles.title, {fontSize:30}]}> {month}/{today} </Text>
-                    <Button  title= 'select' onPress={()=>navigation.navigate('SELECT')} style={[textStyles.title, {alignItems:'flex-end'}]} /> 
+                    <CustomButton text="select" onPress={()=>navigation.navigate('SELECT')}/> 
                 </View>
                 <Input value={newTask} onChangeText={_handleTextChange} onSubmitEditing={_addTask} onBlur={_onBlur}/>
                 
