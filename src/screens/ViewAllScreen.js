@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
-import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles, bottombarStyles} from '../styles';
+import {viewStyles, textStyles, barStyles, cardStyles, rowStyles, topbarStyles, bottombarStyles} from '../styles';
 import { images } from '../images';
 import IconButton from '../components/IconButton';
 import Task from '../components/Task';
@@ -19,7 +19,11 @@ export default function ViewAll({navigation, route}) {
         '2' : {id: '2', text: "Todo item #2", completed: true},*/
     });
 
+    //using search
     const [searchText, setSearchText] = useState('');
+    
+    //show and hide search bar
+    const [shouldShow, setShouldShow] = useState(true);
 
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -32,31 +36,16 @@ export default function ViewAll({navigation, route}) {
         return reloadTab;
     },[navigation]);
 
-    //const item = route.params;
-    //console.log("===",item);
-
     /*
-    Object.values(route.params).reverse().map(function(item){
-        console.log(".....",item.id);
-        const ID = item.id;
-        const newTaskObject = {
-        [ID]: {id: ID, text: item.text, completed: item.completed},
-        };
-    });
-    */
+        AsyncStorage.setItem('KEY', JSON.stringify(array));
+        Object.values(AsyncStorage.getAllKeys).reverse().map(function(item){
+            console.log(item)
+        });
+        
+        const keys = await AsyncStorage.getAllKeys;
+        const result = await AsyncStorage.multiGet(keys);
+        return result.map(req => JSON.parse(req)).forEach(console.log);
 
-    /*
-    //tasks = route.params;
-    Object.values(route.params).reverse().map(function(item){
-        const ID = item.id;
-        const newTaskObject = {
-            [ID]: {id: ID, text: item.text, completed: item.completed},
-        };
-
-        //setTasks({...tasks, ...newTaskObject});
-        _saveTasks({...tasks, ...newTaskObject});
-    })
-    //console.log(data);
     */
     const _saveTasks = async tasks => {
         try {
@@ -113,10 +102,13 @@ export default function ViewAll({navigation, route}) {
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="dark-content" style={barStyles.statusbar}/> 
             
-            <View style={cardStyles.card}> 
-                <IconButton type={images.searchI}/>
-                <Search value={searchText} onChangeText={text => {setSearchText(text)}}/>
+            <View style={cardStyles.card}>
+                <View style={rowStyles.context}> 
+                    <IconButton type={images.searchI} onPressOut={()=>setShouldShow(!shouldShow)}/>
+                    {shouldShow ? <Search value={searchText} onChangeText={text => {setSearchText(text)}}/> : null}
+                </View>
                 <Button  title= 'select' onPress={()=>navigation.navigate('SELECT')} style={[textStyles.title, {alignItems:'flex-end'}]} /> 
+                
                 <ScrollView width = {width-20} onLoad={(route)=>_addTask(route.params)}>
                     {Object.values(tasks).reverse().filter((filterItem)=>{
                         if(searchText ==""){

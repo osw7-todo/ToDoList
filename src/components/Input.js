@@ -37,6 +37,7 @@ const inputStyle = StyleSheet.create({
         height: 60,
         marginTop: 10,
         marginLeft: 3,
+        marginRight: 3,
         paddingLeft: 15,
         paddingTop: 2,
         borderRadius: 10,

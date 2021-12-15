@@ -25,6 +25,9 @@ const iconStyle = StyleSheet.create({
         width: 30,
         height: 30,
         margin: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center'
     },
 });
 
