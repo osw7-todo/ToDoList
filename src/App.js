@@ -18,8 +18,11 @@ import Monthly from './screens/monthlyScreen';
 import CompletionRate from './screens/CompletionRateScreen';
 import CategoryScreen from './screens/CategoryScreen';
 import SelectedCategoryScreen from './screens/SelectedCategoryScreen'
-import IconButton from './components/IconButton';
+/* import IconButton from './components/IconButton';
 import { images } from './images';
+const [shouldShow, setShouldShow] = useState(true);
+/*
+
 //import { SafeAreaView } from 'react-native-safe-area-context';
 
 //change screen using navigation stack&tab
@@ -107,6 +110,7 @@ function MenuBar() {
                     headerTintColor: theme.main,
                     /*headerRight: () => (
                       <IconButton type={images.searchI} onPressOut={()=>setShouldShow(!shouldShow)}/>
+
                     )*/
                   }}
               />
