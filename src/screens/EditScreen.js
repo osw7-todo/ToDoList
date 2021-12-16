@@ -19,6 +19,7 @@ export default function EditScreen({navigation, route}){
     const [categories, setCategories] = useState({});
 
     const {selectedTask, taskID} = route.params;
+    //const [categories, setCategories] = useState({});
 
     useEffect(()=>{
       const reloadTab = navigation.addListener('focus',(e)=>{

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {TouchableOpacity,StyleSheet, Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
+import {TouchableOpacity,StyleSheet, Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View, Share} from 'react-native';
 import {viewStyles, textStyles, barStyles, cardStyles, rowStyles, topbarStyles, bottombarStyles} from '../styles';
 import { images } from '../images';
 import IconButton from '../components/IconButton';
@@ -10,6 +10,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import Search from '../components/Search';
 import { theme } from '../theme';
 import CustomButton from '../components/custombutton';
+//import copy from 'copy-to-clipboard';
 
 export default function ViewAll({navigation, route}) {   
     const width = Dimensions.get('window').width;
@@ -38,17 +39,6 @@ export default function ViewAll({navigation, route}) {
         return reloadTab;
     },[navigation]);
 
-    /*
-        AsyncStorage.setItem('KEY', JSON.stringify(array));
-        Object.values(AsyncStorage.getAllKeys).reverse().map(function(item){
-            console.log(item)
-        });
-        
-        const keys = await AsyncStorage.getAllKeys;
-        const result = await AsyncStorage.multiGet(keys);
-        return result.map(req => JSON.parse(req)).forEach(console.log);
-
-    */
     const _saveTasks = async tasks => {
         try {
             await AsyncStorage.setItem('tasks',JSON.stringify(tasks));
@@ -98,8 +88,34 @@ export default function ViewAll({navigation, route}) {
     var month = now.getMonth() + 1;
     var today = now.getDate();
 
+    const _shareData = async() => {
+        var text = '<ToDoList>\n';
+        {Object.values(tasks).reverse()
+            .map(function(data){text+=data.text+'('+data.completed+') : startdate('+data.startdate+'), duedate('+data.duedate+')\n'})}
+        
+        try{
+            const result = await Share.share({
+                message:
+                  text,
+              });
+              if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                  // shared with activity type of result.activityType
+                } else {
+                  // shared
+                }
+              } else if (result.action === Share.dismissedAction) {
+                // dismissed
+              }
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
     {/*const image = focused ? require('../assets/due-date.png') : require('../assets/due-date.png') */}
-    //when onPress IconButton, show searchbar
+
+
+//[ID]: {id: ID, text: newTask, completed: false, startdate: JSON.stringify(date), duedate: JSON.stringify(date), category: "null"},
     return  isReady? (
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="dark-content" style={barStyles.statusbar}/> 
@@ -111,7 +127,7 @@ export default function ViewAll({navigation, route}) {
                 </View>
 
                 <View style={rowStyles.context}> 
-                    <CustomButton text="share" onPress={()=>{}}/>
+                    <CustomButton text="share" onPress={_shareData}/>
                     <CustomButton text="select" onPress={()=>navigation.navigate('SELECT')} /*style={[textStyles.title, {alignItems:'flex-end'}]}*//> 
                 </View>
 
