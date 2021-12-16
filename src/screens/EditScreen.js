@@ -20,6 +20,7 @@ export default function EditScreen({navigation, route}){
     const [tasks, setTasks] = useState({});
 
     const {selectedTask, taskID} = route.params;
+    //const [categories, setCategories] = useState({});
 
     useEffect(()=>{
       const reloadTab = navigation.addListener('focus',(e)=>{
@@ -48,6 +49,11 @@ export default function EditScreen({navigation, route}){
       navigation.setParams({selectedTask: item,});
       //setTasks(currentTasks);
       _saveTasks(selectedTask);
+  };
+
+  const _loadCategories = async () => {
+    const loadedCategories = await AsyncStorage.getItem('categories');
+    setCategories(JSON.parse(loadedCategories || '{}'));
   };
 
   /*duedate 설정*/
@@ -94,8 +100,8 @@ export default function EditScreen({navigation, route}){
             </Text>
             <RNPickerSelect onValueChange={(value) => selectedTask.category = value}
             items=
-            {Object.values(Categories).map(item=>
-                [{ label: item.text, value: item.id},]
+            {Object.values(categories).map(item=>(
+                [{ label: item.text, value: item.id},])
                 )}
             />
             <EditTask key={taskID} item={selectedTask} duedate={selectedTask.duedate} updateTask={_updateTask}/>
@@ -127,7 +133,7 @@ export default function EditScreen({navigation, route}){
         </CategoryProvider>
     ) : (
       <AppLoading
-      startAsync = {_loadTasks}
+      startAsync = {_loadTasks} //_loadCategories
       onFinish={()=>setIsReady(true)}
       onError={console.error}/>
     );

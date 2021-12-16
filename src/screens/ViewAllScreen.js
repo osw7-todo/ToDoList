@@ -38,17 +38,6 @@ export default function ViewAll({navigation, route}) {
         return reloadTab;
     },[navigation]);
 
-    /*
-        AsyncStorage.setItem('KEY', JSON.stringify(array));
-        Object.values(AsyncStorage.getAllKeys).reverse().map(function(item){
-            console.log(item)
-        });
-        
-        const keys = await AsyncStorage.getAllKeys;
-        const result = await AsyncStorage.multiGet(keys);
-        return result.map(req => JSON.parse(req)).forEach(console.log);
-
-    */
     const _saveTasks = async tasks => {
         try {
             await AsyncStorage.setItem('tasks',JSON.stringify(tasks));
@@ -98,8 +87,39 @@ export default function ViewAll({navigation, route}) {
     var month = now.getMonth() + 1;
     var today = now.getDate();
 
+    const _getData = async() => {
+        try {
+            await AsyncStorage.getAllKeys().then(async keys => {
+                await AsyncStorage.multiGet(keys).then(key => {
+                  key.forEach(data => {
+                    //Object.values(data).reverse().map(function(item){ console.log(item) })
+                    console.log(data[1]); //values
+                  });
+                });
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        //AsyncStorage.getAllKeys().then((keys)=> AsyncStorage.multiGet(keys).then((keys)=>console.log(keys[1])))
+
+        /*
+        AsyncStorage.setItem('KEY', JSON.stringify(array));
+        Object.values(AsyncStorage.getAllKeys).reverse().map(function(item){
+            console.log(item)
+        });
+        */
+        
+        /*
+        const keys = await AsyncStorage.getAllKeys;
+        const result = await AsyncStorage.multiGet(keys);
+        return result.map(req => JSON.parse(req)).forEach(console.log);
+        */
+    }
+
     {/*const image = focused ? require('../assets/due-date.png') : require('../assets/due-date.png') */}
-    //when onPress IconButton, show searchbar
+
+
+//[ID]: {id: ID, text: newTask, completed: false, startdate: JSON.stringify(date), duedate: JSON.stringify(date), category: "null"},
     return  isReady? (
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="dark-content" style={barStyles.statusbar}/> 
@@ -111,7 +131,7 @@ export default function ViewAll({navigation, route}) {
                 </View>
 
                 <View style={rowStyles.context}> 
-                    <CustomButton text="share" onPress={()=>{}}/>
+                    <CustomButton text="share" onPress={_getData}/>
                     <CustomButton text="select" onPress={()=>navigation.navigate('SELECT')} /*style={[textStyles.title, {alignItems:'flex-end'}]}*//> 
                 </View>
 
