@@ -9,8 +9,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import RNPickerSelect from 'react-native-picker-select';
-import Categories from '../components/categories';
-import CategoryContext, {CategoryProvider} from '../contexts/categories';
 import {Image} from '../components/Image';
 
 export default function EditScreen({navigation, route}){
@@ -18,6 +16,7 @@ export default function EditScreen({navigation, route}){
 
     const [isReady, setIsReady] = useState(false);
     const [tasks, setTasks] = useState({});
+    const [categories, setCategories] = useState({});
 
     const {selectedTask, taskID} = route.params;
     //const [categories, setCategories] = useState({});
@@ -37,23 +36,20 @@ export default function EditScreen({navigation, route}){
     } catch (e) {
         console.error(e);
     }
-};
+  };
 
-    const _loadTasks = async () => {
-      const loadedTasks = await AsyncStorage.getItem('selectedTask');
-      setTasks(JSON.parse(loadedTasks || '{}'));
-    };
+  const _load = async () => {
+    const loadedTasks = await AsyncStorage.getItem('selectedTask');
+    const loadedCategories = await AsyncStorage.getItem('categories');
+    setTasks(JSON.parse(loadedTasks || '{}'));
+    setCategories(JSON.parse(loadedCategories || '{}'));
+  };
 
 
     const _updateTask = item => {
       navigation.setParams({selectedTask: item,});
       //setTasks(currentTasks);
       _saveTasks(selectedTask);
-  };
-
-  const _loadCategories = async () => {
-    const loadedCategories = await AsyncStorage.getItem('categories');
-    setCategories(JSON.parse(loadedCategories || '{}'));
   };
 
   /*duedate 설정*/
@@ -80,10 +76,6 @@ export default function EditScreen({navigation, route}){
       };
 
 
-      /*카테고리 설정*/
-     // const [categories, setCategories] = useState(<Categories/>);
-
-
       //var due = new Date(JSON.parse(selectedTask.duedate));
 
       /*이미지 넣기*/
@@ -91,7 +83,6 @@ export default function EditScreen({navigation, route}){
 
 
     return isReady? (
-      <CategoryProvider>
         <SafeAreaView style={viewStyles.container}>
           <StatusBar barStyle="dark-content" style={barStyles.statusbar}/>
             <ScrollView width={width-20} onLoad={()=>route.params}>
@@ -100,8 +91,8 @@ export default function EditScreen({navigation, route}){
             </Text>
             <RNPickerSelect onValueChange={(value) => selectedTask.category = value}
             items=
-            {Object.values(categories).map(item=>(
-                [{ label: item.text, value: item.id},])
+            {Object.values(categories).map(item=>
+                [{ label: item.text, value: item.id},]
                 )}
             />
             <EditTask key={taskID} item={selectedTask} duedate={selectedTask.duedate} updateTask={_updateTask}/>
@@ -130,10 +121,9 @@ export default function EditScreen({navigation, route}){
               })
             }}/>
         </SafeAreaView>
-        </CategoryProvider>
     ) : (
       <AppLoading
-      startAsync = {_loadTasks} //_loadCategories
+      startAsync = {_load}
       onFinish={()=>setIsReady(true)}
       onError={console.error}/>
     );
