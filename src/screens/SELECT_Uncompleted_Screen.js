@@ -100,7 +100,7 @@ export default function SELECT_Uncompleted_Screen({navigation, route}) {
                             {/* <input type = "checkbox"쓰고 싶은데, function이어야한다면서 console error발생...*/}
                             <IconButton
                                 key={item.id}
-                                type={"images.uncompleted"}
+                                type={images.uncompleted}
                                 onChange={(e) => onCheckedElement(e.target.checked, item)}
                                 checked={checkedList.includes(item) ? true : false}
                             />
@@ -118,7 +118,7 @@ export default function SELECT_Uncompleted_Screen({navigation, route}) {
                 <View style={{flexDirection: 'row'}}>
                     {/*전체선택/해제 여부를 입력받는 checkbox*/}
                     <IconButton
-                        type="images.uncompleted"
+                        type={images.uncompleted}
                         onChange={(e) => onCheckedAll(e.target.checked)}
                         checked={
                         checkedList.length === 0

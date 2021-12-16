@@ -47,6 +47,34 @@ export default function SELECT_Completed_Screen({navigation, route}) {
         _saveTasks(currentTasks);
     };
 
+    const _getData = async() => {
+        try {
+            await AsyncStorage.getAllKeys().then(async keys => {
+                await AsyncStorage.multiGet(keys).then(key => {
+                  key.forEach(data => {
+                    //Object.values(data).reverse().map(function(item){ console.log(item) })
+                    console.log(data[1]); //values
+                  });
+                });
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        //AsyncStorage.getAllKeys().then((keys)=> AsyncStorage.multiGet(keys).then((keys)=>console.log(keys[1])))
+
+        /*
+        AsyncStorage.setItem('KEY', JSON.stringify(array));
+        Object.values(AsyncStorage.getAllKeys).reverse().map(function(item){
+            console.log(item)
+        });
+        */
+        
+        /*
+        const keys = await AsyncStorage.getAllKeys;
+        const result = await AsyncStorage.multiGet(keys);
+        return result.map(req => JSON.parse(req)).forEach(console.log);
+        */
+    }
 
     /* checkbox 구현방법 2 */
     const [checkedList, setCheckedLists] = useState([]);
@@ -100,7 +128,7 @@ export default function SELECT_Completed_Screen({navigation, route}) {
                             {/* <input type = "checkbox"쓰고 싶은데, function이어야한다면서 console error발생...*/}
                             <IconButton
                                 key={item.id}
-                                type={"images.uncompleted"}
+                                type={images.uncompleted}
                                 onChange={(e) => onCheckedElement(e.target.checked, item)}
                                 checked={checkedList.includes(item) ? true : false}
                             />
@@ -118,7 +146,7 @@ export default function SELECT_Completed_Screen({navigation, route}) {
                 <View style={{flexDirection: 'row'}}>
                     {/*전체선택/해제 여부를 입력받는 checkbox*/}
                     <IconButton
-                        type="images.uncompleted"
+                        type={images.uncompleted}
                         onChange={(e) => onCheckedAll(e.target.checked)}
                         checked={
                         checkedList.length === 0
@@ -129,6 +157,7 @@ export default function SELECT_Completed_Screen({navigation, route}) {
                         }
                     />
                     <IconButton type={images.delete} style={{justifyContent: 'felx-end'}}/>
+
                 </View>
             </View>
         </SafeAreaView>

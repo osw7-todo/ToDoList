@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import {theme} from '../theme';
+import { onChange } from 'react-native-reanimated';
 
 class customButton extends Component {
 	render() {
