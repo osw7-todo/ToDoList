@@ -131,9 +131,9 @@ export default function MainScreen({navigation, route}) {
                     <CustomButton text="select" onPress={()=>navigation.navigate('SELECT')}/> 
                 </View>
 
-                <View>
+                {/*<View>
                     <Calendar></Calendar>
-                </View>
+                </View>*/}
                 
                 <Input value={newTask} onChangeText={_handleTextChange} onSubmitEditing={_addTask} onBlur={_onBlur}/>
                 
@@ -150,6 +150,8 @@ export default function MainScreen({navigation, route}) {
                         simultaneousHandlers={scrollView}
                         activationDistance={20}
                     </DraggableFlatList> */}
+                    <Calendar></Calendar>
+
                     {Object.values(tasks).reverse().map(item=> (
                         <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}
                         updateTask={_updateTask} renderItem={renderItem}
