@@ -8,6 +8,7 @@ import AppLoading from 'expo-app-loading';
 import CustomButton from './components/custombutton';
 import DraggableFlatList, { RenderItemParams, useCallback} from 'react-native-draggable-flatlist';
 import Animated from 'react-native-reanimated';
+import { Calendar } from 'react-native-calendars';
 
 export default function MainScreen({navigation, route}) { 
     const width = Dimensions.get('window').width; //set window size
@@ -129,6 +130,11 @@ export default function MainScreen({navigation, route}) {
                     <Text style={[textStyles.title, {fontSize:30}]}> {month}/{today} </Text>
                     <CustomButton text="select" onPress={()=>navigation.navigate('SELECT')}/> 
                 </View>
+
+                <View>
+                    <Calendar></Calendar>
+                </View>
+                
                 <Input value={newTask} onChangeText={_handleTextChange} onSubmitEditing={_addTask} onBlur={_onBlur}/>
                 
                 <ScrollView width = {width-20} ref={ScrollView}>
