@@ -1,12 +1,14 @@
 import React, { useState, Component, useCallback } from 'react';
-import {StyleSheet, Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
-import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles} from '../styles';
+import {StyleSheet, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
+import {viewStyles, barStyles, cardStyles} from '../styles';
 import {theme} from '../theme';
 import { images } from '../images';
 import IconButton from '../components/IconButton';
+import CustomButton from '../components/custombutton';
 import Task from '../components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
+import { CheckBox } from 'react-native-elements/dist/checkbox/CheckBox';
 
 export default function SelectScreen({navigation, route}) {
     const width = Dimensions.get('window').width;
@@ -53,6 +55,36 @@ export default function SelectScreen({navigation, route}) {
         _saveTasks(currentTasks);
     };
 
+    const _getData = async() => {
+        try {
+            await AsyncStorage.getAllKeys().then(async keys => {
+                await AsyncStorage.multiGet(keys).then(key => {
+                  key.forEach(data => {
+                    //Object.values(data).reverse().map(function(item){ console.log(item) })
+                    console.log(data[1]); //values
+                  });
+                });
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        //AsyncStorage.getAllKeys().then((keys)=> AsyncStorage.multiGet(keys).then((keys)=>console.log(keys[1])))
+
+        /*
+        AsyncStorage.setItem('KEY', JSON.stringify(array));
+        Object.values(AsyncStorage.getAllKeys).reverse().map(function(item){
+            console.log(item)
+        });
+        */
+        
+        /*
+        const keys = await AsyncStorage.getAllKeys;
+        const result = await AsyncStorage.multiGet(keys);
+        return result.map(req => JSON.parse(req)).forEach(console.log);
+        */
+    }
+
+
     /* checkbox 구현방법 2 */
     const [checkedList, setCheckedLists] = useState([]);
     const dataLists = Object.values(tasks).reverse(); //dataList에 해당화면에서 넘어온 항목들 저장
@@ -85,6 +117,8 @@ export default function SelectScreen({navigation, route}) {
         [checkedList]
     );
 
+    const [check, setCheck] = useState(false);
+
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="dark-content" style={barStyles.statusbar}/>    
@@ -97,11 +131,11 @@ export default function SelectScreen({navigation, route}) {
                         <View style={taskStyle.container}>
                             {/* checkbox */}
                             {/* <input type = "checkbox"쓰고 싶은데, function이어야한다면서 console error발생...*/}
-                            <IconButton
-                                key={item.id}
-                                type={"images.uncompleted"}
-                                onChange={(e) => onCheckedElement(e.target.checked, item)}
-                                checked={checkedList.includes(item) ? true : false}
+                            <CheckBox
+                                id={item.id}
+                                checked={ checkedList.includes(item) ? true : false }
+                                //type={this.checked ? images.completed : images.uncompleted}
+                                onPress={(e) => onCheckedElement(e.target.checked, item)}
                             />
     
                             {/* 할 일 text */}
@@ -116,18 +150,21 @@ export default function SelectScreen({navigation, route}) {
        
                 <View style={{flexDirection: 'row'}}>
                     {/*전체선택/해제 여부를 입력받는 checkbox*/}
-                    <IconButton
-                        type="images.uncompleted"
-                        onChange={(e) => onCheckedAll(e.target.checked)}
+                    <CheckBox
                         checked={
-                        checkedList.length === 0
-                            ? false
-                            : checkedList.length === dataLists.length
-                            ? true
-                            : false
+                            checkedList.length === 0
+                                ? false
+                                : checkedList.length === dataLists.length
+                                ? true
+                                : false
                         }
+                        checkedColor='blue'
+                        //type={this.checked ? images.completed : images.uncompleted}
+                        onPress={(e) => onCheckedAll(e.target.checked)}
                     />
                     <IconButton type={images.delete} style={{justifyContent: 'felx-end'}}/>
+                    <CustomButton text = "test" onPress={_getData}/>
+                    <CheckBox checked={check} onPress={() => setCheck(!check)} />
                 </View>
             </View>
         </SafeAreaView>
