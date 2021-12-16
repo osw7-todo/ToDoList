@@ -1,14 +1,15 @@
-import React, {useState} from 'react';
-import {Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View, Alert} from 'react-native';
+import React, {useState, useRef, useEffect} from 'react';
+import {Button, StatusBar, SafeAreaView, Text, StyleSheet, TouchableOpacity, Platform, Dimensions, ScrollView, View, Alert} from 'react-native';
 import {viewStyles, textStyles, barStyles, cardStyles, rowStyles} from './styles';
 import Input from './components/Input';
 import Task from './components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import CustomButton from './components/custombutton';
+import DraggableFlatList, { RenderItemParams, useCallback} from 'react-native-draggable-flatlist';
+import Animated from 'react-native-reanimated';
 
-export default function MainScreen({navigation, route}) {
-    
+export default function MainScreen({navigation, route}) { 
     const width = Dimensions.get('window').width; //set window size
     const [isReady, setIsReady] = useState(false);
     const [newTask, setNewTask] = useState('');
@@ -86,7 +87,26 @@ export default function MainScreen({navigation, route}) {
         return editScreen;
     };
 
-
+    const renderItem= ({ item, index, drag, isActive }) => {    
+        return (
+                <TouchableOpacity
+                  style={[
+                    styles.rowItem,
+                    {
+                      backgroundColor: isActive ? 'red' : item.backgroundColor,
+                      height: item.height,
+                        elevation: isActive ? 30 : 0,
+                    },
+                  ]}
+                  onLongPress={drag}>
+                  <Animated.View
+                    style={{
+                    }}>
+                    <Text style={styles.text}>{item.label}</Text>
+                  </Animated.View>
+                </TouchableOpacity>
+        )
+    };
 
     const _onBlur = () => {
         setNewTask('');
@@ -111,12 +131,23 @@ export default function MainScreen({navigation, route}) {
                 </View>
                 <Input value={newTask} onChangeText={_handleTextChange} onSubmitEditing={_addTask} onBlur={_onBlur}/>
                 
-                <ScrollView width = {width-20}>
+                <ScrollView width = {width-20} ref={ScrollView}>
+                    {/* <DraggableFlatList>
+                        data={Task}
+                        renderItem={renderItem}
+                        keyExtractor={(Task, index) => `draggable-item-${Task.key}`}
+                        onDragBegin={() => setOuterScrollEnabled(false)}
+                        onDragEnd={({ data }) => {
+                            setData(data)
+                            setOuterScrollEnabled(true)
+                        }}
+                        simultaneousHandlers={scrollView}
+                        activationDistance={20}
+                    </DraggableFlatList> */}
                     {Object.values(tasks).reverse().map(item=> (
                         <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}
-                        updateTask={_updateTask}
-                        />                   
-
+                        updateTask={_updateTask} renderItem={renderItem}
+                        />           
                     ))}
                 </ScrollView>
             </View>
