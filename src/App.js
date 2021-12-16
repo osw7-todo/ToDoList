@@ -18,7 +18,10 @@ import Daily from './screens/DailyScreen';
 import Monthly from './screens/monthlyScreen';
 import CompletionRate from './screens/CompletionRateScreen';
 import CategoryScreen from './screens/CategoryScreen';
-import SelectedCategoryScreen from './screens/SelectedCategoryScreen'
+import SelectedCategoryScreen from './screens/SelectedCategoryScreen';
+import SELECT_Completed_Screen from './screens/SELECT_Completed_Screen';
+import SELECT_Uncompleted_Screen from './screens/SELECT_Uncompleted_Screen';
+
 /* import IconButton from './components/IconButton';
 import { images } from './images';
 const [shouldShow, setShouldShow] = useState(true);
@@ -267,6 +270,46 @@ function App() {
         <Stack.Screen 
           name="SELECT" 
           component={SelectScreen} 
+          options={{
+            title: 'SELECT & DELETE',
+            cardstyle: {backgroundColor: theme.background},
+            headerStyle: {
+              backgroundColor: theme.background
+            },
+            headerTitleStyle: {
+              fontSize: 25,
+              color: theme.main,
+            },
+            headerTitleAlign: 'center',
+            headerBackTitleVisible: true,
+            headerBackTitle:' ',
+            headerTintColor: theme.main,
+          }}
+        />
+
+        <Stack.Screen 
+          name="SELECT_Completed" 
+          component={SELECT_Completed_Screen} 
+          options={{
+            title: 'SELECT & DELETE',
+            cardstyle: {backgroundColor: theme.background},
+            headerStyle: {
+              backgroundColor: theme.background
+            },
+            headerTitleStyle: {
+              fontSize: 25,
+              color: theme.main,
+            },
+            headerTitleAlign: 'center',
+            headerBackTitleVisible: true,
+            headerBackTitle:' ',
+            headerTintColor: theme.main,
+          }}
+        />
+
+        <Stack.Screen 
+          name="SELECT_Uncompleted" 
+          component={SELECT_Uncompleted_Screen} 
           options={{
             title: 'SELECT & DELETE',
             cardstyle: {backgroundColor: theme.background},

@@ -111,7 +111,7 @@ export default function Uncompleted({navigation, route}) {
             <StatusBar barStyle="dark-content" style={barStyles.statusbar}/> 
             
             <View style={cardStyles.card}> 
-                <CustomButton text="select" onPress={()=>navigation.navigate('SELECT')}/>  
+                <CustomButton text="select" onPress={()=>navigation.navigate('SELECT_Uncompleted')}/>  
                 <ScrollView width = {width-20} onLoad={(route)=>_addTask(route.params)}>
                     {Object.values(tasks).reverse().filter((filterItem)=>{
                         if(filterItem.completed == false){
