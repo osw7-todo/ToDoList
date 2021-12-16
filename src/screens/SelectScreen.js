@@ -7,7 +7,6 @@ import IconButton from '../components/IconButton';
 import Task from '../components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
-import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function SelectScreen({navigation, route}) {
     const width = Dimensions.get('window').width;
@@ -52,30 +51,6 @@ export default function SelectScreen({navigation, route}) {
         delete currentTasks[id];
         //setTasks(currentTasks);
         _saveTasks(currentTasks);
-    };
-    const _toggleTask = id => {
-        const currentTasks = Object.assign({}, tasks);
-        currentTasks[id]['completed'] = !currentTasks[id]['completed'];
-        //setTasks(currentTasks);
-        _saveTasks(currentTasks);
-    };
-    const _updateTask = item => {
-        const currentTasks = Object.assign({}, tasks);
-        currentTasks[item.id] = item;
-        //setTasks(currentTasks);
-        _saveTasks(currentTasks);
-    };
-
-    const _editTask = id => {
-        const currentTasks = Object.assign({}, tasks);
-        const editScreen = navigation.navigate('EDIT', {selectedTask: currentTasks[id], taskID: id});
-        return editScreen;
-    };
-
-    const _setDueDate = item => {
-        const currentTasks = Object.assign({}, tasks);
-        showDatepicker();
-        setTasks(currentTasks);
     };
 
     /* checkbox 구현방법 2 */
