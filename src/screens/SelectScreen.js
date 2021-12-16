@@ -54,7 +54,7 @@ export default function SelectScreen({navigation, route}) {
         //setTasks(currentTasks);
         _saveTasks(currentTasks);
     };
-   
+
     const _getData = async() => {
         try {
             await AsyncStorage.getAllKeys().then(async keys => {
@@ -83,6 +83,7 @@ export default function SelectScreen({navigation, route}) {
         return result.map(req => JSON.parse(req)).forEach(console.log);
         */
     }
+
 
     /* checkbox 구현방법 2 */
     const [checkedList, setCheckedLists] = useState([]);
