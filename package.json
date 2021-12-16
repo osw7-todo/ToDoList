@@ -27,6 +27,7 @@
     "react-freeze": "^1.0.0",
     "react-freezeframe": "^5.0.2",
     "react-native": "0.64.3",
+    "react-native-calendars": "^1.1274.0",
     "react-native-draggable-flatlist": "^3.0.3",
     "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "^1.10.3",
