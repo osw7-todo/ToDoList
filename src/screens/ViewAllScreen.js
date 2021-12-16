@@ -91,12 +91,16 @@ export default function ViewAll({navigation, route}) {
     const _shareData = async() => {
         var text = '<ToDoList>\n';
         {Object.values(tasks).reverse()
-            .map(function(data){text+=data.text+'('+data.completed+') : startdate('+data.startdate+'), duedate('+data.duedate+')\n'})}
+            .map(function(data){
+                var splitStart = data.startdate.split('T');
+                var splitDue = data.duedate.split('T');
+                text+=data.text+'('+data.completed+') : startdate('+splitStart[0]+'"), duedate('+splitDue[0]+'")\n'
+            })
+        }
         
         try{
             const result = await Share.share({
-                message:
-                  text,
+                message:text,
               });
               if (result.action === Share.sharedAction) {
                 if (result.activityType) {
