@@ -87,9 +87,12 @@ export default function EditScreen({navigation, route}){
           <StatusBar barStyle="dark-content" style={barStyles.statusbar}/>
             <ScrollView width={width-20} onLoad={()=>route.params}>
             <Text style={textStyles.contents}>
-            Select a Category
+            Category
             </Text>
-            <RNPickerSelect onValueChange={(value) => selectedTask.category = value}
+            <RNPickerSelect
+            value={selectedTask.category}
+            onValueChange={(value) => selectedTask.category = value}
+            //placeholder={{label: "Select a Category"}}
             items={(() =>Object.values(categories).map((item)=>
               ({ label: item.text, value: item.id})
               ))()}
