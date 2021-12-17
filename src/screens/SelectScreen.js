@@ -14,17 +14,10 @@ export default function SelectScreen({navigation, route}) {
     const width = Dimensions.get('window').width;
 
     const [isReady, setIsReady] = useState(false);
-    const [newTask, setNewTask] = useState('');
     const [tasks, setTasks] = useState({ //
         /*'1' : {id: '1', text: "Todo item #1", completed: false},
         '2' : {id: '2', text: "Todo item #2", completed: true},*/
     });
-
-    const [searchText, setSearchText] = useState('');
-
-    const [date, setDate] = useState(new Date());
-    const [mode, setMode] = useState('date');
-    const [show, setShow] = useState(false);
 
     React.useEffect(()=>{
         const reloadTab = navigation.addListener('focus',(e)=>{
@@ -54,7 +47,11 @@ export default function SelectScreen({navigation, route}) {
         //setTasks(currentTasks);
         _saveTasks(currentTasks);
     };
+<<<<<<< HEAD
+   
+=======
 
+>>>>>>> e7a2ef60a430a209a25cc1d51404046a0c2fc51f
     const _getData = async() => {
         try {
             await AsyncStorage.getAllKeys().then(async keys => {
@@ -83,23 +80,26 @@ export default function SelectScreen({navigation, route}) {
         return result.map(req => JSON.parse(req)).forEach(console.log);
         */
     }
+<<<<<<< HEAD
+=======
 
+>>>>>>> e7a2ef60a430a209a25cc1d51404046a0c2fc51f
 
     /* checkbox 구현방법 2 */
-    const [checkedList, setCheckedLists] = useState([]);
+    const [checkedList, setCheckedList] = useState([]);
     const dataLists = Object.values(tasks).reverse(); //dataList에 해당화면에서 넘어온 항목들 저장
     
     // 전체 체크 클릭 시 발생하는 함수
     const onCheckedAll = useCallback(
         (checked) => {
+        alert("전체 클릭 함수 호출됨")
         if (checked) {
-            const checkedListArray = [];
-    
-            dataLists.forEach((item) => checkedListArray.push(item));
-    
-            setCheckedLists(checkedListArray);
+            alert("전체 선택됨")
+            dataLists.forEach((item) => checkedList.push(item.id));
+            setCheckedList(checkedList);
         } else {
-            setCheckedLists([]);
+            alert("전체 해제됨")
+            setCheckedList([]);
         }
         },
         [dataLists]
@@ -108,6 +108,23 @@ export default function SelectScreen({navigation, route}) {
     // 개별 체크 클릭 시 발생하는 함수
     const onCheckedElement = useCallback(
         (checked, item) => {
+            alert("개별 클릭 호출됨")
+            if (checked) {
+                alert("개별 선택")
+                checkedList.push(item.id);
+                setCheckedList(checkedList);
+            } else {
+                alert("개별 해제")
+                setCheckedList(checkedList.filter((el) => el !== item.id));
+            }
+        },
+        [checkedList]
+    );
+
+    // 선택된 거 삭제하는 함수
+    const deleteSelectedTask = useCallback(
+        (checked, item) => {
+            alert("개별 클릭 호출됨")
             if (checked) {
                 setCheckedLists([...checkedList, item]);
             } else {
@@ -125,17 +142,13 @@ export default function SelectScreen({navigation, route}) {
             
             <View style={cardStyles.card}> 
                 <ScrollView width = {width-20}>
-                    {Object.values(tasks).reverse().filter((filterItem)=>{
-                        return filterItem
-                    }).map(item=> (
+                    {dataLists.map((item)=> (
                         <View style={taskStyle.container}>
                             {/* checkbox */}
-                            {/* <input type = "checkbox"쓰고 싶은데, function이어야한다면서 console error발생...*/}
                             <CheckBox
-                                id={item.id}
-                                checked={ checkedList.includes(item) ? true : false }
-                                //type={this.checked ? images.completed : images.uncompleted}
+                                key={item.id}
                                 onPress={(e) => onCheckedElement(e.target.checked, item)}
+                                checked={ alert("개별선택 상태바뀜"), checkedList.includes(item.id) ? true : false }
                             />
     
                             {/* 할 일 text */}
@@ -151,16 +164,15 @@ export default function SelectScreen({navigation, route}) {
                 <View style={{flexDirection: 'row'}}>
                     {/*전체선택/해제 여부를 입력받는 checkbox*/}
                     <CheckBox
+                        onPress={(e) => onCheckedAll(e.target.checked)}
                         checked={
+                            alert("전체선택 상태바뀜"),
                             checkedList.length === 0
                                 ? false
                                 : checkedList.length === dataLists.length
                                 ? true
                                 : false
                         }
-                        checkedColor='blue'
-                        //type={this.checked ? images.completed : images.uncompleted}
-                        onPress={(e) => onCheckedAll(e.target.checked)}
                     />
                     <IconButton type={images.delete} style={{justifyContent: 'felx-end'}}/>
                     <CustomButton text = "test" onPress={_getData}/>
