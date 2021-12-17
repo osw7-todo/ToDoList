@@ -44,95 +44,55 @@ export default function SelectScreen({navigation, route}) {
     const _deleteTask = id => {
         const currentTasks = Object.assign({}, tasks);
         delete currentTasks[id];
-        //setTasks(currentTasks);
         _saveTasks(currentTasks);
     };
-<<<<<<< HEAD
-   
-=======
-
->>>>>>> e7a2ef60a430a209a25cc1d51404046a0c2fc51f
-    const _getData = async() => {
-        try {
-            await AsyncStorage.getAllKeys().then(async keys => {
-                await AsyncStorage.multiGet(keys).then(key => {
-                  key.forEach(data => {
-                    //Object.values(data).reverse().map(function(item){ console.log(item) })
-                    console.log(data[1]); //values
-                  });
-                });
-            });
-        } catch (error) {
-            console.log(error);
-        }
-        //AsyncStorage.getAllKeys().then((keys)=> AsyncStorage.multiGet(keys).then((keys)=>console.log(keys[1])))
-
-        /*
-        AsyncStorage.setItem('KEY', JSON.stringify(array));
-        Object.values(AsyncStorage.getAllKeys).reverse().map(function(item){
-            console.log(item)
-        });
-        */
-        
-        /*
-        const keys = await AsyncStorage.getAllKeys;
-        const result = await AsyncStorage.multiGet(keys);
-        return result.map(req => JSON.parse(req)).forEach(console.log);
-        */
-    }
-<<<<<<< HEAD
-=======
-
->>>>>>> e7a2ef60a430a209a25cc1d51404046a0c2fc51f
 
     /* checkbox 구현방법 2 */
     const [checkedList, setCheckedList] = useState([]);
     const dataLists = Object.values(tasks).reverse(); //dataList에 해당화면에서 넘어온 항목들 저장
     
     // 전체 체크 클릭 시 발생하는 함수
+    //문제점: !checked를 하면 전체선택만 되고, checked를 하면 전체해제만 되고... 어쨌든 둘 중 하나만 계속 작동됨. toggle이 안됨..
     const onCheckedAll = useCallback(
         (checked) => {
-        alert("전체 클릭 함수 호출됨")
-        if (checked) {
-            alert("전체 선택됨")
-            dataLists.forEach((item) => checkedList.push(item.id));
-            setCheckedList(checkedList);
-        } else {
-            alert("전체 해제됨")
-            setCheckedList([]);
-        }
+            alert("전체 클릭 함수 호출됨")
+            if (!checked) {
+                const checkedListArray = [];
+
+                alert("전체 선택됨")
+                dataLists.forEach((item) => checkedListArray.push(item));
+                setCheckedList(checkedListArray);
+            } else {
+                alert("전체 해제됨")
+                setCheckedList([]);
+            }
         },
         [dataLists]
     );
     
     // 개별 체크 클릭 시 발생하는 함수
+    //문제점: !checked를 하면 개별선택만 잘되고, checked를 하면 개별해제만 되고... 위의 거랑 같은 상황
     const onCheckedElement = useCallback(
         (checked, item) => {
             alert("개별 클릭 호출됨")
             if (checked) {
                 alert("개별 선택")
-                checkedList.push(item.id);
-                setCheckedList(checkedList);
+                setCheckedList([...checkedList, item]);
             } else {
                 alert("개별 해제")
-                setCheckedList(checkedList.filter((el) => el !== item.id));
+                setCheckedList(checkedList.filter((el) => el !== item));
             }
         },
         [checkedList]
     );
 
     // 선택된 거 삭제하는 함수
-    const deleteSelectedTask = useCallback(
-        (checked, item) => {
-            alert("개별 클릭 호출됨")
-            if (checked) {
-                setCheckedLists([...checkedList, item]);
-            } else {
-                setCheckedLists(checkedList.filter((el) => el !== item));
-            }
-        },
-        [checkedList]
-    );
+    const deleteSelectedTask = () => {
+            alert("삭제함수 호출됨")
+            {/* 문제점: list 맨 마지막꺼 한개만 삭제됨. */}
+            checkedList.forEach((item) => _deleteTask(item.id));
+            setCheckedList([]);
+    }
 
     const [check, setCheck] = useState(false);
 
@@ -142,13 +102,14 @@ export default function SelectScreen({navigation, route}) {
             
             <View style={cardStyles.card}> 
                 <ScrollView width = {width-20}>
+                {checkedList.map((task)=> ( <Text> {task.text} {task.id}</Text>))}
                     {dataLists.map((item)=> (
                         <View style={taskStyle.container}>
                             {/* checkbox */}
                             <CheckBox
                                 key={item.id}
                                 onPress={(e) => onCheckedElement(e.target.checked, item)}
-                                checked={ alert("개별선택 상태바뀜"), checkedList.includes(item.id) ? true : false }
+                                checked={ alert("개별선택 상태바뀜"),  checkedList.includes(item) ? true : false  }
                             />
     
                             {/* 할 일 text */}
@@ -174,9 +135,7 @@ export default function SelectScreen({navigation, route}) {
                                 : false
                         }
                     />
-                    <IconButton type={images.delete} style={{justifyContent: 'felx-end'}}/>
-                    <CustomButton text = "test" onPress={_getData}/>
-                    <CheckBox checked={check} onPress={() => setCheck(!check)} />
+                    <IconButton type={images.delete} onPressOut={deleteSelectedTask} style={{justifyContent: 'felx-end'}}/>
                 </View>
             </View>
         </SafeAreaView>
