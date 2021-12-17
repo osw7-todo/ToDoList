@@ -90,10 +90,9 @@ export default function EditScreen({navigation, route}){
             Select a Category
             </Text>
             <RNPickerSelect onValueChange={(value) => selectedTask.category = value}
-            items=
-            {Object.values(categories).map(item=>
-                [{ label: item.text, value: item.id},]
-                )}
+            items={(() =>Object.values(categories).map((item)=>
+              ({ label: item.text, value: item.id})
+              ))()}
             />
             <EditTask key={taskID} item={selectedTask} duedate={selectedTask.duedate} updateTask={_updateTask}/>
             <Text style={textStyles.contents}>

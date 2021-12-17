@@ -7,7 +7,6 @@ import CategoryInput from '../components/CategoryInput';
 import { Category } from '../components/Category';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
-import CategoryContext, { CategoryConsumer } from '../contexts/categories';
 
 
 function CategoryScreen({navigation}){
