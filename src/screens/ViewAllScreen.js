@@ -160,7 +160,7 @@ export default function ViewAll({navigation, route}) {
                         keyExtractor={(item) => item.id}
                         //onDragBegin={() => setOuterScrollEnabled(false)}
                         onDragEnd={({ data }) => {
-                            setTasks(data)
+                            _saveTasks(data)
                             //setOuterScrollEnabled(true)
                         }}
                         simultaneousHandlers={ScrollView}
