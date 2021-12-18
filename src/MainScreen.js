@@ -23,6 +23,7 @@ export default function MainScreen({navigation, route}) {
     const [markedDates, setMarkedDates] = React.useState(null);
     const [dates, setDates] = React.useState(['2021-12-01', '2022-12-31']);
 
+
     React.useEffect(()=>{
         const reload = navigation.addListener('focus',(e)=>{
             setIsReady(false);
@@ -58,7 +59,7 @@ export default function MainScreen({navigation, route}) {
         const date = new Date();
         const newTaskObject = {
             [ID]: {id: ID, text: newTask, completed: false, startdate: JSON.stringify(date),
-                duedate: JSON.stringify(date), category: null },
+                duedate: JSON.stringify(date), category: null, comment: null },
         };
         console.log(ID);
 

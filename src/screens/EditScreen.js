@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
+import {StyleSheet, Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View, TextInput} from 'react-native';
 import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles, bottombarStyles} from '../styles';
 import {theme} from '../theme';
 import { images } from '../images';
@@ -37,6 +37,11 @@ export default function EditScreen({navigation, route}){
         console.error(e);
     }
   };
+
+  const _saveComment = (item) =>{
+    selectedTask.comment = item;
+    _saveTasks(selectedTask);
+  }
 
   const _load = async () => {
     const loadedTasks = await AsyncStorage.getItem('selectedTask');
@@ -110,7 +115,8 @@ export default function EditScreen({navigation, route}){
             display="default"
             onChange = {onChange}
             />}
-
+            
+            <Comment item={selectedTask.comment} saveComment={_saveComment}/>
             
 
               {/* 이미지 넣기 */}
@@ -185,5 +191,80 @@ const taskStyle = StyleSheet.create({
       flex: 1,
       fontSize: 20,
       color: theme.text,
+  },
+});
+
+const Comment = ({item, saveComment}) => {
+  const [isEditing, setIsEditing] = useState(true);
+  const [text, setText] = useState(item);
+
+  const _handleUpdateButtonPress = () => {
+    setIsEditing(true);
+  };
+
+  const _onSubmitEditing = (item) => {
+    if (isEditing) {
+      const comment = Object.assign({}, item, {text});
+      setIsEditing(false);
+      saveComment(comment);
+    }
+  };
+
+  const _onBlur = () => {
+    if (isEditing) {
+        setIsEditing(false);
+        setText(text);
+        saveComment(text);
+    }
+};
+
+return isEditing ? (
+  <View style={commentStyle.container}>
+    <TextInput
+    style={commentStyle.textInput}
+    value={text}
+    placeholder="comment... press to write"
+    placeholderTextColor= {theme.main}
+    onChangeText={text => setText(text)}
+    onSubmitEditing={_onSubmitEditing}
+    onBlur={_onBlur}
+    multiline={true}
+    />
+    </View>
+) : (
+    <View style={commentStyle.container}>
+        <Text style={commentStyle.contents} onPress={_handleUpdateButtonPress}>
+        {text}</Text>
+    </View>
+);
+};
+
+const commentStyle = StyleSheet.create({
+  textInput: {
+      fontSize: 15,
+      width: Dimensions.get('window').width-20,
+      height: 50,
+      marginTop: 15,
+      marginLeft: 3,
+      marginRight: 3,
+      paddingLeft: 15,
+      paddingTop: 2,
+      borderRadius: 10,
+      backgroundColor: theme.itemBackground,
+      color: theme.text,
+  },
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: theme.itemBackground,
+    borderRadius: 10,
+    padding: 15, 
+    marginTop: 15,
+    marginLeft: 0,
+  },
+  contents: {
+    flex: 1,
+    fontSize: 15,
+    color: theme.text,
   },
 });
