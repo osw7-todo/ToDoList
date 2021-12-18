@@ -143,8 +143,9 @@ export default function MainScreen({navigation, route}) {
                 </View>
                 
                 <Input value={newTask} onChangeText={_handleTextChange} onSubmitEditing={_addTask} onBlur={_onBlur}/>
+
                 <DraggableFlatList width = {width-20}
-                        data={Object.values(tasks).reverse()}
+                        data={Object.values(tasks)}
                         renderItem={renderItem}
                         keyExtractor={(item) => item.id}
                         //onDragBegin={() => setOuterScrollEnabled(false)}

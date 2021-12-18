@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
+import {TouchableOpacity, Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
 import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles, bottombarStyles} from '../styles';
 import { images } from '../images';
 import IconButton from '../components/IconButton';
@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import CustomButton from '../components/custombutton';
+import DraggableFlatList, { RenderItemParams, ScaleDecorator, ShadowDecorator, OpacityDecorator, useOnCellActiveAnimation} from 'react-native-draggable-flatlist';
 
 export default function Uncompleted({navigation, route}) {   
     const width = Dimensions.get('window').width;
@@ -83,12 +84,6 @@ export default function Uncompleted({navigation, route}) {
         //setTasks(currentTasks);
         _saveTasks(currentTasks);
     };
-    const _updateTask = item => {
-        const currentTasks = Object.assign({}, tasks);
-        currentTasks[item.id] = item;
-        //setTasks(currentTasks);
-        _saveTasks(currentTasks);
-    };
 
     const _editTask = id => {
         const currentTasks = Object.assign({}, tasks);
@@ -96,10 +91,27 @@ export default function Uncompleted({navigation, route}) {
         return editScreen;
     };
 
-    const _setDueDate = item => {
-        const currentTasks = Object.assign({}, tasks);
-        showDatepicker();
-        setTasks(currentTasks);
+    const renderItem= ({ item, index, drag, isActive }) => {    
+        return (
+            <ScaleDecorator>
+                <TouchableOpacity
+                  style={[
+                    {
+                      backgroundColor: isActive ? 'red' : item.backgroundColor,
+                      height: item.height,
+                        elevation: isActive ? 30 : 0,
+                    },
+                  ]}
+                  onLongPress={drag}>
+                      <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}/>
+                 {/*} <Animated.View
+                    style={{
+                    }}>
+                    <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}/>
+                </Animated.View> */}
+                </TouchableOpacity>
+            </ScaleDecorator>
+        )
     };
 
     var now = new Date();
@@ -111,17 +123,24 @@ export default function Uncompleted({navigation, route}) {
             <StatusBar barStyle="dark-content" style={barStyles.statusbar}/> 
             
             <View style={cardStyles.card}> 
-                <CustomButton text="select" onPress={()=>navigation.navigate('SELECT_Uncompleted')}/>  
-                <ScrollView width = {width-20} onLoad={(route)=>_addTask(route.params)}>
-                    {Object.values(tasks).reverse().filter((filterItem)=>{
-                        if(filterItem.completed == false){
-                            return filterItem
-                        } 
-                    }).map(item=> (
-                        <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}
-                        updateTask={_updateTask} setDueDate={_setDueDate}/>
-                    ))}
-                </ScrollView>
+                <CustomButton text="select" onPress={()=>navigation.navigate('SELECT_Uncompleted')}/>
+
+                <DraggableFlatList width = {width-20}
+                        data={Object.values(tasks).filter((filterItem)=>{
+                            if(filterItem.completed == false){
+                                return filterItem
+                            } 
+                        })}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.id}
+                        //onDragBegin={() => setOuterScrollEnabled(false)}
+                        onDragEnd={({ data }) => {
+                            setTasks(data)
+                            //setOuterScrollEnabled(true)
+                        }}
+                        simultaneousHandlers={ScrollView}
+                        activationDistance={20}
+                />
             </View>
         </SafeAreaView>
     )   :   (
