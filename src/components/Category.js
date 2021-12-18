@@ -61,5 +61,4 @@ const style = StyleSheet.create({
 
 Category.propTypes = {
     item: PropTypes.object.isRequired,
-    deleteCategory: PropTypes.func.isRequired,
 };

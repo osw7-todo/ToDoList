@@ -132,7 +132,7 @@ export default function EditScreen({navigation, route}){
 };
 
 
-const EditTask = ({item, updateTask, setDueDate}) => {
+const EditTask = ({item, updateTask}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(item.text);
 

@@ -64,7 +64,7 @@ function CategoryScreen({navigation}){
 
   const _moveToCategory = id => {
     const currentCategories= Object.assign({}, categories);
-    const selectedCategoryScreen = navigation.navigate('CATEGORY', {selectedCategory: JSON.stringify(currentCategories[id]), categoryID: id});
+    const selectedCategoryScreen = navigation.navigate('CATEGORY', {selectedCategory: currentCategories[id], categoryID: id});
     return selectedCategoryScreen;
   }
     
