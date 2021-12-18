@@ -4,6 +4,7 @@ import {viewStyles, barStyles, cardStyles} from '../styles';
 import {theme} from '../theme';
 import { images } from '../images';
 import IconButton from '../components/IconButton';
+import Task from '../components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import { CheckBox } from 'react-native-elements/dist/checkbox/CheckBox';
@@ -44,17 +45,17 @@ export default function SelectScreen({navigation, route}) {
     const dataLists = Object.values(tasks).reverse(); //dataList에 해당화면에서 넘어온 항목들 저장
     
     // 전체 체크 클릭 시 발생하는 함수
+    //문제점: onPress={}에서 현재 박스의 checked값이 넘어오지 않는다. undefinded로 넘어온다.
     const onCheckedAll = useCallback(
         (checked) => {
-            //alert("전체 클릭 함수 호출됨")
-            if (!checked) {
+            if(checked){ //false
                 const checkedListArray = [];
                 alert("Select All")
-                dataLists.forEach((item) => checkedListArray.push(item));
+                dataLists.reverse().map((item)=>checkedListArray.push(item.id));
                 setCheckedList(checkedListArray);
-            } else {
-                alert("Deselect All")
-                setCheckedList([]);
+                console.log(checkedList);
+            } else { //true
+                setCheckedList([]); //초기화
             }
         },
         [dataLists]
@@ -120,12 +121,12 @@ export default function SelectScreen({navigation, route}) {
                     {/*전체선택/해제 여부를 입력받는 checkbox*/}
                     <CheckBox
                         onPress={(e) => {
-                            onCheckedAll(e.target.checked);
+                            onCheckedAll(checkedList.length==0);
                         }}
                         checked={
                             checkedList.length === 0
                                 ? false
-                                : checkedList.length === dataLists.length
+                                : checkedList.length > 0
                                 ? true
                                 : false
                         }
