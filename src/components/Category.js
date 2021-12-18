@@ -34,7 +34,7 @@ export const Category = ({item, deleteCategory, updateCategory, moveToCategory})
     ) :(
         <View style={style.container}>
             <Text style={style.contents}>{item.text}</Text>
-            <IconButton type={images.openNew} onPressOut={moveToCategory}/>
+            <IconButton type={images.openNew} id={item.id} onPressOut={moveToCategory}/>
             <IconButton type={images.update} onPressOut={_handleUpdateButtonPress}/>
             <IconButton type={images.delete} id={item.id} onPressOut={deleteCategory}/>
         </View>

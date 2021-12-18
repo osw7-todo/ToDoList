@@ -83,6 +83,7 @@ export default function MainScreen({navigation, route}) {
     const _editTask = id => {
         const currentTasks = Object.assign({}, tasks);
         const editScreen = navigation.navigate('EDIT', {selectedTask: currentTasks[id], taskID: id});
+        //console.log("go currentTasks\n",currentTasks[id], id);
         return editScreen;
     };
 
