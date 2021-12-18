@@ -104,6 +104,7 @@ function CategoryScreen({navigation}){
       <SafeAreaView style={viewStyles.container}>
         <StatusBar barStyle="dark-content" style={barStyles.statusbar}/>
           <View style={cardStyles.card}>
+          <CategoryInput value={newCategory} onChangeText={_handleTextChange} onSubmitEditing={_addCategory} onBlur={_onBlur}/>
           <DraggableFlatList width = {width-20}
                         data={Object.values(categories)}
                         renderItem={renderItem}
@@ -116,7 +117,6 @@ function CategoryScreen({navigation}){
                         simultaneousHandlers={ScrollView}
                         activationDistance={20}
                 />
-          <CategoryInput value={newCategory} onChangeText={_handleTextChange} onSubmitEditing={_addCategory} onBlur={_onBlur}/>
           </View>
       </SafeAreaView>
       
