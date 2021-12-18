@@ -88,9 +88,9 @@ export default function MainScreen({navigation, route}) {
 
     const renderItem= ({ item, index, drag, isActive }) => {    
         return (
+            <ScaleDecorator>
                 <TouchableOpacity
                   style={[
-                    styles.rowItem,
                     {
                       backgroundColor: isActive ? 'red' : item.backgroundColor,
                       height: item.height,
@@ -98,12 +98,14 @@ export default function MainScreen({navigation, route}) {
                     },
                   ]}
                   onLongPress={drag}>
-                  <Animated.View
+                       <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}/>
+                 {/*} <Animated.View
                     style={{
                     }}>
-                    <Text style={styles.text}>{item.label}</Text>
-                  </Animated.View>
+                    <Text style={textStyles.text}>{item.text}</Text>
+                  </Animated.View> */}
                 </TouchableOpacity>
+            </ScaleDecorator>
         )
     };
 
@@ -115,13 +117,13 @@ export default function MainScreen({navigation, route}) {
     };
 
     const _addDates = () => {
-        var Object=date.reduce( (c,v) => Object.assign(c, {
+        var Object=dates.reduce( (c,v) => Object.assign(c, {
             [v]: {maked: true, dotColor: 'red'},
         }),
         {},
         );
 
-        setMarkedDated(obj);
+        setMarkedDates(obj);
     }
 
     var now = new Date();
@@ -141,34 +143,33 @@ export default function MainScreen({navigation, route}) {
                 </View>
                 
                 <Input value={newTask} onChangeText={_handleTextChange} onSubmitEditing={_addTask} onBlur={_onBlur}/>
-                
-                <ScrollView width = {width-20} ref={ScrollView}>
-                    {/* <DraggableFlatList>
-                        data={Task}
+                <DraggableFlatList width = {width-20}
+                        data={Object.values(tasks).reverse()}
                         renderItem={renderItem}
-                        keyExtractor={(Task, index) => `draggable-item-${Task.key}`}
+                        keyExtractor={(item) => item.key}
                         onDragBegin={() => setOuterScrollEnabled(false)}
                         onDragEnd={({ data }) => {
                             setData(data)
                             setOuterScrollEnabled(true)
                         }}
-                        simultaneousHandlers={scrollView}
+                        simultaneousHandlers={ScrollView}
                         activationDistance={20}
-                    </DraggableFlatList> */}
+                />
+               {/* <ScrollView width = {width-20} ref={ScrollView}>
 
-                    <Calendar>
+                    <Calendar
                         onDayPress = {(day) => {
                             _addDates();
                             }}
                         markedDates={markedDates}
-                    </Calendar>
+                        />
 
                     {Object.values(tasks).reverse().map(item=> (
                         <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}
                         renderItem={renderItem}
                         />           
                     ))}
-                </ScrollView>
+                    </ScrollView> */}
             </View>
         </SafeAreaView>
     )   :   (
