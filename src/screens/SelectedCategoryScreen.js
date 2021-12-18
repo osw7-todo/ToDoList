@@ -2,11 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
 import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles, bottombarStyles} from '../styles';
 import {theme} from '../theme';
-import { images } from '../images';
-import IconButton from '../components/IconButton';
 import Task from '../components/Task';
-import { Category } from '../components/Category';
-import Input from '../components/Input';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 
@@ -63,9 +59,8 @@ export default function SelectedCategoryScreen({navigation, route}){
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="light-content" style={barStyles.statusbar}/>
-            <CategoryTitle key={categoryID} item={selectedCategory}/>
+            <Text style={textStyles.title}>{selectedCategory.text}</Text>
             <ScrollView width={width-20} onLoad={()=>route.params}>
-            {console.log(categoryID)}
             {Object.values(tasks).reverse().filter((filterItem)=>{
                         if(filterItem.category == categoryID){
                             return filterItem
@@ -82,17 +77,6 @@ export default function SelectedCategoryScreen({navigation, route}){
         onError={console.error}/>
       );
 };
-
-
-const CategoryTitle = (item) => {  
-    return (
-        <View style={style.container}>
-            <Text style={style.contents}>
-            {item.text}</Text>
-        </View>
-    );
-  
-  };
 
   
 const style = StyleSheet.create({

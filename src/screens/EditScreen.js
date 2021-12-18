@@ -111,6 +111,8 @@ export default function EditScreen({navigation, route}){
             onChange = {onChange}
             />}
 
+            
+
               {/* 이미지 넣기 */}
             <IconButton type={images.photo} />
 
