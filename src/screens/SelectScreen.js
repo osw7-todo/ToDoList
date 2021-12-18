@@ -127,7 +127,7 @@ export default function SelectScreen({navigation, route}) {
                         checked={
                             checkedList.length === 0
                                 ? false
-                                : checkedList.length > 0
+                                : checkedList.length === dataLists.length
                                 ? true
                                 : false
                         }
