@@ -4,7 +4,6 @@ import {viewStyles, barStyles, cardStyles} from '../styles';
 import {theme} from '../theme';
 import { images } from '../images';
 import IconButton from '../components/IconButton';
-import Task from '../components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import { CheckBox } from 'react-native-elements/dist/checkbox/CheckBox';
@@ -41,20 +40,22 @@ export default function SelectScreen({navigation, route}) {
     };
 
     /* 전체/개별 선택/해제 삭제 구현*/
-    const [checkedList, setCheckedList] = useState([]);
     const dataLists = Object.values(tasks).reverse(); //dataList에 해당화면에서 넘어온 항목들 저장
+    const [checkedList, setCheckedList] = useState([]); //check된 것들을 넣는 배열
+    const [isCheckedAll, setisCheckedAll] = useState(false); //전체선택,해제 여부를 기록
+
     
     // 전체 체크 클릭 시 발생하는 함수
-    //문제점: onPress={}에서 현재 박스의 checked값이 넘어오지 않는다. undefinded로 넘어온다.
     const onCheckedAll = useCallback(
-        (checked) => {
-            //alert("전체 클릭 함수 호출됨")
-            if (!checked) {
+        () => { //checked값을 받아오고 싶었지만 안돼서, isCheckedAll이라는 toggle되는 boolean값을 이용
+            if (!isCheckedAll) {
+                setisCheckedAll(!isCheckedAll)
                 const checkedListArray = [];
                 alert("Select All")
                 dataLists.forEach((item) => checkedListArray.push(item));
                 setCheckedList(checkedListArray);
             } else {
+                setisCheckedAll(!isCheckedAll)
                 alert("Deselect All")
                 setCheckedList([]);
             }
@@ -96,14 +97,14 @@ export default function SelectScreen({navigation, route}) {
             
             <View style={cardStyles.card}> 
                 <ScrollView width = {width-20}>
-                {checkedList.map((task)=> ( <Text> {task.text} {task.id}</Text>))}
+                    {checkedList.map((task)=> ( <Text> {task.text} {task.id}</Text>))}
                     {dataLists.map((item)=> (
                         <View style={taskStyle.container}>
                             {/* 개별 checkbox */}
                             <CheckBox
                                 key={item.id}
                                 onPress={(e) => onCheckedElement(e.target.checked, item)}
-                                checked={checkedList.includes(item) ? true : false  }
+                                checked={checkedList.includes(item) ? true : false}
                             />
     
                             {/* 할 일 text */}
@@ -119,7 +120,7 @@ export default function SelectScreen({navigation, route}) {
                 <View style={{flexDirection: 'row'}}>
                     {/*전체선택/해제 여부를 입력받는 checkbox*/}
                     <CheckBox
-                        onPress={(e) => onCheckedAll(e.target.checked)}
+                        onPress={(e) => onCheckedAll()}
                         checked={
                             checkedList.length === 0
                                 ? false
