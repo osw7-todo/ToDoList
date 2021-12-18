@@ -98,12 +98,12 @@ export default function MainScreen({navigation, route}) {
                     },
                   ]}
                   onLongPress={drag}>
-                       <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}/>
+                      <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}/>
                  {/*} <Animated.View
                     style={{
                     }}>
-                    <Text style={textStyles.text}>{item.text}</Text>
-                  </Animated.View> */}
+                    <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}/>
+                </Animated.View> */}
                 </TouchableOpacity>
             </ScaleDecorator>
         )
@@ -146,11 +146,11 @@ export default function MainScreen({navigation, route}) {
                 <DraggableFlatList width = {width-20}
                         data={Object.values(tasks).reverse()}
                         renderItem={renderItem}
-                        keyExtractor={(item) => item.key}
-                        onDragBegin={() => setOuterScrollEnabled(false)}
+                        keyExtractor={(item) => item.id}
+                        //onDragBegin={() => setOuterScrollEnabled(false)}
                         onDragEnd={({ data }) => {
-                            setData(data)
-                            setOuterScrollEnabled(true)
+                            setTasks(data)
+                            //setOuterScrollEnabled(true)
                         }}
                         simultaneousHandlers={ScrollView}
                         activationDistance={20}
