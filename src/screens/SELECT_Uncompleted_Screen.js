@@ -1,18 +1,18 @@
 import React, { useState, Component, useCallback } from 'react';
-import {StyleSheet, Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
-import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles} from '../styles';
+import {StyleSheet, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
+import {viewStyles, barStyles, cardStyles} from '../styles';
 import {theme} from '../theme';
 import { images } from '../images';
 import IconButton from '../components/IconButton';
 import Task from '../components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
+import { CheckBox } from 'react-native-elements/dist/checkbox/CheckBox';
 
-export default function SELECT_Uncompleted_Screen({navigation, route}) {
+export default function SelectScreen({navigation, route}) {
     const width = Dimensions.get('window').width;
 
     const [isReady, setIsReady] = useState(false);
-    const [newTask, setNewTask] = useState('');
     const [tasks, setTasks] = useState({ //
         /*'1' : {id: '1', text: "Todo item #1", completed: false},
         '2' : {id: '2', text: "Todo item #2", completed: true},*/
@@ -40,69 +40,74 @@ export default function SELECT_Uncompleted_Screen({navigation, route}) {
         setTasks(JSON.parse(loadedTasks || '{}'));
     };
 
-    const _deleteTask = id => {
-        const currentTasks = Object.assign({}, tasks);
-        delete currentTasks[id];
-        //setTasks(currentTasks);
-        _saveTasks(currentTasks);
-    };
-
-
-    /* checkbox 구현방법 2 */
-    const [checkedList, setCheckedLists] = useState([]);
-    
-    //dataList에 항목들 저장
+    /* 전체/개별 선택/해제 삭제 구현*/
+    const [checkedList, setCheckedList] = useState([]);
     const dataLists = Object.values(tasks).reverse().filter((filterItem)=>{
-        if(filterItem.completed == true) {return filterItem}
+        if(filterItem.completed == false) {return filterItem}
     })
-
+    
     // 전체 체크 클릭 시 발생하는 함수
+    //문제점: onPress={}에서 현재 박스의 checked값이 넘어오지 않는다. undefinded로 넘어온다.
     const onCheckedAll = useCallback(
         (checked) => {
-        if (checked) {
-            const checkedListArray = [];
-    
-            dataLists.forEach((item) => checkedListArray.push(item));
-    
-            setCheckedLists(checkedListArray);
-        } else {
-            setCheckedLists([]);
-        }
+            if(checked){ //false
+                const checkedListArray = [];
+                alert("Select All")
+                dataLists.reverse().map((item)=>checkedListArray.push(item.id));
+                setCheckedList(checkedListArray);
+                console.log(checkedList);
+            } else { //true
+                alert("Deselect All")
+                setCheckedList([]); //초기화
+            }
         },
         [dataLists]
     );
     
     // 개별 체크 클릭 시 발생하는 함수
+    //문제점: onPress={}에서 현재 박스의 checked값이 넘어오지 않는다. undefinded로 넘어온다.
     const onCheckedElement = useCallback(
         (checked, item) => {
-            if (checked) {
-                setCheckedLists([...checkedList, item]);
-            } else {
-                setCheckedLists(checkedList.filter((el) => el !== item));
+            //alert("개별 클릭 호출됨")
+            if (!checked) { //false
+                //alert("개별 선택");
+                setCheckedList([...checkedList, item]);
+                console.log(checkedList);
+            } else { //true
+                //alert("개별 해제");
+                setCheckedList(checkedList.filter((el) => el !== item));
             }
         },
         [checkedList]
     );
 
+    // 선택된 거 삭제하는 함수
+    const deleteSelectedTask = () => {
+        alert("delete");
+        const currentTasks = Object.assign({}, tasks);
+        for( var i=0; i<checkedList.length; i++) {
+            delete currentTasks[checkedList[i]];
+        }
+        _saveTasks(currentTasks);
+        //checkedList.forEach(item => _deleteTask(item.id)); //이렇게 하면 맨마지막 한개만 삭제된다.
+        setCheckedList([]);
+    };
+    
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="dark-content" style={barStyles.statusbar}/>    
             
             <View style={cardStyles.card}> 
                 <ScrollView width = {width-20}>
-                    {Object.values(tasks).reverse().filter((filterItem)=>{
-                        if(filterItem.completed == false){
-                            return filterItem
-                        } 
-                    }).map(item=> (
+                    {dataLists.reverse().map((item)=> (
                         <View style={taskStyle.container}>
-                            {/* checkbox */}
-                            {/* <input type = "checkbox"쓰고 싶은데, function이어야한다면서 console error발생...*/}
-                            <IconButton
+                            {/* 개별 checkbox */}
+                            <CheckBox
                                 key={item.id}
-                                type={images.uncompleted}
-                                onChange={(e) => onCheckedElement(e.target.checked, item)}
-                                checked={checkedList.includes(item) ? true : false}
+                                checked={checkedList.includes(item.id) ? true : false }
+                                onPress={() => {
+                                    onCheckedElement(checkedList.includes(item.id), item.id);
+                                }}
                             />
     
                             {/* 할 일 text */}
@@ -117,18 +122,19 @@ export default function SELECT_Uncompleted_Screen({navigation, route}) {
        
                 <View style={{flexDirection: 'row'}}>
                     {/*전체선택/해제 여부를 입력받는 checkbox*/}
-                    <IconButton
-                        type={images.uncompleted}
-                        onChange={(e) => onCheckedAll(e.target.checked)}
+                    <CheckBox
+                        onPress={(e) => {
+                            onCheckedAll(checkedList.length==0);
+                        }}
                         checked={
-                        checkedList.length === 0
-                            ? false
-                            : checkedList.length === dataLists.length
-                            ? true
-                            : false
+                            checkedList.length === 0
+                                ? false
+                                : checkedList.length > 0
+                                ? true
+                                : false
                         }
                     />
-                    <IconButton type={images.delete} style={{justifyContent: 'felx-end'}}/>
+                    <IconButton type={images.delete} onPressOut={deleteSelectedTask} style={{justifyContent: 'felx-end'}}/>
                 </View>
             </View>
         </SafeAreaView>
