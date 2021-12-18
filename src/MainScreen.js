@@ -6,9 +6,10 @@ import Task from './components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import CustomButton from './components/custombutton';
-import DraggableFlatList, { RenderItemParams, useCallback} from 'react-native-draggable-flatlist';
 import Animated from 'react-native-reanimated';
-import { Calendar } from 'react-native-calendars';
+import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import { FlatList } from 'react-native-gesture-handler';
+import DraggableFlatList, { RenderItemParams, ScaleDecorator, ShadowDecorator, OpacityDecorator, useOnCellActiveAnimation} from 'react-native-draggable-flatlist';
 
 export default function MainScreen({navigation, route}) { 
     const width = Dimensions.get('window').width; //set window size
@@ -18,6 +19,9 @@ export default function MainScreen({navigation, route}) {
         /*'1' : {id: '1', text: "Todo item #1", completed: false},
         '2' : {id: '2', text: "Todo item #2", completed: true},*/
     });
+
+    const [markedDates, setMarkedDates] = React.useState(null);
+    const [dates, setDates] = React.useState(['2021-12-01', '2022-12-31']);
 
     React.useEffect(()=>{
         const reload = navigation.addListener('focus',(e)=>{
@@ -109,6 +113,17 @@ export default function MainScreen({navigation, route}) {
     const _handleTextChange = text => {
         setNewTask(text);
     };
+
+    const _addDates = () => {
+        var Object=date.reduce( (c,v) => Object.assign(c, {
+            [v]: {maked: true, dotColor: 'red'},
+        }),
+        {},
+        );
+
+        setMarkedDated(obj);
+    }
+
     var now = new Date();
     var month = now.getMonth() + 1;
     var today = now.getDate();
@@ -124,10 +139,6 @@ export default function MainScreen({navigation, route}) {
                     <Text style={[textStyles.title, {fontSize:30}]}> {month}/{today} </Text>
                     <CustomButton text="select" onPress={()=>navigation.navigate('SELECT')}/> 
                 </View>
-
-                {/*<View>
-                    <Calendar></Calendar>
-                </View>*/}
                 
                 <Input value={newTask} onChangeText={_handleTextChange} onSubmitEditing={_addTask} onBlur={_onBlur}/>
                 
@@ -144,7 +155,13 @@ export default function MainScreen({navigation, route}) {
                         simultaneousHandlers={scrollView}
                         activationDistance={20}
                     </DraggableFlatList> */}
-                    <Calendar></Calendar>
+
+                    <Calendar>
+                        onDayPress = {(day) => {
+                            _addDates();
+                            }}
+                        markedDates={markedDates}
+                    </Calendar>
 
                     {Object.values(tasks).reverse().map(item=> (
                         <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}
