@@ -21,7 +21,7 @@ const searchStyle = StyleSheet.create({
         fontSize: 25,
         width: Dimensions.get('window').width-100,
         height: 40,
-        marginBottom: 10,
+        marginTop: 10,
         paddingLeft: 15,
         borderRadius: 10,
         backgroundColor: theme.itemBackground,
