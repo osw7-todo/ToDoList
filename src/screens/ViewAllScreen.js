@@ -105,9 +105,15 @@ export default function ViewAll({navigation, route}) {
         var text = '<ToDoList>\n';
         {Object.values(tasks).reverse()
             .map(function(data){
+                var shape;
+                if(data.completed){
+                    shape = "○";
+                } else {
+                    shape = "x";
+                }
                 var splitStart = data.startdate.split('T');
                 var splitDue = data.duedate.split('T');
-                text+=data.text+'('+data.completed+') : startdate('+splitStart[0]+'"), duedate('+splitDue[0]+'")\n'
+                text+=data.text+'('+shape+') : startdate('+splitStart[0]+'"), duedate('+splitDue[0]+'")\n'
             })
         }
         
@@ -129,6 +135,16 @@ export default function ViewAll({navigation, route}) {
         }
     }
 
+    var sorted = true;
+    //.sort((a,b)=>(a.duedate>b.duedate)?1:-1)
+    const _sortDataS = () => {
+        sorted = true;
+        console.log(sorted);
+    }
+    const _sortDataD = () => {
+        sorted = false;
+        console.log(sorted);
+    }
     {/*const image = focused ? require('../assets/due-date.png') : require('../assets/due-date.png') */}
 
 
@@ -138,24 +154,27 @@ export default function ViewAll({navigation, route}) {
             <StatusBar barStyle="dark-content" style={barStyles.statusbar}/> 
             
             <View style={cardStyles.card}>
-
+                <View style={rowStyles.context}> 
+                    <IconButton type={images.searchI} onPressOut={()=>setShouldShow(!shouldShow)}/>
+                    {shouldShow ? <Search value={searchText} onChangeText={text => {setSearchText(text)}}/> : null}
+                </View>
                 <View style={rowStyles.context}> 
                     <CustomButton text="share" onPress={_shareData}/>
                     <CustomButton text="select" onPress={()=>navigation.navigate('SELECT')} /*style={[textStyles.title, {alignItems:'flex-end'}]}*//> 
-                    <IconButton type={images.searchI} onPressOut={()=>setShouldShow(!shouldShow)}/>
-                </View>
-                <View style={rowStyles.context}> 
-                    {shouldShow ? <Search value={searchText} onChangeText={text => {setSearchText(text)}}/> : null}
+                    <CustomButton text="sortS" onPress={_sortDataS}/>
+                    <CustomButton text="sortD" onPress={_sortDataD}/>
                 </View>
 
                 <DraggableFlatList width = {width-20}
-                        data={Object.values(tasks).filter((filterItem)=>{
+                        data={Object.values(tasks).filter((filterItem)=>{ //duedate
                             if(searchText ==""){
                                 return filterItem
                             } else if (filterItem.text.toLowerCase().includes(searchText.toLowerCase())){
                                 return filterItem
                             }
-                        })}
+                            }).sort((a,b)=>(a.duedate>b.duedate)?1:-1)
+                        }
+
                         renderItem={renderItem}
                         keyExtractor={(item) => item.id}
                         //onDragBegin={() => setOuterScrollEnabled(false)}
