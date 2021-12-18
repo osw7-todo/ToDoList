@@ -103,7 +103,7 @@ export default function ViewAll({navigation, route}) {
 
     const _shareData = async() => {
         var text = '<ToDoList>\n';
-        {Object.values(tasks).reverse()
+        {Object.values(tasks)
             .map(function(data){
                 var shape;
                 if(data.completed){
@@ -136,15 +136,17 @@ export default function ViewAll({navigation, route}) {
     }
 
     var sorted = true;
+    //const [sortingData, setSortingData] = useState({});
     //.sort((a,b)=>(a.duedate>b.duedate)?1:-1)
     const _sortDataS = () => {
         sorted = true;
-        console.log(sorted);
+        //setSortingData(Object.values(tasks).sort((a,b)=>(a.startdate>b.startdate)?1:-1));
     }
     const _sortDataD = () => {
         sorted = false;
-        console.log(sorted);
+        //setSortingData(Object.values(tasks).sort((a,b)=>(a.duedate>b.duedate)?1:-1));
     }
+    
     {/*const image = focused ? require('../assets/due-date.png') : require('../assets/due-date.png') */}
 
 
@@ -166,15 +168,20 @@ export default function ViewAll({navigation, route}) {
                 </View>
 
                 <DraggableFlatList width = {width-20}
-                        data={Object.values(tasks).filter((filterItem)=>{ //duedate
+                        data={!sorted 
+                            ? (Object.values(tasks).sort((a,b)=>(a.startdate>b.startdate)?1:-1).filter((filterItem)=>{ 
                             if(searchText ==""){
                                 return filterItem
                             } else if (filterItem.text.toLowerCase().includes(searchText.toLowerCase())){
                                 return filterItem
-                            }
-                            }).sort((a,b)=>(a.duedate>b.duedate)?1:-1)
+                            }}))
+                            : (Object.values(tasks).sort((a,b)=>(a.duedate>b.duedate)?1:-1).filter((filterItem)=>{ 
+                            if(searchText ==""){
+                                return filterItem
+                            } else if (filterItem.text.toLowerCase().includes(searchText.toLowerCase())){
+                                return filterItem
+                            }}))
                         }
-
                         renderItem={renderItem}
                         keyExtractor={(item) => item.id}
                         //onDragBegin={() => setOuterScrollEnabled(false)}
