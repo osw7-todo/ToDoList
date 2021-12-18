@@ -138,14 +138,14 @@ export default function ViewAll({navigation, route}) {
             <StatusBar barStyle="dark-content" style={barStyles.statusbar}/> 
             
             <View style={cardStyles.card}>
-                <View style={rowStyles.context}> 
-                    <IconButton type={images.searchI} onPressOut={()=>setShouldShow(!shouldShow)}/>
-                    {shouldShow ? <Search value={searchText} onChangeText={text => {setSearchText(text)}}/> : null}
-                </View>
 
                 <View style={rowStyles.context}> 
                     <CustomButton text="share" onPress={_shareData}/>
                     <CustomButton text="select" onPress={()=>navigation.navigate('SELECT')} /*style={[textStyles.title, {alignItems:'flex-end'}]}*//> 
+                    <IconButton type={images.searchI} onPressOut={()=>setShouldShow(!shouldShow)}/>
+                </View>
+                <View style={rowStyles.context}> 
+                    {shouldShow ? <Search value={searchText} onChangeText={text => {setSearchText(text)}}/> : null}
                 </View>
 
                 <DraggableFlatList width = {width-20}

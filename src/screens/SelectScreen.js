@@ -40,22 +40,19 @@ export default function SelectScreen({navigation, route}) {
     };
 
     /* 전체/개별 선택/해제 삭제 구현*/
+    const [checkedList, setCheckedList] = useState([]);
     const dataLists = Object.values(tasks).reverse(); //dataList에 해당화면에서 넘어온 항목들 저장
-    const [checkedList, setCheckedList] = useState([]); //check된 것들을 넣는 배열
-    const [isCheckedAll, setisCheckedAll] = useState(false); //전체선택,해제 여부를 기록
-
     
     // 전체 체크 클릭 시 발생하는 함수
     const onCheckedAll = useCallback(
-        () => { //checked값을 받아오고 싶었지만 안돼서, isCheckedAll이라는 toggle되는 boolean값을 이용
-            if (!isCheckedAll) {
-                setisCheckedAll(!isCheckedAll)
+        (checked) => {
+            //alert("전체 클릭 함수 호출됨")
+            if (!checked) {
                 const checkedListArray = [];
                 alert("Select All")
                 dataLists.forEach((item) => checkedListArray.push(item));
                 setCheckedList(checkedListArray);
             } else {
-                setisCheckedAll(!isCheckedAll)
                 alert("Deselect All")
                 setCheckedList([]);
             }
@@ -68,11 +65,12 @@ export default function SelectScreen({navigation, route}) {
     const onCheckedElement = useCallback(
         (checked, item) => {
             //alert("개별 클릭 호출됨")
-            if (checked) {
-                alert("개별 선택")
+            if (!checked) { //false
+                alert("개별 선택");
                 setCheckedList([...checkedList, item]);
-            } else {
-                alert("개별 해제")
+                console.log(checkedList);
+            } else { //true
+                alert("개별 해제");
                 setCheckedList(checkedList.filter((el) => el !== item));
             }
         },
@@ -81,30 +79,31 @@ export default function SelectScreen({navigation, route}) {
 
     // 선택된 거 삭제하는 함수
     const deleteSelectedTask = () => {
-        alert("delete")
+        alert("delete");
         const currentTasks = Object.assign({}, tasks);
         for( var i=0; i<checkedList.length; i++) {
-            delete currentTasks[checkedList[i].id];
+            delete currentTasks[checkedList[i]];
         }
         _saveTasks(currentTasks);
         //checkedList.forEach(item => _deleteTask(item.id)); //이렇게 하면 맨마지막 한개만 삭제된다.
         setCheckedList([]);
     };
-
+    
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="dark-content" style={barStyles.statusbar}/>    
             
             <View style={cardStyles.card}> 
                 <ScrollView width = {width-20}>
-                    {checkedList.map((task)=> ( <Text> {task.text} {task.id}</Text>))}
-                    {dataLists.map((item)=> (
+                    {dataLists.reverse().map((item)=> (
                         <View style={taskStyle.container}>
                             {/* 개별 checkbox */}
                             <CheckBox
                                 key={item.id}
-                                onPress={(e) => onCheckedElement(e.target.checked, item)}
-                                checked={checkedList.includes(item) ? true : false}
+                                checked={checkedList.includes(item.id) ? true : false }
+                                onPress={() => {
+                                    onCheckedElement(checkedList.includes(item.id), item.id);
+                                }}
                             />
     
                             {/* 할 일 text */}
@@ -120,7 +119,9 @@ export default function SelectScreen({navigation, route}) {
                 <View style={{flexDirection: 'row'}}>
                     {/*전체선택/해제 여부를 입력받는 checkbox*/}
                     <CheckBox
-                        onPress={(e) => onCheckedAll()}
+                        onPress={(e) => {
+                            onCheckedAll(e.target.checked);
+                        }}
                         checked={
                             checkedList.length === 0
                                 ? false
