@@ -16,6 +16,7 @@ export default function SelectedCategoryScreen({navigation, route}){
 
     const [tasks, setTasks] = useState({});
     const {selectedCategory, categoryID} = route.params;
+    //console.log("get selectedCategory\n",route.params);
 
     useEffect(()=>{
         const reloadTab = navigation.addListener('focus',(e)=>{
