@@ -4,7 +4,6 @@ import {viewStyles, barStyles, cardStyles} from '../styles';
 import {theme} from '../theme';
 import { images } from '../images';
 import IconButton from '../components/IconButton';
-import CustomButton from '../components/custombutton';
 import Task from '../components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
@@ -41,29 +40,22 @@ export default function SelectScreen({navigation, route}) {
         setTasks(JSON.parse(loadedTasks || '{}'));
     };
 
-    const _deleteTask = id => {
-        const currentTasks = Object.assign({}, tasks);
-        delete currentTasks[id];
-        _saveTasks(currentTasks);
-    };
-
-    /* checkbox 구현방법 2 */
+    /* 전체/개별 선택/해제 삭제 구현*/
     const [checkedList, setCheckedList] = useState([]);
     const dataLists = Object.values(tasks).reverse(); //dataList에 해당화면에서 넘어온 항목들 저장
     
     // 전체 체크 클릭 시 발생하는 함수
-    //문제점: !checked를 하면 전체선택만 되고, checked를 하면 전체해제만 되고... 어쨌든 둘 중 하나만 계속 작동됨. toggle이 안됨..
+    //문제점: onPress={}에서 현재 박스의 checked값이 넘어오지 않는다. undefinded로 넘어온다.
     const onCheckedAll = useCallback(
         (checked) => {
-            alert("전체 클릭 함수 호출됨")
+            //alert("전체 클릭 함수 호출됨")
             if (!checked) {
                 const checkedListArray = [];
-
-                alert("전체 선택됨")
+                alert("Select All")
                 dataLists.forEach((item) => checkedListArray.push(item));
                 setCheckedList(checkedListArray);
             } else {
-                alert("전체 해제됨")
+                alert("Deselect All")
                 setCheckedList([]);
             }
         },
@@ -71,10 +63,10 @@ export default function SelectScreen({navigation, route}) {
     );
     
     // 개별 체크 클릭 시 발생하는 함수
-    //문제점: !checked를 하면 개별선택만 잘되고, checked를 하면 개별해제만 되고... 위의 거랑 같은 상황
+    //문제점: onPress={}에서 현재 박스의 checked값이 넘어오지 않는다. undefinded로 넘어온다.
     const onCheckedElement = useCallback(
         (checked, item) => {
-            alert("개별 클릭 호출됨")
+            //alert("개별 클릭 호출됨")
             if (checked) {
                 alert("개별 선택")
                 setCheckedList([...checkedList, item]);
@@ -88,13 +80,15 @@ export default function SelectScreen({navigation, route}) {
 
     // 선택된 거 삭제하는 함수
     const deleteSelectedTask = () => {
-            alert("삭제함수 호출됨")
-            {/* 문제점: list 맨 마지막꺼 한개만 삭제됨. */}
-            checkedList.forEach((item) => _deleteTask(item.id));
-            setCheckedList([]);
-    }
-
-    const [check, setCheck] = useState(false);
+        alert("delete")
+        const currentTasks = Object.assign({}, tasks);
+        for( var i=0; i<checkedList.length; i++) {
+            delete currentTasks[checkedList[i].id];
+        }
+        _saveTasks(currentTasks);
+        //checkedList.forEach(item => _deleteTask(item.id)); //이렇게 하면 맨마지막 한개만 삭제된다.
+        setCheckedList([]);
+    };
 
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
@@ -105,11 +99,11 @@ export default function SelectScreen({navigation, route}) {
                 {checkedList.map((task)=> ( <Text> {task.text} {task.id}</Text>))}
                     {dataLists.map((item)=> (
                         <View style={taskStyle.container}>
-                            {/* checkbox */}
+                            {/* 개별 checkbox */}
                             <CheckBox
                                 key={item.id}
                                 onPress={(e) => onCheckedElement(e.target.checked, item)}
-                                checked={ alert("개별선택 상태바뀜"),  checkedList.includes(item) ? true : false  }
+                                checked={checkedList.includes(item) ? true : false  }
                             />
     
                             {/* 할 일 text */}
@@ -127,7 +121,6 @@ export default function SelectScreen({navigation, route}) {
                     <CheckBox
                         onPress={(e) => onCheckedAll(e.target.checked)}
                         checked={
-                            alert("전체선택 상태바뀜"),
                             checkedList.length === 0
                                 ? false
                                 : checkedList.length === dataLists.length
