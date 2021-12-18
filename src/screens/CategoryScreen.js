@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
+import {TouchableOpacity, StyleSheet, Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
 import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles, bottombarStyles} from '../styles';
 import {theme} from '../theme';
 import Task from '../components/Task';
@@ -7,6 +7,7 @@ import CategoryInput from '../components/CategoryInput';
 import { Category } from '../components/Category';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
+import DraggableFlatList, { RenderItemParams, ScaleDecorator, ShadowDecorator, OpacityDecorator, useOnCellActiveAnimation} from 'react-native-draggable-flatlist';
 
 
 function CategoryScreen({navigation}){
@@ -67,7 +68,30 @@ function CategoryScreen({navigation}){
     const selectedCategoryScreen = navigation.navigate('CATEGORY', {selectedCategory: currentCategories[id], categoryID: id});
     //console.log("go selectedCategory\n",currentCategories[id], id);
     return selectedCategoryScreen;
-  }
+  };
+
+  const renderItem= ({ item, index, drag, isActive }) => {    
+    return (
+        <ScaleDecorator>
+            <TouchableOpacity
+              style={[
+                {
+                  backgroundColor: isActive ? 'red' : item.backgroundColor,
+                  height: item.height,
+                  elevation: isActive ? 30 : 0,
+                },
+              ]}
+              onLongPress={drag}>
+                  <Category key={item.id} item={item} deleteCategory={_deleteCategory} updateCategory={_updateCategory} moveToCategory={_moveToCategory}/>
+             {/*} <Animated.View
+                style={{
+                }}>
+                <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}/>
+            </Animated.View> */}
+            </TouchableOpacity>
+        </ScaleDecorator>
+    )
+};
     
     const _onBlur = () => {
       setNewCategory('');
@@ -80,12 +104,19 @@ function CategoryScreen({navigation}){
       <SafeAreaView style={viewStyles.container}>
         <StatusBar barStyle="dark-content" style={barStyles.statusbar}/>
           <View style={cardStyles.card}>
-              <ScrollView width = {width-20}>
-                    {Object.values(categories).map(item=> (
-                        <Category key={item.id} item={item} deleteCategory={_deleteCategory} updateCategory={_updateCategory} moveToCategory={_moveToCategory}/> 
-                    ))}
-                  <CategoryInput value={newCategory} onChangeText={_handleTextChange} onSubmitEditing={_addCategory} onBlur={_onBlur}/>
-              </ScrollView>
+          <DraggableFlatList width = {width-20}
+                        data={Object.values(categories)}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.id}
+                        //onDragBegin={() => setOuterScrollEnabled(false)}
+                        onDragEnd={({ data }) => {
+                            _saveCategories(data)
+                            //setOuterScrollEnabled(true)
+                        }}
+                        simultaneousHandlers={ScrollView}
+                        activationDistance={20}
+                />
+          <CategoryInput value={newCategory} onChangeText={_handleTextChange} onSubmitEditing={_addCategory} onBlur={_onBlur}/>
           </View>
       </SafeAreaView>
       
