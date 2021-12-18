@@ -55,6 +55,7 @@ export default function SelectScreen({navigation, route}) {
                 setCheckedList(checkedListArray);
                 console.log(checkedList);
             } else { //true
+                alert("Deselect All")
                 setCheckedList([]); //초기화
             }
         },
@@ -67,11 +68,11 @@ export default function SelectScreen({navigation, route}) {
         (checked, item) => {
             //alert("개별 클릭 호출됨")
             if (!checked) { //false
-                alert("개별 선택");
+                //alert("개별 선택");
                 setCheckedList([...checkedList, item]);
                 console.log(checkedList);
             } else { //true
-                alert("개별 해제");
+                //alert("개별 해제");
                 setCheckedList(checkedList.filter((el) => el !== item));
             }
         },
