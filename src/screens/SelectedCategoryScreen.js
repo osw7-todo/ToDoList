@@ -9,18 +9,13 @@ import { Category } from '../components/Category';
 import Input from '../components/Input';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import RNPickerSelect from 'react-native-picker-select';
 
 export default function SelectedCategoryScreen({navigation, route}){
     const width = Dimensions.get('window').width;
     const [isReady, setIsReady] = useState(false);
-    const [categories, setCategories] = useState({});
 
     const [tasks, setTasks] = useState({});
-
     const {selectedCategory, categoryID} = route.params;
-    //console.log(selectedCategory);
 
     useEffect(()=>{
         const reloadTab = navigation.addListener('focus',(e)=>{
@@ -28,88 +23,71 @@ export default function SelectedCategoryScreen({navigation, route}){
         });
         return reloadTab;
       },[navigation]);
-
-    const _saveCategories = async categories => {
-        try {
-            await AsyncStorage.setItem('categories',JSON.stringify(categories));
-            setCategories(categories);
-        } catch (e) {
-            console.error(e);
-        }
-      };
-    
-    const _loadCategories = async () => {
-        const loadedCategories = await AsyncStorage.getItem('categories');
-        setCategories(JSON.parse(loadedCategories || '{}'));
-    };
     
     const _loadTasks = async () => {
         const loadedTasks = await AsyncStorage.getItem('tasks');
         setTasks(JSON.parse(loadedTasks || '{}'));
     };
+    
 
-    const _updateCategory = item => {
-        const currentCategories = Object.assign({}, categories);
-        currentCategories[item.id] = item;
+    const _saveTasks = async tasks => {
+        try {
+            await AsyncStorage.setItem('tasks',JSON.stringify(tasks));
+            setTasks(tasks);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    const _deleteTask = id => {
+        const currentTasks = Object.assign({}, tasks);
+        delete currentTasks[id];
         //setTasks(currentTasks);
-        _saveCategories(currentCategories);
+        _saveTasks(currentTasks);
+    };
+    const _toggleTask = id => {
+        const currentTasks = Object.assign({}, tasks);
+        currentTasks[id]['completed'] = !currentTasks[id]['completed'];
+        //setTasks(currentTasks);
+        _saveTasks(currentTasks);
+    };
+
+    const _editTask = id => {
+        const currentTasks = Object.assign({}, tasks);
+        const editScreen = navigation.navigate('EDIT', {selectedTask: currentTasks[id], taskID: id});
+        return editScreen;
     };
 
 
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="light-content" style={barStyles.statusbar}/>
-            <Text>{selectedCategory}</Text>
+            <CategoryTitle key={categoryID} item={selectedCategory}/>
             <ScrollView width={width-20} onLoad={()=>route.params}>
+            {console.log(categoryID)}
             {Object.values(tasks).reverse().filter((filterItem)=>{
                         if(filterItem.category == categoryID){
                             return filterItem
                         } 
                     }).map(item=> (
-                        <Task key={item.id} item={item}/>
+                        <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}/>
                     ))}
             </ScrollView>
         </SafeAreaView>
     ) : (
         <AppLoading
-        startAsync = {_loadCategories, _loadTasks}
+        startAsync = {_loadTasks}
         onFinish={()=>setIsReady(true)}
         onError={console.error}/>
       );
 };
 
-const CategoryTitle = ({item, updateCategory}) => {
-    const [isEditing, setIsEditing] = useState(false);
-    const [text, setText] = useState(item.text);
-  
-  
-    const _handleUpdateButtonPress = () => {
-        setIsEditing(true);
-    };
-    const _onSubmitEditing = () => {
-        if (isEditing) {
-            const editedCategory = Object.assign({}, item, {text});
-            setIsEditing(false);
-            updateCategory(editedCategory);
-        }
-    };
-    const _onBlur = () => {
-        if (isEditing) {
-            setIsEditing(false);
-            setText(item.text);
-        }
-    };
-  
-  
-    return isEditing ? (
-        <Input value={text} onChangeText={text => setText(text)}
-        onSubmitEditing={_onSubmitEditing}
-        onBlur={_onBlur} />
-    ) : (
+
+const CategoryTitle = (item) => {  
+    return (
         <View style={style.container}>
             <Text style={style.contents}>
             {item.text}</Text>
-            {<IconButton type = {images.update} onPressOut={_handleUpdateButtonPress}/>}
         </View>
     );
   

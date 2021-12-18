@@ -75,12 +75,6 @@ export default function MainScreen({navigation, route}) {
         //setTasks(currentTasks);
         _saveTasks(currentTasks);
     };
-    const _updateTask = item => {
-        const currentTasks = Object.assign({}, tasks);
-        currentTasks[item.id] = item;
-        //setTasks(currentTasks);
-        _saveTasks(currentTasks);
-    };
 
     const _editTask = id => {
         const currentTasks = Object.assign({}, tasks);
@@ -154,7 +148,7 @@ export default function MainScreen({navigation, route}) {
 
                     {Object.values(tasks).reverse().map(item=> (
                         <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}
-                        updateTask={_updateTask} renderItem={renderItem}
+                        renderItem={renderItem}
                         />           
                     ))}
                 </ScrollView>

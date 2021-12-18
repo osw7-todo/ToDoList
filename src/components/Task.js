@@ -8,39 +8,16 @@ import Input from './Input';
 import Swipeable from 'react-native-gesture-handler/Swipeable'
 //import {SwipeListView} from 'react-native-swipe-list-view'
 
-const Task = ({ item, deleteTask, toggleTask, updateTask, editTask}) => {
+const Task = ({ item, deleteTask, toggleTask, editTask}) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [text, setText] = useState(item.text);
-
-    const _handleUpdateButtonPress = () => {
-        setIsEditing(true);
-    };
-    const _onSubmitEditing = () => {
-        if (isEditing) {
-            const editedTask = Object.assign({}, item, {text});
-            setIsEditing(false);
-            updateTask(editedTask);
-        }
-    };
-    const _onBlur = () => {
-        if (isEditing) {
-            setIsEditing(false);
-            setText(item.text);
-        }
-    };
-
-      
+    const [text, setText] = useState(item.text);  
 
     /*const datalist = Array(1)
         .fill('')
         .map((_, i) => ({key: `${i}`, text: `${item.text}`})); */
 
 
-    return isEditing ? (
-        <Input value={text} onChangeText={text => setText(text)}
-        onSubmitEditing={_onSubmitEditing}
-        onBlur={_onBlur} />
-    ) : (
+    return (
         <Swipeable
         renderRightActions={() =>
             <View style={taskStyle.hiddenContainer}>
