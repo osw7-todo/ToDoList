@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+//import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { theme } from './theme';
 
@@ -62,8 +62,6 @@ function MenuBar() {
         component={MainScreen}
         options={{
           title: "main",
-          /*이 title 자리에 해당 날짜 넣고 싶은데, 이 값이 drawer 젤 윗칸 이름에 그대로 들어가기도하고, 
-          {month}/{today}를 title에 넣는 방법을 모르겠음 */
           headerStyle: {
             backgroundColor: theme.background
           },
