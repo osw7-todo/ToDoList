@@ -78,11 +78,6 @@ export default function ViewAll({ navigation, route }) {
                     ]}
                     onLongPress={drag}>
                     <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask} />
-                    {/*} <Animated.View
-                    style={{
-                    }}>
-                    <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}/>
-                </Animated.View> */}
                 </TouchableOpacity>
             </ScaleDecorator>
         )

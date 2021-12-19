@@ -6,31 +6,22 @@ import Task from './components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import CustomButton from './components/custombutton';
-import Animated from 'react-native-reanimated';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
-import { FlatList } from 'react-native-gesture-handler';
 import DraggableFlatList, { RenderItemParams, ScaleDecorator, ShadowDecorator, OpacityDecorator, useOnCellActiveAnimation} from 'react-native-draggable-flatlist';
 
 export default function MainScreen({navigation, route}) { 
     const width = Dimensions.get('window').width; //set window size
     const [isReady, setIsReady] = useState(false);
     const [newTask, setNewTask] = useState('');
-    const [tasks, setTasks] = useState({ //
-        /*'1' : {id: '1', text: "Todo item #1", completed: false},
-        '2' : {id: '2', text: "Todo item #2", completed: true},*/
-    });
+    const [tasks, setTasks] = useState({});
 
-    const [markedDates, setMarkedDates] = React.useState(null);
-    const [dates, setDates] = React.useState(['2021-12-01', '2022-12-31']);
-
-    React.useEffect(()=>{
+    useEffect(()=>{
         const reload = navigation.addListener('focus',(e)=>{
             setIsReady(false);
         });
         return reload;
     },[navigation]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if(route.params?.task, route.params?.id){
             const currentTasks = Object.assign({}, tasks);
             currentTasks[route.params?.id] = route.params?.task;
@@ -83,7 +74,7 @@ export default function MainScreen({navigation, route}) {
         return editScreen;
     };
 
-    const renderItem= ({ item, index, drag, isActive }) => {    
+    const renderItem= ({ item, drag, isActive }) => {    
         return (
             <ScaleDecorator>
                 <TouchableOpacity
@@ -96,11 +87,6 @@ export default function MainScreen({navigation, route}) {
                   ]}
                   onLongPress={drag}>
                       <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}/>
-                 {/*} <Animated.View
-                    style={{
-                    }}>
-                    <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}/>
-                </Animated.View> */}
                 </TouchableOpacity>
             </ScaleDecorator>
         )
@@ -113,16 +99,6 @@ export default function MainScreen({navigation, route}) {
         setNewTask(text);
     };
 
-    const _addDates = () => {
-        var Object=dates.reduce( (c,v) => Object.assign(c, {
-            [v]: {maked: true, dotColor: 'red'},
-        }),
-        {},
-        );
-
-        setMarkedDates(obj);
-    }
-
     var now = new Date();
     var month = now.getMonth() + 1;
     var today = now.getDate();
@@ -134,7 +110,7 @@ export default function MainScreen({navigation, route}) {
 
             <View style={cardStyles.card}>
                 <View style={rowStyles.context}> 
-                    <Text style={[textStyles.title, {fontSize:30}]}> {month}/{today} </Text>
+                    <Text style={[textStyles.title, {fontSize:32}]}> {month}/{today} </Text>
                     <CustomButton text="select" onPress={()=>navigation.navigate('SELECT')}/> 
                 </View>
                 
@@ -150,23 +126,8 @@ export default function MainScreen({navigation, route}) {
                             //setOuterScrollEnabled(true)
                         }}
                         simultaneousHandlers={ScrollView}
-                        activationDistance={20}
+                        //activationDistance={20}
                 />
-               {/* <ScrollView width = {width-20} ref={ScrollView}>
-
-                    <Calendar
-                        onDayPress = {(day) => {
-                            _addDates();
-                            }}
-                        markedDates={markedDates}
-                        />
-
-                    {Object.values(tasks).reverse().map(item=> (
-                        <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}
-                        renderItem={renderItem}
-                        />           
-                    ))}
-                    </ScrollView> */}
             </View>
         </SafeAreaView>
     )   :   (

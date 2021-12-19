@@ -62,10 +62,15 @@ export default function EditScreen({ navigation, route }) {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || JSON.parse(selectedTask.duedate);
     setShow(Platform.OS === 'Android');
-    setDate(currentDate);
-    alert(`Due: ${currentDate.getMonth() + 1}/${currentDate.getDate()}`);
-    selectedTask.duedate = JSON.stringify(currentDate);
-    setIsReady(false);
+    if(event.type == "set"){
+      setDate(currentDate);
+      alert(`Due: ${currentDate.getMonth() + 1}/${currentDate.getDate()}`);
+      selectedTask.duedate = JSON.stringify(currentDate);
+      setIsReady(false);
+    }
+    else{
+      return null;
+    }
   };
 
   const showMode = (currentMode) => {
@@ -180,7 +185,8 @@ const taskStyle = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: theme.itemBackground,
     borderRadius: 10,
-    padding: 3,
+    margin: 3,
+    /* padding: 3, */
     marginTop: 3,
     marginLeft: 0,
   },
@@ -221,7 +227,7 @@ const Comment = ({ item, saveComment }) => {
         style={commentStyle.textInput}
         value={text}
         placeholder="comment... press to write"
-        placeholderTextColor={theme.main}
+        placeholderTextColor={theme.text}
         onChangeText={text => setText(text)}
         onSubmitEditing={_onSubmitEditing}
         onBlur={_onBlur}
@@ -241,27 +247,29 @@ const commentStyle = StyleSheet.create({
     fontSize: 15,
     width: Dimensions.get('window').width - 20,
     height: 50,
-    marginTop: 15,
-    marginLeft: 3,
+    marginTop: 2,
+    marginLeft: 15,
+    /* marginLeft: 3,
     marginRight: 3,
     paddingLeft: 15,
-    paddingTop: 2,
+    paddingTop: 2, */
     borderRadius: 10,
     backgroundColor: theme.itemBackground,
-    color: theme.text,
+    color: theme.main,
   },
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: theme.itemBackground,
     borderRadius: 10,
-    padding: 15,
+    margin: 15,
+    /* padding: 15, */
     marginTop: 15,
     marginLeft: 0,
   },
   contents: {
     flex: 1,
     fontSize: 15,
-    color: theme.text,
+    color: theme.main,
   },
 });

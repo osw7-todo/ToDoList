@@ -22,7 +22,8 @@ const searchStyle = StyleSheet.create({
         width: Dimensions.get('window').width - 100,
         height: 40,
         marginTop: 10,
-        paddingLeft: 15,
+        marginLeft: 15,
+        /* paddingLeft: 15, */
         borderRadius: 10,
         backgroundColor: theme.itemBackground,
         color: theme.text,
