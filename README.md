@@ -2,6 +2,7 @@
 ## 📌 Expo 
 https://expo.dev/@melody2108/to-do-cloud
 
+![image](https://user-images.githubusercontent.com/81164264/146677826-0f7cdd55-16dc-40e6-84cc-af78a73b9ec3.png)
 
 ## 😊 Member & Role
 - #### 2071006 Kim Geunju 김근주
@@ -37,6 +38,17 @@ https://expo.dev/@melody2108/to-do-cloud
   * Add a comment to a to-do list
   * Show/visualize the completion rate per category
 
+## 📱 screenshot
+![mainscreen](https://user-images.githubusercontent.com/81164264/146677708-4dc08b21-bc82-45ac-8c09-17409e5e841f.PNG)
+![mainscreen2](https://user-images.githubusercontent.com/81164264/146677723-223d61e3-e9b7-4656-b7b2-80c5f1b744e5.PNG)
+![select deletescreen](https://user-images.githubusercontent.com/81164264/146677721-d2fa8580-b866-4f96-bb5b-eed263a96b85.PNG)
+![drawerscreen](https://user-images.githubusercontent.com/81164264/146677736-2ee826a6-1310-42b1-a3fc-075362e8cfb5.PNG)
+![allscreen](https://user-images.githubusercontent.com/81164264/146677739-b6d7048d-b235-41cf-9a45-d70c1de71f5f.PNG)
+![completedscreen](https://user-images.githubusercontent.com/81164264/146677748-43f4f4ae-09eb-46c7-bc8c-b7cc000322d8.PNG)
+![uncompletedscreen](https://user-images.githubusercontent.com/81164264/146677751-8f5d4f89-1fc5-4dd6-b7ed-26db37d7a34b.PNG)
+![categoryscreen](https://user-images.githubusercontent.com/81164264/146677756-9daf534d-4e63-435f-870a-8c6c02d6028c.PNG)
+![selectedcategoryscreen](https://user-images.githubusercontent.com/81164264/146677762-24a86045-eb7c-4b75-83c8-2b89b025f6af.PNG)
+![completionratescreen](https://user-images.githubusercontent.com/81164264/146677768-281cf67f-cca4-43e3-89a9-370d601e079d.PNG)
 
 ## 📚 opensource projects and libraries
 - __React__
