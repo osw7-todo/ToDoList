@@ -52,6 +52,11 @@ export const rowStyles = StyleSheet.create({
         marginTop: 3,
         marginLeft:0,
     },
+    category: {
+        flexDirection: 'row',
+        marginTop: 3,
+        marginLeft:0,
+    }
 });
 
 /*일반 글씨 스타일 추가*/

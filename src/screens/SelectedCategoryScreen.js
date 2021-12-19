@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View } from 'react-native';
-import { viewStyles, textStyles, barStyles, cardStyles, topbarStyles, bottombarStyles } from '../styles';
+import { viewStyles,rowStyles, textStyles, barStyles, cardStyles, topbarStyles, bottombarStyles } from '../styles';
 import { theme } from '../theme';
 import Task from '../components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
+import CustomButton from '../components/custombutton';
 
 export default function SelectedCategoryScreen({ navigation, route }) {
     const width = Dimensions.get('window').width;
@@ -55,19 +56,32 @@ export default function SelectedCategoryScreen({ navigation, route }) {
         return editScreen;
     };
 
+    const [sortingData, setSortingData] = useState(true);
 
     return isReady ? (
         <SafeAreaView style={viewStyles.container}>
             <StatusBar barStyle="light-content" style={barStyles.statusbar} />
-            <Text style={textStyles.title}>{selectedCategory.text}</Text>
+            <View style={rowStyles.category}>
+                <CustomButton text="sortS" onPress={()=>setSortingData(true)} />
+                <Text style={textStyles.title}>{selectedCategory.text}</Text>
+                <CustomButton text="sortD" onPress={()=>setSortingData(false)} />
+            </View>
             <ScrollView width={width - 20} onLoad={() => route.params}>
-                {Object.values(tasks).reverse().filter((filterItem) => {
-                    if (filterItem.category == categoryID) {
-                        return filterItem
-                    }
-                }).map(item => (
-                    <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask} />
-                ))}
+                {Object.values(tasks).reverse()
+                    .sort((a,b)=>{
+                            if(sortingData){
+                                return (a.startdate>b.startdate)?1:-1;
+                            } else {
+                                return (a.duedate>b.duedate)?1:-1;
+                            }
+                    }).filter((filterItem) => {
+                        if (filterItem.category == categoryID) {
+                            return filterItem
+                        }
+                    }).map(item => (
+                        <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask} />
+                    ))
+                }
             </ScrollView>
         </SafeAreaView>
     ) : (
