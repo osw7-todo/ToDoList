@@ -246,13 +246,11 @@ const commentStyle = StyleSheet.create({
   textInput: {
     fontSize: 15,
     width: Dimensions.get('window').width - 20,
-    height: 50,
-    marginTop: 2,
-    marginLeft: 15,
-    /* marginLeft: 3,
+    marginLeft: 3,
     marginRight: 3,
     paddingLeft: 15,
-    paddingTop: 2, */
+    paddingRight: 15,
+    paddingTop: 2,
     borderRadius: 10,
     backgroundColor: theme.itemBackground,
     color: theme.main,
@@ -262,14 +260,15 @@ const commentStyle = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: theme.itemBackground,
     borderRadius: 10,
-    margin: 15,
-    /* padding: 15, */
+    padding: 15,
     marginTop: 15,
     marginLeft: 0,
   },
   contents: {
     flex: 1,
     fontSize: 15,
+    paddingLeft: 15,
+    paddingRight: 15,
     color: theme.main,
   },
 });
