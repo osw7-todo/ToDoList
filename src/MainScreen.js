@@ -58,7 +58,7 @@ export default function MainScreen({navigation, route}) {
         const date = new Date();
         const newTaskObject = {
             [ID]: {id: ID, text: newTask, completed: false, startdate: JSON.stringify(date),
-                duedate: JSON.stringify(date), category: null },
+                duedate: JSON.stringify(date), category: null, comment: null },
         };
         console.log(ID);
 
