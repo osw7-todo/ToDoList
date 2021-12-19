@@ -80,15 +80,16 @@ const CategoryCompletion = ({ item, tasks }) => {
             if (filterItem.completed == true){
                 return filterItem }
         }
-    })
+    });
+
+    const allTasks = Object.values(tasks).filter((filterItem) =>
+        {if (filterItem.category == item.id) { return filterItem }});
 
     return (
         <View>
             <Text style={generalTextStyles.text}> [{item.text}] </Text>
-            <Text style={generalTextStyles.text}> done: {doneTasks.length}   /   total:{Object.values(tasks).filter((filterItem) =>
-            {if (filterItem.category == item.id) { return filterItem.length }})} </Text>
-            <Text style={generalTextStyles.text}> completion rate: {(doneTasks.length / Object.values(tasks).filter((filterItem) =>
-            {if (filterItem.category == item.id) { return filterItem.length }}) * 100).toFixed(2)}*% </Text>
+            <Text style={generalTextStyles.text}> done: {doneTasks.length}   /   total:{allTasks.length} </Text>
+            <Text style={generalTextStyles.text}> completion rate: {(doneTasks.length / allTasks.length * 100).toFixed(2)}*% </Text>
         </View>
     );
 };
