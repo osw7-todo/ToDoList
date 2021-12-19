@@ -1,5 +1,7 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import {theme} from './theme';
+
+const widthW = Dimensions.get('window').width;
 
 export const viewStyles = StyleSheet.create({
     container: {
@@ -36,6 +38,7 @@ export const barStyles = StyleSheet.create({
 /*card view 스타일 추가*/
 export const cardStyles = StyleSheet.create({
     card: {
+        width : (widthW-10),
         backgroundColor: '#FFFFFF',
         alignItems: 'center',
         flex: 1,
@@ -43,7 +46,7 @@ export const cardStyles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
         marginTop: 3,
-        borderRadius: 10,
+        borderRadius: 20,
         margin: 10 //edit margin for ViewAllScreen
     },
 });
@@ -51,8 +54,8 @@ export const cardStyles = StyleSheet.create({
 /*앱 상단바 스타일 추가*/
 export const rowStyles = StyleSheet.create({
     context: {
+        alignItems: 'center',
         flexDirection: 'row',
-        backgroundColor: '#FFFFFF',
         marginTop: 3,
         marginLeft:0,
     },
