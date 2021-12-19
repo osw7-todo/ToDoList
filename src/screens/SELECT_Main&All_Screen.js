@@ -1,4 +1,4 @@
-import React, { useState, Component, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { StyleSheet, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View } from 'react-native';
 import { viewStyles, barStyles, cardStyles } from '../styles';
 import { theme } from '../theme';
@@ -45,17 +45,18 @@ export default function SelectScreen({ navigation, route }) {
 
     // 전체 체크 클릭 시 발생하는 함수
     //문제점: onPress={}에서 현재 박스의 checked값이 넘어오지 않는다. undefinded로 넘어온다.
+    //해결방법: e.target.checked 대신에, 조건 자체를 넘겨줬다.
     const onCheckedAll = useCallback(
         (checked) => {
-            if (checked) { //false
+            if (checked) {
                 const checkedListArray = [];
                 alert("Select All")
                 dataLists.reverse().map((item) => checkedListArray.push(item.id));
-                setCheckedList(checkedListArray);
-                console.log(checkedList);
-            } else { //true
+                setCheckedList(checkedListArray); //checkedList를 모든 item의 item.id를 넣은 것으로 변경한다.
+                //console.log(checkedList);
+            } else {
                 alert("Deselect All")
-                setCheckedList([]); //초기화
+                setCheckedList([]); //checkedList를 초기화한다.
             }
         },
         [dataLists]
@@ -63,14 +64,14 @@ export default function SelectScreen({ navigation, route }) {
 
     // 개별 체크 클릭 시 발생하는 함수
     //문제점: onPress={}에서 현재 박스의 checked값이 넘어오지 않는다. undefinded로 넘어온다.
+    //해결방법: e.target.checked 대신에, 조건 자체를 넘겨줬다.
     const onCheckedElement = useCallback(
         (checked, item) => {
-            //alert("개별 클릭 호출됨")
-            if (!checked) { //false
+            if (!checked) {
                 //alert("개별 선택");
                 setCheckedList([...checkedList, item]);
-                console.log(checkedList);
-            } else { //true
+                //console.log(checkedList);
+            } else {
                 //alert("개별 해제");
                 setCheckedList(checkedList.filter((el) => el !== item));
             }
@@ -82,7 +83,7 @@ export default function SelectScreen({ navigation, route }) {
     const deleteSelectedTask = () => {
         alert("delete");
         const currentTasks = Object.assign({}, tasks);
-        for (var i = 0; i < checkedList.length; i++) {
+        for (var i = 0; i < checkedList.length; i++) { //checkedList안에 들어있는 item에 해당하는 것들을 지운다.
             delete currentTasks[checkedList[i]];
         }
         _saveTasks(currentTasks);
