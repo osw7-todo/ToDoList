@@ -82,7 +82,10 @@ export default function EditScreen({ navigation, route }) {
 
   /*이미지 넣기*/
   // const[photoUrl, setPhotoUrl] = useState(images.photo);
-
+  const changevalue = (value) => {
+    selectedTask.category = value;
+    setIsReady(false);
+  }
 
   var due = selectedTask.duedate.split('T')[0] + "\"";
 
@@ -95,11 +98,11 @@ export default function EditScreen({ navigation, route }) {
         </Text>
         <RNPickerSelect
           value={selectedTask.category}
-          onValueChange={(value) => selectedTask.category = value}
+          onValueChange={changevalue}
           //placeholder={{label: "Select a Category"}}
           items={(() => Object.values(categories).map((item) =>
             ({ label: item.text, value: item.id })
-          ))()}
+          ))() }
         />
         <EditTask key={taskID} item={selectedTask} duedate={selectedTask.duedate} updateTask={_updateTask} />
         <Text style={textStyles.contents}>
