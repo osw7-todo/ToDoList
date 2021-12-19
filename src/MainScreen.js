@@ -28,7 +28,8 @@ export default function MainScreen({navigation, route}) {
             _saveTasks(currentTasks);
         }
     }, [route.params?.task, route.params?.id]);
-    
+
+
     const _saveTasks = async tasks => {
         try {
             await AsyncStorage.setItem('tasks',JSON.stringify(tasks));

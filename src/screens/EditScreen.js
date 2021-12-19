@@ -62,10 +62,15 @@ export default function EditScreen({ navigation, route }) {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || JSON.parse(selectedTask.duedate);
     setShow(Platform.OS === 'Android');
-    setDate(currentDate);
-    alert(`Due: ${currentDate.getMonth() + 1}/${currentDate.getDate()}`);
-    selectedTask.duedate = JSON.stringify(currentDate);
-    setIsReady(false);
+    if(event.type == "set"){
+      setDate(currentDate);
+      alert(`Due: ${currentDate.getMonth() + 1}/${currentDate.getDate()}`);
+      selectedTask.duedate = JSON.stringify(currentDate);
+      setIsReady(false);
+    }
+    else{
+      return null;
+    }
   };
 
   const showMode = (currentMode) => {
