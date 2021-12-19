@@ -62,10 +62,15 @@ export default function EditScreen({ navigation, route }) {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || JSON.parse(selectedTask.duedate);
     setShow(Platform.OS === 'Android');
-    setDate(currentDate);
-    alert(`Due: ${currentDate.getMonth() + 1}/${currentDate.getDate()}`);
-    selectedTask.duedate = JSON.stringify(currentDate);
-    setIsReady(false);
+    if(event.type == "set"){
+      setDate(currentDate);
+      alert(`Due: ${currentDate.getMonth() + 1}/${currentDate.getDate()}`);
+      selectedTask.duedate = JSON.stringify(currentDate);
+      setIsReady(false);
+    }
+    else{
+      return null;
+    }
   };
 
   const showMode = (currentMode) => {
@@ -91,7 +96,7 @@ export default function EditScreen({ navigation, route }) {
 
   return isReady ? (
     <SafeAreaView style={viewStyles.container}>
-      <StatusBar barStyle="dark-content" style={barStyles.statusbar} />
+      <StatusBar barStyle="light-content" style={barStyles.statusbar} />
       <ScrollView width={width - 20} onLoad={() => route.params}>
         <Text style={textStyles.contents}>
           Category
@@ -180,7 +185,8 @@ const taskStyle = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: theme.itemBackground,
     borderRadius: 10,
-    padding: 3,
+    margin: 3,
+    /* padding: 3, */
     marginTop: 3,
     marginLeft: 0,
   },
@@ -241,11 +247,12 @@ const commentStyle = StyleSheet.create({
     fontSize: 15,
     width: Dimensions.get('window').width - 20,
     height: 50,
-    marginTop: 15,
-    marginLeft: 3,
+    marginTop: 2,
+    marginLeft: 15,
+    /* marginLeft: 3,
     marginRight: 3,
     paddingLeft: 15,
-    paddingTop: 2,
+    paddingTop: 2, */
     borderRadius: 10,
     backgroundColor: theme.itemBackground,
     color: theme.main,
@@ -255,7 +262,8 @@ const commentStyle = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: theme.itemBackground,
     borderRadius: 10,
-    padding: 15,
+    margin: 15,
+    /* padding: 15, */
     marginTop: 15,
     marginLeft: 0,
   },

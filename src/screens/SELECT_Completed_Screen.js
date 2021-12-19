@@ -94,7 +94,7 @@ export default function SelectScreen({ navigation, route }) {
 
     return isReady ? (
         <SafeAreaView style={viewStyles.container}>
-            <StatusBar barStyle="dark-content" style={barStyles.statusbar} />
+            <StatusBar barStyle="light-content" style={barStyles.statusbar} />
 
             <View style={cardStyles.card}>
                 <ScrollView width={width - 20}>
@@ -151,7 +151,7 @@ const taskStyle = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: theme.itemBackground,
         borderRadius: 10,
-        padding: 3,
+        margin: 3, /* */
         marginTop: 3,
         marginLeft: 0,
     },
@@ -160,7 +160,7 @@ const taskStyle = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: theme.itemBackground,
         borderRadius: 10,
-        padding: 3,
+        margin: 3, /* */
         marginTop: 3,
         marginLeft: 0,
     },

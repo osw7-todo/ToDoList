@@ -47,7 +47,7 @@ export default function CompletionRate({ navigation, route }) {
 
     return isReady ? (
         <SafeAreaView style={viewStyles.container}>
-            <StatusBar barStyle="dark-content" style={barStyles.statusbar} />
+            <StatusBar barStyle="light-content" style={barStyles.statusbar} />
 
             <View style={cardStyles.card}>
 
