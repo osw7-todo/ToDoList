@@ -15,10 +15,7 @@ export default function MainScreen({navigation, route}) {
     const width = Dimensions.get('window').width; //set window size
     const [isReady, setIsReady] = useState(false);
     const [newTask, setNewTask] = useState('');
-    const [tasks, setTasks] = useState({ //
-        /*'1' : {id: '1', text: "Todo item #1", completed: false},
-        '2' : {id: '2', text: "Todo item #2", completed: true},*/
-    });
+    const [tasks, setTasks] = useState({});
 
     const [markedDates, setMarkedDates] = React.useState(null);
     const [dates, setDates] = React.useState(['2021-12-01', '2022-12-31']);
@@ -83,7 +80,7 @@ export default function MainScreen({navigation, route}) {
         return editScreen;
     };
 
-    const renderItem= ({ item, index, drag, isActive }) => {    
+    const renderItem= ({ item, drag, isActive }) => {    
         return (
             <ScaleDecorator>
                 <TouchableOpacity
@@ -96,11 +93,6 @@ export default function MainScreen({navigation, route}) {
                   ]}
                   onLongPress={drag}>
                       <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}/>
-                 {/*} <Animated.View
-                    style={{
-                    }}>
-                    <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}/>
-                </Animated.View> */}
                 </TouchableOpacity>
             </ScaleDecorator>
         )
@@ -150,7 +142,7 @@ export default function MainScreen({navigation, route}) {
                             //setOuterScrollEnabled(true)
                         }}
                         simultaneousHandlers={ScrollView}
-                        activationDistance={20}
+                        //activationDistance={20}
                 />
                {/* <ScrollView width = {width-20} ref={ScrollView}>
 
