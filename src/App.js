@@ -1,238 +1,165 @@
 import * as React from 'react';
-import { NavigationContainer, DrawerActions} from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList, DrawerView } from '@react-navigation/drawer';
-import {Text, Image, Dimensions, View, SafeAreaView} from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { theme } from './theme';
-import Category from './components/Category'
 
 import MainScreen from './MainScreen';
-import SelectScreen from './screens/SelectScreen';
+import SelectScreen from './screens/SELECT_Main&All_Screen';
 import EditScreen from './screens/EditScreen';
 import ViewAll from './screens/ViewAllScreen';
 import Completed from './screens/CompletedScreen';
-import Uncompleted from './screens/UncompletedScreen'; 
-import Daily from './screens/DailyScreen';
-import Monthly from './screens/monthlyScreen';
+import Uncompleted from './screens/UncompletedScreen';
 import CompletionRate from './screens/CompletionRateScreen';
 import CategoryScreen from './screens/CategoryScreen';
 import SelectedCategoryScreen from './screens/SelectedCategoryScreen';
 import SELECT_Completed_Screen from './screens/SELECT_Completed_Screen';
 import SELECT_Uncompleted_Screen from './screens/SELECT_Uncompleted_Screen';
 
-/* import IconButton from './components/IconButton';
-import { images } from './images';
-const [shouldShow, setShouldShow] = useState(true);
-*/
-
-//import { SafeAreaView } from 'react-native-safe-area-context';
-
 //change screen using navigation stack&tab
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator(); 
+//const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
-//BottomTab
-function BottomTab(){
-  return(
+/*
+//BottomTab >> Drawer로 대체
+function BottomTab() {
+  return (
     <Tab.Navigator initalRouteName="MAIN" drawerPosition="bottom">
-        <Tab.Screen name="ViewAll" component={ViewAll} 
-        options={{headerShown:false, //delete headear
-        tabBarInactiveBackgroundColor:theme.background,
-        tabBarActiveBackgroundColor:theme.background,
-        tabBarActiveTintColor:"#778bdd",
-        tabBarIcon: ({ focused }) => { //after set color, must change 2nd img src
-          const image = focused ? require('../assets/list.png') : require('../assets/list.png')
-          return (<Image source={image} style={{width:30, height:24}}/>)
-        }}}/> 
-        <Tab.Screen name="MAIN" component={MainScreen}
-        options={{ headerShown:false,
-        tabBarInactiveBackgroundColor:theme.background, 
-        tabBarActiveBackgroundColor:theme.background,
-        tabBarActiveTintColor:"#778bdd",
-        tabBarIcon: ({ focused }) => { //after set color, must change 2nd img src
-          const image = focused ? require('../assets/due-date.png') : require('../assets/due-date.png')
-          return (<Image source={image} style={{width:30, height:24}}/>)
-        }}}/>
+      <Tab.Screen name="ViewAll" component={ViewAll}
+        options={{
+          headerShown: false, //delete headear
+          tabBarInactiveBackgroundColor: theme.background,
+          tabBarActiveBackgroundColor: theme.background,
+          tabBarActiveTintColor: "#778bdd",
+          tabBarIcon: ({ focused }) => { //after set color, must change 2nd img src
+            const image = focused ? require('../assets/list.png') : require('../assets/list.png')
+            return (<Image source={image} style={{ width: 30, height: 24 }} />)
+          }
+        }} />
+      <Tab.Screen name="MAIN" component={MainScreen}
+        options={{
+          headerShown: false,
+          tabBarInactiveBackgroundColor: theme.background,
+          tabBarActiveBackgroundColor: theme.background,
+          tabBarActiveTintColor: "#778bdd",
+          tabBarIcon: ({ focused }) => { //after set color, must change 2nd img src
+            const image = focused ? require('../assets/due-date.png') : require('../assets/due-date.png')
+            return (<Image source={image} style={{ width: 30, height: 24 }} />)
+          }
+        }} />
     </Tab.Navigator>
   )
-}
-
-
-/*
-function completed({ navigation }) {
-  return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button title="completed" />
-      </View>
-  );
 }
 */
 
 function MenuBar() {
-  var now = new Date();
-  var month = now.getMonth() + 1;
-  var today = now.getDate();
-  
-  
-
   return (
-          <Drawer.Navigator initialRouteName="MAIN">
-              <Drawer.Screen 
-                  name="main" 
-                  component={MainScreen}           
-                  options={{
-                    title: "main",
-                    /*이 title 자리에 해당 날짜 넣고 싶은데, 이 값이 drawer 젤 윗칸 이름에 그대로 들어가기도하고, 
-                    {month}/{today}를 title에 넣는 방법을 모르겠음 */
-                    headerStyle: {
-                      backgroundColor: theme.background
-                    },
-                    headerTitleStyle: {
-                      fontSize: 35,
-                      color: theme.main,
-                    },
-                    headerTitleAlign: 'center',
-                    headerTintColor: theme.main,
-                  }}
-              />
+    <Drawer.Navigator initialRouteName="MAIN">
+      <Drawer.Screen
+        name="main"
+        component={MainScreen}
+        options={{
+          title: "main",
+          /*이 title 자리에 해당 날짜 넣고 싶은데, 이 값이 drawer 젤 윗칸 이름에 그대로 들어가기도하고, 
+          {month}/{today}를 title에 넣는 방법을 모르겠음 */
+          headerStyle: {
+            backgroundColor: theme.background
+          },
+          headerTitleStyle: {
+            fontSize: 35,
+            color: theme.main,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: theme.main,
+        }}
+      />
 
-              <Drawer.Screen 
-                  name="all" 
-                  component={ViewAll} 
-                  options={{
-                    headerStyle: {
-                      backgroundColor: theme.background
-                    },
-                    headerTitleStyle: {
-                      fontSize: 35,
-                      color: theme.main,
-                    },
-                    headerTitleAlign: 'center',
-                    headerTintColor: theme.main,
-                    /*headerRight: () => (
-                      <IconButton type={images.searchI} onPressOut={()=>setShouldShow(!shouldShow)}/>
+      <Drawer.Screen
+        name="all"
+        component={ViewAll}
+        options={{
+          headerStyle: {
+            backgroundColor: theme.background
+          },
+          headerTitleStyle: {
+            fontSize: 35,
+            color: theme.main,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: theme.main,
+          /*headerRight: () => (
+            <IconButton type={images.searchI} onPressOut={()=>setShouldShow(!shouldShow)}/>
 
-                    )*/
-                  }}
-              />
+          )*/
+        }}
+      />
 
-              <Drawer.Screen 
-                  name="completed" 
-                  component={Completed} 
-                  options={{
-                    headerStyle: {
-                      backgroundColor: theme.background
-                    },
-                    headerTitleStyle: {
-                      fontSize: 35,
-                      color: theme.main,
-                    },
-                    headerTitleAlign: 'center',
-                    headerTintColor: theme.main,
-                  }}
-              />
+      <Drawer.Screen
+        name="completed"
+        component={Completed}
+        options={{
+          headerStyle: {
+            backgroundColor: theme.background
+          },
+          headerTitleStyle: {
+            fontSize: 35,
+            color: theme.main,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: theme.main,
+        }}
+      />
 
-              <Drawer.Screen 
-                  name="uncompleted" 
-                  component={Uncompleted} 
-                  options={{
-                    headerStyle: {
-                      backgroundColor: theme.background
-                    },
-                    headerTitleStyle: {
-                      fontSize: 35,
-                      color: theme.main,
-                    },
-                    headerTitleAlign: 'center',
-                    headerTintColor: theme.main,
-                  }}
-              />
+      <Drawer.Screen
+        name="uncompleted"
+        component={Uncompleted}
+        options={{
+          headerStyle: {
+            backgroundColor: theme.background
+          },
+          headerTitleStyle: {
+            fontSize: 35,
+            color: theme.main,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: theme.main,
+        }}
+      />
 
-              <Drawer.Screen 
-                  name="categories" 
-                  component={CategoryScreen} 
-                  options={{
-                    headerStyle: {
-                      backgroundColor: theme.background
-                    },
-                    headerTitleStyle: {
-                      fontSize: 35,
-                      color: theme.main,
-                    },
-                    headerTitleAlign: 'center',
-                    headerTintColor: theme.main,
-                  }}
-              />  
-              
-              <Drawer.Screen 
-                  name="daily" 
-                  component={Daily} 
-                  options={{
-                    headerStyle: {
-                      backgroundColor: theme.background
-                    },
-                    headerTitleStyle: {
-                      fontSize: 35,
-                      color: theme.main,
-                    },
-                    headerTitleAlign: 'center',
-                    headerTintColor: theme.main,
-                  }}
-              />
+      <Drawer.Screen
+        name="categories"
+        component={CategoryScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: theme.background
+          },
+          headerTitleStyle: {
+            fontSize: 35,
+            color: theme.main,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: theme.main,
+        }}
+      />
 
-              <Drawer.Screen 
-                  name="monthly" 
-                  component={Monthly} 
-                  options={{
-                    headerStyle: {
-                      backgroundColor: theme.background
-                    },
-                    headerTitleStyle: {
-                      fontSize: 35,
-                      color: theme.main,
-                    },
-                    headerTitleAlign: 'center',
-                    headerTintColor: theme.main,
-                  }}
-              />
-
-              <Drawer.Screen 
-                  name="completion rate" 
-                  component={CompletionRate} 
-                  options={{
-                    headerStyle: {
-                      backgroundColor: theme.background
-                    },
-                    headerTitleStyle: {
-                      fontSize: 30,
-                      color: theme.main,
-                    },
-                    headerTitleAlign: 'center',
-                    headerTintColor: theme.main,
-                  }}
-              />
-
-              {/*Object.values(categories).map(item=>{
-                <Drawer.Screen
-                name={item.text}
-                component={CategoryScreen}
-                options={{
-                  headerStyle: {
-                  backgroundColor: theme.background
-                },
-                headerTitleStyle: {
-                  fontSize: 30,
-                  color: theme.main,
-                },
-                headerTitleAlign: 'center',
-                headerTintColor: theme.main,
-              }}
-              />
-            })*/}
-          </Drawer.Navigator>
+      <Drawer.Screen
+        name="completion rate"
+        component={CompletionRate}
+        options={{
+          headerStyle: {
+            backgroundColor: theme.background
+          },
+          headerTitleStyle: {
+            fontSize: 30,
+            color: theme.main,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: theme.main,
+        }}
+      />
+    </Drawer.Navigator>
   );
 }
 
@@ -243,36 +170,25 @@ function App() {
    * 이때 형식이 1) Drawer, 2)Tab bar 3)은 그냥 screen.
    */
 
-  const[tasks, setTasks] = React.useState({});
+  const [tasks, setTasks] = React.useState({});
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen 
-          name="Main" 
-          component={MenuBar} 
+        <Stack.Screen
+          name="Main"
+          component={MenuBar}
           options={{
-            headerShown:false,
-           }}
+            headerShown: false,
+          }}
         />
 
-        <Stack.Screen 
-          name="Tab" 
-          component={BottomTab} 
-          options={{
-            headerShown:false, 
-            style: {elevation: 0, shadowOffset: {width: 0, height: 0}}, //remove line for Android, iOS
-           }}
-        />
-        
-        {/* <Stack.Screen name="MAIN" component={MainScreen} options={{ headerShown: false}}/> */}
-
-        <Stack.Screen 
-          name="SELECT" 
-          component={SelectScreen} 
+        <Stack.Screen
+          name="SELECT"
+          component={SelectScreen}
           options={{
             title: 'SELECT & DELETE',
-            cardstyle: {backgroundColor: theme.background},
+            cardstyle: { backgroundColor: theme.background },
             headerStyle: {
               backgroundColor: theme.background
             },
@@ -282,17 +198,17 @@ function App() {
             },
             headerTitleAlign: 'center',
             headerBackTitleVisible: true,
-            headerBackTitle:' ',
+            headerBackTitle: ' ',
             headerTintColor: theme.main,
           }}
         />
 
-        <Stack.Screen 
-          name="SELECT_Completed" 
-          component={SELECT_Completed_Screen} 
+        <Stack.Screen
+          name="SELECT_Completed"
+          component={SELECT_Completed_Screen}
           options={{
             title: 'SELECT & DELETE',
-            cardstyle: {backgroundColor: theme.background},
+            cardstyle: { backgroundColor: theme.background },
             headerStyle: {
               backgroundColor: theme.background
             },
@@ -302,17 +218,17 @@ function App() {
             },
             headerTitleAlign: 'center',
             headerBackTitleVisible: true,
-            headerBackTitle:' ',
+            headerBackTitle: ' ',
             headerTintColor: theme.main,
           }}
         />
 
-        <Stack.Screen 
-          name="SELECT_Uncompleted" 
-          component={SELECT_Uncompleted_Screen} 
+        <Stack.Screen
+          name="SELECT_Uncompleted"
+          component={SELECT_Uncompleted_Screen}
           options={{
             title: 'SELECT & DELETE',
-            cardstyle: {backgroundColor: theme.background},
+            cardstyle: { backgroundColor: theme.background },
             headerStyle: {
               backgroundColor: theme.background
             },
@@ -322,17 +238,17 @@ function App() {
             },
             headerTitleAlign: 'center',
             headerBackTitleVisible: true,
-            headerBackTitle:' ',
+            headerBackTitle: ' ',
             headerTintColor: theme.main,
           }}
         />
-        
-        <Stack.Screen 
+
+        <Stack.Screen
           name="EDIT"
           component={EditScreen}
           options={{
             title: 'EDIT',
-            cardstyle: {backgroundColor: theme.background},
+            cardstyle: { backgroundColor: theme.background },
             headerStyle: {
               backgroundColor: theme.background
             },
@@ -342,17 +258,17 @@ function App() {
             },
             headerTitleAlign: 'center',
             headerBackTitleVisible: true,
-            headerBackTitle:' ',
+            headerBackTitle: ' ',
             headerTintColor: theme.main,
           }}
         />
-        
-        <Stack.Screen 
+
+        <Stack.Screen
           name="CATEGORY"
           component={SelectedCategoryScreen}
           options={{
             title: 'CATEGORY',
-            cardstyle: {backgroundColor: theme.background},
+            cardstyle: { backgroundColor: theme.background },
             headerStyle: {
               backgroundColor: theme.background
             },
@@ -362,7 +278,7 @@ function App() {
             },
             headerTitleAlign: 'center',
             headerBackTitleVisible: true,
-            headerBackTitle:' ',
+            headerBackTitle: ' ',
             headerTintColor: theme.main,
           }}
         />

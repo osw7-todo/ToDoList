@@ -1,10 +1,9 @@
-import React, { useState, Component, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import {StyleSheet, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
 import {viewStyles, barStyles, cardStyles} from '../styles';
 import {theme} from '../theme';
 import { images } from '../images';
 import IconButton from '../components/IconButton';
-import Task from '../components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import { CheckBox } from 'react-native-elements/dist/checkbox/CheckBox';
