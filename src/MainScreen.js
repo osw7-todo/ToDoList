@@ -23,7 +23,6 @@ export default function MainScreen({navigation, route}) {
     const [markedDates, setMarkedDates] = React.useState(null);
     const [dates, setDates] = React.useState(['2021-12-01', '2022-12-31']);
 
-
     React.useEffect(()=>{
         const reload = navigation.addListener('focus',(e)=>{
             setIsReady(false);
