@@ -92,17 +92,17 @@ export default function ViewAll({ navigation, route }) {
         var text = '<ToDoList>\n';
         {
             Object.values(tasks)
-            .map(function (data) {
-                var shape;
-                if (data.completed) {
-                    shape = "○";
-                } else {
-                    shape = "x";
-                }
-                var splitStart = data.startdate.split('T');
-                var splitDue = data.duedate.split('T');
-                text += data.text + '(' + shape + ') : startdate(' + splitStart[0] + '"), duedate(' + splitDue[0] + '")\n'
-            })
+                .map(function (data) {
+                    var shape;
+                    if (data.completed) {
+                        shape = "○";
+                    } else {
+                        shape = "x";
+                    }
+                    var splitStart = data.startdate.split('T');
+                    var splitDue = data.duedate.split('T');
+                    text += data.text + '(' + shape + ') : startdate(' + splitStart[0] + '"), duedate(' + splitDue[0] + '")\n'
+                })
         }
 
         try {
@@ -123,17 +123,7 @@ export default function ViewAll({ navigation, route }) {
         }
     }
 
-    var sorted = true;
-    //const [sortingData, setSortingData] = useState({});
-    //.sort((a,b)=>(a.duedate>b.duedate)?1:-1)
-    const _sortDataS = () => {
-        sorted = true;
-        //setSortingData(Object.values(tasks).sort((a,b)=>(a.startdate>b.startdate)?1:-1));
-    }
-    const _sortDataD = () => {
-        sorted = false;
-        //setSortingData(Object.values(tasks).sort((a,b)=>(a.duedate>b.duedate)?1:-1));
-    }
+    const [sortingData, setSortingData] = useState(true);
 
     {/*const image = focused ? require('../assets/due-date.png') : require('../assets/due-date.png') */ }
 
@@ -149,27 +139,25 @@ export default function ViewAll({ navigation, route }) {
                 <View style={rowStyles.context}>
                     <CustomButton text="share" onPress={_shareData} />
                     <CustomButton text="select" onPress={() => navigation.navigate('SELECT')} /*style={[textStyles.title, {alignItems:'flex-end'}]}*/ />
-                    <CustomButton text="sortS" onPress={_sortDataS} />
-                    <CustomButton text="sortD" onPress={_sortDataD} />
+                    <CustomButton text="sortS" onPress={()=>setSortingData(true)} />
+                    <CustomButton text="sortD" onPress={()=>setSortingData(false)} />
                 </View>
 
                 <DraggableFlatList width={width - 20}
-                    data={!sorted
-                        ? (Object.values(tasks).sort((a, b) => (a.startdate > b.startdate) ? 1 : -1).filter((filterItem) => {
+                    data={Object.values(tasks)
+                        .sort((a,b)=>{
+                            if(sortingData){
+                                return (a.startdate>b.startdate)?1:-1;
+                            } else {
+                                return (a.duedate>b.duedate)?1:-1;
+                            }
+                        }).filter((filterItem) => {
                             if (searchText == "") {
                                 return filterItem
                             } else if (filterItem.text.toLowerCase().includes(searchText.toLowerCase())) {
                                 return filterItem
                             }
-                        }))
-                        : (Object.values(tasks).sort((a, b) => (a.duedate > b.duedate) ? 1 : -1).filter((filterItem) => {
-                            if (searchText == "") {
-                                return filterItem
-                            } else if (filterItem.text.toLowerCase().includes(searchText.toLowerCase())) {
-                                return filterItem
-                            }
-                        }))
-                    }
+                        })}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id}
                     //onDragBegin={() => setOuterScrollEnabled(false)}
