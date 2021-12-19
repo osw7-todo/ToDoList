@@ -134,17 +134,17 @@ export default function ViewAll({ navigation, route }) {
                 <View style={rowStyles.context}>
                     <CustomButton text="share" onPress={_shareData} />
                     <CustomButton text="select" onPress={() => navigation.navigate('SELECT')} /*style={[textStyles.title, {alignItems:'flex-end'}]}*/ />
-                    <CustomButton text="sortS" onPress={()=>setSortingData(true)} />
-                    <CustomButton text="sortD" onPress={()=>setSortingData(false)} />
+                    <CustomButton text="sortS" onPress={() => setSortingData(true)} />
+                    <CustomButton text="sortD" onPress={() => setSortingData(false)} />
                 </View>
 
                 <DraggableFlatList width={width - 20}
                     data={Object.values(tasks)
-                        .sort((a,b)=>{
-                            if(sortingData){
-                                return (a.startdate>b.startdate)?1:-1;
+                        .sort((a, b) => {
+                            if (sortingData) {
+                                return (a.startdate > b.startdate) ? 1 : -1;
                             } else {
-                                return (a.duedate>b.duedate)?1:-1;
+                                return (a.duedate > b.duedate) ? 1 : -1;
                             }
                         }).filter((filterItem) => {
                             if (searchText == "") {
