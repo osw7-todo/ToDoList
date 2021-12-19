@@ -124,7 +124,7 @@ export default function ViewAll({ navigation, route }) {
 
     return isReady ? (
         <SafeAreaView style={viewStyles.container}>
-            <StatusBar barStyle="dark-content" style={barStyles.statusbar} />
+            <StatusBar barStyle="light-content" style={barStyles.statusbar} />
 
             <View style={cardStyles.card}>
                 <View style={rowStyles.context}>

@@ -96,7 +96,7 @@ export default function EditScreen({ navigation, route }) {
 
   return isReady ? (
     <SafeAreaView style={viewStyles.container}>
-      <StatusBar barStyle="dark-content" style={barStyles.statusbar} />
+      <StatusBar barStyle="light-content" style={barStyles.statusbar} />
       <ScrollView width={width - 20} onLoad={() => route.params}>
         <Text style={textStyles.contents}>
           Category
