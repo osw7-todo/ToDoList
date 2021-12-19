@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, View, Image } from 'react-native';
+import { Pressable, StyleSheet, Image } from 'react-native';
 import {theme} from '../theme';
 import PropTypes from 'prop-types';
 import { images } from '../images';

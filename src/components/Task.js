@@ -1,5 +1,5 @@
 import React , {useState} from 'react';
-import {StyleSheet, View, Text, Button, TouchableHighlight} from 'react-native';
+import {StyleSheet, View, Text, TouchableHighlight} from 'react-native';
 import {theme} from '../theme';
 import PropTypes from 'prop-types';
 import IconButton from './IconButton';
