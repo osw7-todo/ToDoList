@@ -109,7 +109,7 @@ export default function Uncompleted({navigation, route}) {
 
     return  isReady? (
         <SafeAreaView style={viewStyles.container}>
-            <StatusBar barStyle="dark-content" style={barStyles.statusbar}/> 
+            <StatusBar barStyle="light-content" style={barStyles.statusbar}/> 
             
             <View style={cardStyles.card}> 
                 <CustomButton text="select" onPress={()=>navigation.navigate('SELECT_Uncompleted')}/>

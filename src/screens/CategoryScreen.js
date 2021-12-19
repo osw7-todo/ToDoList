@@ -102,7 +102,7 @@ function CategoryScreen({ navigation }) {
 
   return isReady ? (
     <SafeAreaView style={viewStyles.container}>
-      <StatusBar barStyle="dark-content" style={barStyles.statusbar} />
+      <StatusBar barStyle="light-content" style={barStyles.statusbar} />
       <View style={cardStyles.card}>
         <CategoryInput value={newCategory} onChangeText={_handleTextChange} onSubmitEditing={_addCategory} onBlur={_onBlur} />
         <DraggableFlatList width={width - 20}

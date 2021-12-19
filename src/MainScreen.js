@@ -105,7 +105,7 @@ export default function MainScreen({navigation, route}) {
 
     return isReady? (
         <SafeAreaView style={viewStyles.container}>
-            <StatusBar barStyle="dark-content" style={barStyles.statusbar}/>    
+            <StatusBar barStyle="light-content" style={barStyles.statusbar}/>    
             {/* 여기에 헤더 추가할거면 추가*/}
 
             <View style={cardStyles.card}>
