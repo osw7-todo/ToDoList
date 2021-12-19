@@ -205,11 +205,10 @@ const Comment = ({ item, saveComment }) => {
     setIsEditing(true);
   };
 
-  const _onSubmitEditing = (item) => {
+  const _onSubmitEditing = () => {
     if (isEditing) {
-      const comment = Object.assign({}, item, { text });
       setIsEditing(false);
-      saveComment(comment);
+      saveComment(text);
     }
   };
 
