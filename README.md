@@ -52,13 +52,13 @@ https://expo.dev/@melody2108/to-do-cloud
   * ```npm install @react-navigation/stack```
   * ```npm install @react-navigation/drawer```
 - __react-native-safe-area-context__
-  * used for
+  * used for a skeleton of the entire app
   * ```npm install react-native-safe-area-context```
 - __react-native-screens__
-  * used for 
+  * used for a skeleton of the entire app
   * ```npm install react-native-screens```
 - __styled-components__
-  * used for 
+  * used for a skeleton of the entire app
   * ```npm install styled-components prop-types```
 - ```expo install expo-image-picker```
 - __draggable-flatlist__
