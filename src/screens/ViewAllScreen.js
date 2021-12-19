@@ -76,7 +76,7 @@ export default function ViewAll({ navigation, route }) {
                             elevation: isActive ? 30 : 0,
                         },
                     ]}
-                    onLongPress={drag}>
+                    /*onLongPress={drag}*/>
                     <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask} />
                 </TouchableOpacity>
             </ScaleDecorator>
@@ -155,13 +155,10 @@ export default function ViewAll({ navigation, route }) {
                         })}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id}
-                    //onDragBegin={() => setOuterScrollEnabled(false)}
                     onDragEnd={({ data }) => {
                         _saveTasks(data)
-                        //setOuterScrollEnabled(true)
                     }}
                     simultaneousHandlers={ScrollView}
-                    activationDistance={20}
                 />
             </View>
         </SafeAreaView>

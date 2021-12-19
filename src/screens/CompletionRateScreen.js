@@ -58,9 +58,9 @@ export default function CompletionRate({ navigation, route }) {
                     <Text style={generalTextStyles.text}> [All] </Text>
                     <Text style={generalTextStyles.text}> done: {doneTasks.length}   /   total:{Object.values(tasks).length} </Text>
                     <Text style={generalTextStyles.text}> completion rate: {(doneTasks.length / Object.values(tasks).length * 100).toFixed(2)}% </Text>
-                    {Object.values(categories).map(item => (
+                    {/*Object.values(categories).map(item => (
                         <CategoryCompletion key={item.id} item={item} tasks={tasks}/>
-                    ))}
+                    ))*/}
                 </ScrollView>
 
             </View>

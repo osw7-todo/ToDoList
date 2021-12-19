@@ -81,13 +81,8 @@ function CategoryScreen({ navigation }) {
               elevation: isActive ? 30 : 0,
             },
           ]}
-          onLongPress={drag}>
+          /*onLongPress={drag}*/>
           <Category key={item.id} item={item} deleteCategory={_deleteCategory} updateCategory={_updateCategory} moveToCategory={_moveToCategory} />
-          {/*} <Animated.View
-                style={{
-                }}>
-                <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}/>
-            </Animated.View> */}
         </TouchableOpacity>
       </ScaleDecorator>
     )
@@ -109,13 +104,10 @@ function CategoryScreen({ navigation }) {
           data={Object.values(categories)}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
-          //onDragBegin={() => setOuterScrollEnabled(false)}
           onDragEnd={({ data }) => {
             _saveCategories(data)
-            //setOuterScrollEnabled(true)
           }}
           simultaneousHandlers={ScrollView}
-          activationDistance={20}
         />
       </View>
     </SafeAreaView>
