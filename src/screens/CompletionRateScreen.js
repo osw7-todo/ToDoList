@@ -23,7 +23,7 @@ export default function CompletionRate({ navigation, route }) {
 
 
     const _load = async () => {
-        const loadedTasks = await AsyncStorage.getItem('selectedTask');
+        const loadedTasks = await AsyncStorage.getItem('tasks');
         const loadedCategories = await AsyncStorage.getItem('categories');
         setTasks(JSON.parse(loadedTasks || '{}'));
         setCategories(JSON.parse(loadedCategories || '{}'));
@@ -58,9 +58,9 @@ export default function CompletionRate({ navigation, route }) {
                     <Text style={generalTextStyles.text}> [All] </Text>
                     <Text style={generalTextStyles.text}> done: {doneTasks.length}   /   total:{Object.values(tasks).length} </Text>
                     <Text style={generalTextStyles.text}> completion rate: {(doneTasks.length / Object.values(tasks).length * 100).toFixed(2)}% </Text>
-                    {/*Object.values(categories).map(item => (
+                    {Object.values(categories).map(item => (
                         <CategoryCompletion key={item.id} item={item} tasks={tasks}/>
-                    ))*/}
+                    ))}
                 </ScrollView>
 
             </View>
@@ -89,7 +89,7 @@ const CategoryCompletion = ({ item, tasks }) => {
         <View>
             <Text style={generalTextStyles.text}> [{item.text}] </Text>
             <Text style={generalTextStyles.text}> done: {doneTasks.length}   /   total:{allTasks.length} </Text>
-            <Text style={generalTextStyles.text}> completion rate: {(doneTasks.length / allTasks.length * 100).toFixed(2)}*% </Text>
+            <Text style={generalTextStyles.text}> completion rate: {(doneTasks.length / allTasks.length * 100).toFixed(2)}% </Text>
         </View>
     );
 };
