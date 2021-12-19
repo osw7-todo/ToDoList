@@ -39,6 +39,10 @@ export const cardStyles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         alignItems: 'center',
         flex: 1,
+        padding: 2,
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginTop: 3,
         borderRadius: 10,
         margin: 10 //edit margin for ViewAllScreen
     },

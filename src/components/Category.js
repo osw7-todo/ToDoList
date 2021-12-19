@@ -47,8 +47,8 @@ const style = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: theme.itemBackground,
         borderRadius: 10,
-        margin: 3,
-        /* padding: 3, */
+        padding: 2,
+        paddingLeft: 15,
         marginTop: 3,
         marginLeft: 0,
     },
