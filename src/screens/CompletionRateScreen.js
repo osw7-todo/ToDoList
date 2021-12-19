@@ -12,6 +12,7 @@ export default function CompletionRate({ navigation, route }) {
         /*'1' : {id: '1', text: "Todo item #1", completed: false},
         '2' : {id: '2', text: "Todo item #2", completed: true},*/
     });
+    const [categories, setCategories] = useState({});
 
     React.useEffect(() => {
         const reloadTab = navigation.addListener('focus', (e) => {
@@ -21,9 +22,11 @@ export default function CompletionRate({ navigation, route }) {
     }, [navigation]);
 
 
-    const _loadTasks = async () => {
-        const loadedTasks = await AsyncStorage.getItem('tasks');
+    const _load = async () => {
+        const loadedTasks = await AsyncStorage.getItem('selectedTask');
+        const loadedCategories = await AsyncStorage.getItem('categories');
         setTasks(JSON.parse(loadedTasks || '{}'));
+        setCategories(JSON.parse(loadedCategories || '{}'));
     };
 
 
@@ -51,18 +54,42 @@ export default function CompletionRate({ navigation, route }) {
 
             <View style={cardStyles.card}>
 
-            <ScrollView width={width - 20} onLoad={(route) => _addTask(route.params)}>
+                <ScrollView width={width - 20} onLoad={(route) => _addTask(route.params)}>
                     <Text style={generalTextStyles.text}> [All] </Text>
                     <Text style={generalTextStyles.text}> done: {doneTasks.length}   /   total:{Object.values(tasks).length} </Text>
                     <Text style={generalTextStyles.text}> completion rate: {(doneTasks.length / Object.values(tasks).length * 100).toFixed(2)}% </Text>
+                    {Object.values(categories).map(item => (
+                        <CategoryCompletion key={item.id} item={item} tasks={tasks}/>
+                    ))}
                 </ScrollView>
-                
+
             </View>
         </SafeAreaView>
     ) : (
         <AppLoading
-            startAsync={_loadTasks}
+            startAsync={_load}
             onFinish={() => setIsReady(true)}
             onError={console.error} />
+    );
+};
+
+const CategoryCompletion = ({ item, tasks }) => {
+
+    return (
+        <View>
+            <Text style={generalTextStyles.text}> [{item.text}] </Text>
+            <Text style={generalTextStyles.text}> done: {Object.values(tasks).reverse().filter((filterItem) => {
+            if(filterItem.category == item.id){
+                if (filterItem.completed == true) { return filterItem.length }
+            }
+        })}   /   total:{Object.values(tasks).filter((filterItem) =>
+            {if (filterItem.category == item.id) { return filterItem.length }})} </Text>
+            <Text style={generalTextStyles.text}> completion rate: {(Object.values(tasks).reverse().filter((filterItem) => {
+            if(filterItem.category == item.id){
+                if (filterItem.completed == true) { return filterItem.length }
+            }
+        }) / Object.values(tasks).filter((filterItem) =>
+            {if (filterItem.category == item.id) { return filterItem.length }}) * 100).toFixed(2)}*% </Text>
+        </View>
     );
 };
