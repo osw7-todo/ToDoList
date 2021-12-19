@@ -1,12 +1,12 @@
 import React from 'react';
-import {StyleSheet, TextInput, Dimensions} from 'react-native';
-import {theme} from '../theme';
+import { StyleSheet, TextInput, Dimensions } from 'react-native';
+import { theme } from '../theme';
 
-const Search = ({value, onChangeText, onSubmitEditing, onBlur}) => {
-    return(
+const Search = ({ value, onChangeText, onSubmitEditing, onBlur }) => {
+    return (
         <TextInput style={searchStyle.textInput}
             placeholder="search..."
-            placeholderTextColor= {theme.main}
+            placeholderTextColor={theme.main}
             maxLength={20}
             keyboardAppearance="dark"
             value={value} onChangeText={onChangeText}
@@ -19,7 +19,7 @@ const Search = ({value, onChangeText, onSubmitEditing, onBlur}) => {
 const searchStyle = StyleSheet.create({
     textInput: {
         fontSize: 25,
-        width: Dimensions.get('window').width-100,
+        width: Dimensions.get('window').width - 100,
         height: 40,
         marginTop: 10,
         paddingLeft: 15,

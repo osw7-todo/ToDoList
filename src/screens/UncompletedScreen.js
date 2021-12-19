@@ -1,12 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {TouchableOpacity, Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
+import {TouchableOpacity, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
 import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles, bottombarStyles} from '../styles';
-import { images } from '../images';
-import IconButton from '../components/IconButton';
 import Task from '../components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import CustomButton from '../components/custombutton';
 import DraggableFlatList, { RenderItemParams, ScaleDecorator, ShadowDecorator, OpacityDecorator, useOnCellActiveAnimation} from 'react-native-draggable-flatlist';
 
@@ -19,10 +16,6 @@ export default function Uncompleted({navigation, route}) {
         /*'1' : {id: '1', text: "Todo item #1", completed: false},
         '2' : {id: '2', text: "Todo item #2", completed: true},*/
     });
-
-    const [date, setDate] = useState(new Date());
-    const [mode, setMode] = useState('date');
-    const [show, setShow] = useState(false);
 
     React.useEffect(()=>{
         const reloadTab = navigation.addListener('focus',(e)=>{
@@ -113,10 +106,6 @@ export default function Uncompleted({navigation, route}) {
             </ScaleDecorator>
         )
     };
-
-    var now = new Date();
-    var month = now.getMonth() + 1;
-    var today = now.getDate();
 
     return  isReady? (
         <SafeAreaView style={viewStyles.container}>

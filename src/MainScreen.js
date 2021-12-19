@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {Button, StatusBar, SafeAreaView, Text, StyleSheet, TouchableOpacity, Platform, Dimensions, ScrollView, View, Alert} from 'react-native';
+import {StatusBar, SafeAreaView, Text, StyleSheet, TouchableOpacity, Platform, Dimensions, ScrollView, View, Alert} from 'react-native';
 import {viewStyles, textStyles, barStyles, cardStyles, rowStyles} from './styles';
 import Input from './components/Input';
 import Task from './components/Task';
@@ -63,27 +63,23 @@ export default function MainScreen({navigation, route}) {
         console.log(ID);
 
         setNewTask('');
-        //setTasks({...tasks, ...newTaskObject});
         _saveTasks({...tasks, ...newTaskObject});        
     };
 
     const _deleteTask = id => {
         const currentTasks = Object.assign({}, tasks);
         delete currentTasks[id];
-        //setTasks(currentTasks);
         _saveTasks(currentTasks);
     };
     const _toggleTask = id => {
         const currentTasks = Object.assign({}, tasks);
         currentTasks[id]['completed'] = !currentTasks[id]['completed'];
-        //setTasks(currentTasks);
         _saveTasks(currentTasks);
     };
 
     const _editTask = id => {
         const currentTasks = Object.assign({}, tasks);
         const editScreen = navigation.navigate('EDIT', {selectedTask: currentTasks[id], taskID: id});
-        //console.log("go currentTasks\n",currentTasks[id], id);
         return editScreen;
     };
 

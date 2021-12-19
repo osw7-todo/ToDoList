@@ -1,13 +1,13 @@
 import React from 'react';
-import {StyleSheet, TextInput, Dimensions} from 'react-native';
-import {theme} from '../theme';
+import { StyleSheet, TextInput, Dimensions } from 'react-native';
+import { theme } from '../theme';
 
 
-const CategoryInput = ({value, onChangeText, onSubmitEditing, onBlur}) => {
-    return(
+const CategoryInput = ({ value, onChangeText, onSubmitEditing, onBlur }) => {
+    return (
         <TextInput style={inputStyle.textInput}
             placeholder="+ Add a category"
-            placeholderTextColor= {theme.main}
+            placeholderTextColor={theme.main}
             maxLength={20}
             keyboardAppearance="dark"
             value={value} onChangeText={onChangeText}
@@ -20,7 +20,7 @@ const CategoryInput = ({value, onChangeText, onSubmitEditing, onBlur}) => {
 const inputStyle = StyleSheet.create({
     textInput: {
         fontSize: 25,
-        width: Dimensions.get('window').width-20,
+        width: Dimensions.get('window').width - 20,
         height: 60,
         marginTop: 10,
         marginLeft: 3,
