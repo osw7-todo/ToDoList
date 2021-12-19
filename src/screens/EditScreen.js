@@ -221,7 +221,7 @@ const Comment = ({ item, saveComment }) => {
         style={commentStyle.textInput}
         value={text}
         placeholder="comment... press to write"
-        placeholderTextColor={theme.main}
+        placeholderTextColor={theme.text}
         onChangeText={text => setText(text)}
         onSubmitEditing={_onSubmitEditing}
         onBlur={_onBlur}
@@ -248,7 +248,7 @@ const commentStyle = StyleSheet.create({
     paddingTop: 2,
     borderRadius: 10,
     backgroundColor: theme.itemBackground,
-    color: theme.text,
+    color: theme.main,
   },
   container: {
     flexDirection: 'row',
@@ -262,6 +262,6 @@ const commentStyle = StyleSheet.create({
   contents: {
     flex: 1,
     fontSize: 15,
-    color: theme.text,
+    color: theme.main,
   },
 });
