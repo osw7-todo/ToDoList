@@ -24,7 +24,7 @@ customButton.propTypes = {
 const styles = StyleSheet.create({
   btn: {
     borderRadius: 10,
-    margin: 10,
+    margin: 8.5,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: theme.background,
