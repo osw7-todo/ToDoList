@@ -1,11 +1,11 @@
-import React,{useEffect} from 'react';
-import {Platform, Alert} from 'react-native';
+import React, { useEffect } from 'react';
+import { Platform, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 //import * as Permissions from 'expo-permissions';
 
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import {MaterialIcons} from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 
 const Container = styled.View`
@@ -34,7 +34,7 @@ const ButtonIcon = styled(MaterialIcons).attrs({
     size: 22,
 });
 
-const PhotoButton = ({onPress}) => {
+const PhotoButton = ({ onPress }) => {
     return (
         <ButtonContainer onPress={onPress}>
             <ButtonIcon />
@@ -42,16 +42,16 @@ const PhotoButton = ({onPress}) => {
     );
 }
 
-const Image = ({imageStyle, showButton}) => {
+const Image = ({ imageStyle, showButton }) => {
     return (
         <Container>
             <StyledImage style={imageStyle} />
-            {showButton && <PhotoButton/>}
+            {showButton && <PhotoButton />}
         </Container>
     );
 };
 
-Image.defaultProps= {
+Image.defaultProps = {
     rounded: false,
     showButton: false,
 };

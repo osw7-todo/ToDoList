@@ -25,7 +25,7 @@ export default function ViewAll({ navigation, route }) {
     const [searchText, setSearchText] = useState('');
 
     //show and hide search bar
-    const [shouldShow, setShouldShow] = useState(true);
+    const [shouldShow, setShouldShow] = useState(false);
 
     React.useEffect(() => {
         const reloadTab = navigation.addListener('focus', (e) => {

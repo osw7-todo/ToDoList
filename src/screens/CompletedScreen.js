@@ -1,16 +1,13 @@
-import React, {useState, useEffect} from 'react';
-import {TouchableOpacity, Button, StatusBar, SafeAreaView, Text, Dimensions, ScrollView, View} from 'react-native';
-import {viewStyles, textStyles, barStyles, cardStyles, topbarStyles, bottombarStyles} from '../styles';
-import { images } from '../images';
-import IconButton from '../components/IconButton';
+import React, { useState, useEffect } from 'react';
+import { TouchableOpacity, StatusBar, SafeAreaView, Dimensions, ScrollView, View } from 'react-native';
+import { viewStyles, textStyles, barStyles, cardStyles, topbarStyles, bottombarStyles } from '../styles';
 import Task from '../components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import CustomButton from '../components/custombutton';
-import DraggableFlatList, { RenderItemParams, ScaleDecorator, ShadowDecorator, OpacityDecorator, useOnCellActiveAnimation} from 'react-native-draggable-flatlist';
+import DraggableFlatList, { RenderItemParams, ScaleDecorator, ShadowDecorator, OpacityDecorator, useOnCellActiveAnimation } from 'react-native-draggable-flatlist';
 
-export default function Completed({navigation, route}) {   
+export default function Completed({ navigation, route }) {
     const width = Dimensions.get('window').width;
 
     const [isReady, setIsReady] = useState(false);
@@ -20,16 +17,12 @@ export default function Completed({navigation, route}) {
         '2' : {id: '2', text: "Todo item #2", completed: true},*/
     });
 
-    const [date, setDate] = useState(new Date());
-    const [mode, setMode] = useState('date');
-    const [show, setShow] = useState(false);
-
-    React.useEffect(()=>{
-        const reloadTab = navigation.addListener('focus',(e)=>{
+    React.useEffect(() => {
+        const reloadTab = navigation.addListener('focus', (e) => {
             setIsReady(false)
         });
         return reloadTab;
-    },[navigation]);
+    }, [navigation]);
 
     //const item = route.params;
     //console.log("===",item);
@@ -60,7 +53,7 @@ export default function Completed({navigation, route}) {
 
     const _saveTasks = async tasks => {
         try {
-            await AsyncStorage.setItem('tasks',JSON.stringify(tasks));
+            await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
             setTasks(tasks);
         } catch (e) {
             console.error(e);
@@ -87,25 +80,25 @@ export default function Completed({navigation, route}) {
 
     const _editTask = id => {
         const currentTasks = Object.assign({}, tasks);
-        const editScreen = navigation.navigate('EDIT', {selectedTask: currentTasks[id], taskID: id});
+        const editScreen = navigation.navigate('EDIT', { selectedTask: currentTasks[id], taskID: id });
         return editScreen;
     };
 
-    
-    const renderItem= ({ item, index, drag, isActive }) => {    
+
+    const renderItem = ({ item, index, drag, isActive }) => {
         return (
             <ScaleDecorator>
                 <TouchableOpacity
-                  style={[
-                    {
-                      backgroundColor: isActive ? 'red' : item.backgroundColor,
-                      height: item.height,
-                        elevation: isActive ? 30 : 0,
-                    },
-                  ]}
-                  onLongPress={drag}>
-                      <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}/>
-                 {/*} <Animated.View
+                    style={[
+                        {
+                            backgroundColor: isActive ? 'red' : item.backgroundColor,
+                            height: item.height,
+                            elevation: isActive ? 30 : 0,
+                        },
+                    ]}
+                    onLongPress={drag}>
+                    <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask} />
+                    {/*} <Animated.View
                     style={{
                     }}>
                     <Task key={item.id} item={item} editTask={_editTask} deleteTask={_deleteTask} toggleTask={_toggleTask}/>
@@ -114,42 +107,36 @@ export default function Completed({navigation, route}) {
             </ScaleDecorator>
         )
     };
-    
 
-
-    var now = new Date();
-    var month = now.getMonth() + 1;
-    var today = now.getDate();
-
-    return  isReady? (
+    return isReady ? (
         <SafeAreaView style={viewStyles.container}>
-            <StatusBar barStyle="dark-content" style={barStyles.statusbar}/> 
-            
-            <View style={cardStyles.card}> 
-                <CustomButton text="select" onPress={()=>navigation.navigate('SELECT_Completed')}/>
+            <StatusBar barStyle="dark-content" style={barStyles.statusbar} />
 
-                    <DraggableFlatList width = {width-20}
-                        data={Object.values(tasks).filter((filterItem)=>{
-                            if(filterItem.completed == true){
-                                return filterItem
-                            } 
-                        })}
-                        renderItem={renderItem}
-                        keyExtractor={(item) => item.id}
-                        //onDragBegin={() => setOuterScrollEnabled(false)}
-                        onDragEnd={({ data }) => {
-                            _saveTasks(data)
-                            //setOuterScrollEnabled(true)
-                        }}
-                        simultaneousHandlers={ScrollView}
-                        activationDistance={20}
-                />  
+            <View style={cardStyles.card}>
+                <CustomButton text="select" onPress={() => navigation.navigate('SELECT_Completed')} />
+
+                <DraggableFlatList width={width - 20}
+                    data={Object.values(tasks).filter((filterItem) => {
+                        if (filterItem.completed == true) {
+                            return filterItem
+                        }
+                    })}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id}
+                    //onDragBegin={() => setOuterScrollEnabled(false)}
+                    onDragEnd={({ data }) => {
+                        _saveTasks(data)
+                        //setOuterScrollEnabled(true)
+                    }}
+                    simultaneousHandlers={ScrollView}
+                    activationDistance={20}
+                />
             </View>
         </SafeAreaView>
-    )   :   (
+    ) : (
         <AppLoading
-            startAsync = {_loadTasks}
-            onFinish={()=>setIsReady(true)}
-            onError={console.error}/>
+            startAsync={_loadTasks}
+            onFinish={() => setIsReady(true)}
+            onError={console.error} />
     );
 };

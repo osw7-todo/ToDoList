@@ -1,16 +1,16 @@
 /*미완료 페이지 just for testing*/
-import React, {Component} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
 class Daily extends Component {
-    render() {
-      return (
-        <View style={styles.container}>
-            <Text style={styles.textStyle}>daily screen</Text>
-        </View>
-      );
-    }
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.textStyle}>daily screen</Text>
+      </View>
+    );
   }
+}
 
 const styles = StyleSheet.create({
   container: {

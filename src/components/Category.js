@@ -1,12 +1,12 @@
-import React , {useState} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
-import {theme} from '../theme';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import { theme } from '../theme';
 import PropTypes from 'prop-types';
 import IconButton from './IconButton';
-import {images} from '../images';
+import { images } from '../images';
 import CategoryInput from './CategoryInput';
 
-export const Category = ({item, deleteCategory, updateCategory, moveToCategory})=> {
+export const Category = ({ item, deleteCategory, updateCategory, moveToCategory }) => {
 
     const [isEditing, setIsEditing] = useState(false);
     const [text, setText] = useState(item.text);
@@ -16,7 +16,7 @@ export const Category = ({item, deleteCategory, updateCategory, moveToCategory})
     };
     const _onSubmitEditing = () => {
         if (isEditing) {
-            const editedCategory = Object.assign({}, item, {text});
+            const editedCategory = Object.assign({}, item, { text });
             setIsEditing(false);
             updateCategory(editedCategory);
         }
@@ -27,16 +27,16 @@ export const Category = ({item, deleteCategory, updateCategory, moveToCategory})
             setText(item.text);
         }
     };
-    return isEditing? (
+    return isEditing ? (
         <CategoryInput value={text} onChangeText={text => setText(text)}
-        onSubmitEditing={_onSubmitEditing}
-        onBlur={_onBlur} />
-    ) :(
+            onSubmitEditing={_onSubmitEditing}
+            onBlur={_onBlur} />
+    ) : (
         <View style={style.container}>
             <Text style={style.contents}>{item.text}</Text>
-            <IconButton type={images.openNew} id={item.id} onPressOut={moveToCategory}/>
-            <IconButton type={images.update} onPressOut={_handleUpdateButtonPress}/>
-            <IconButton type={images.delete} id={item.id} onPressOut={deleteCategory}/>
+            <IconButton type={images.openNew} id={item.id} onPressOut={moveToCategory} />
+            <IconButton type={images.update} onPressOut={_handleUpdateButtonPress} />
+            <IconButton type={images.delete} id={item.id} onPressOut={deleteCategory} />
         </View>
     );
 };
@@ -47,7 +47,7 @@ const style = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: theme.itemBackground,
         borderRadius: 10,
-        padding: 3, 
+        padding: 3,
         marginTop: 3,
         marginLeft: 0,
     },
