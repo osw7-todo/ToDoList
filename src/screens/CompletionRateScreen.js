@@ -75,20 +75,19 @@ export default function CompletionRate({ navigation, route }) {
 
 const CategoryCompletion = ({ item, tasks }) => {
 
+    const doneTasks = Object.values(tasks).reverse().filter((filterItem) => {
+        if(filterItem.category == item.id){
+            if (filterItem.completed == true){
+                return filterItem }
+        }
+    })
+
     return (
         <View>
             <Text style={generalTextStyles.text}> [{item.text}] </Text>
-            <Text style={generalTextStyles.text}> done: {Object.values(tasks).reverse().filter((filterItem) => {
-            if(filterItem.category == item.id){
-                if (filterItem.completed == true) { return filterItem.length }
-            }
-        })}   /   total:{Object.values(tasks).filter((filterItem) =>
+            <Text style={generalTextStyles.text}> done: {doneTasks.length}   /   total:{Object.values(tasks).filter((filterItem) =>
             {if (filterItem.category == item.id) { return filterItem.length }})} </Text>
-            <Text style={generalTextStyles.text}> completion rate: {(Object.values(tasks).reverse().filter((filterItem) => {
-            if(filterItem.category == item.id){
-                if (filterItem.completed == true) { return filterItem.length }
-            }
-        }) / Object.values(tasks).filter((filterItem) =>
+            <Text style={generalTextStyles.text}> completion rate: {(doneTasks.length / Object.values(tasks).filter((filterItem) =>
             {if (filterItem.category == item.id) { return filterItem.length }}) * 100).toFixed(2)}*% </Text>
         </View>
     );
