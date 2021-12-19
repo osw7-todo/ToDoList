@@ -28,8 +28,7 @@ export default function MainScreen({navigation, route}) {
             _saveTasks(currentTasks);
         }
     }, [route.params?.task, route.params?.id]);
-
-
+    
     const _saveTasks = async tasks => {
         try {
             await AsyncStorage.setItem('tasks',JSON.stringify(tasks));
@@ -111,7 +110,7 @@ export default function MainScreen({navigation, route}) {
 
             <View style={cardStyles.card}>
                 <View style={rowStyles.context}> 
-                    <Text style={[textStyles.title, {fontSize:30}]}> {month}/{today} </Text>
+                    <Text style={[textStyles.title, {fontSize:32}]}> {month}/{today} </Text>
                     <CustomButton text="select" onPress={()=>navigation.navigate('SELECT')}/> 
                 </View>
                 
