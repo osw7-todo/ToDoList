@@ -32,16 +32,14 @@ const Input = ({ value, onChangeText, onSubmitEditing, onBlur }) => {
 
 const inputStyle = StyleSheet.create({
     textInput: {
-        fontSize: 25,
+        fontSize: 23,
         width: Dimensions.get('window').width - 20,
         height: 60,
         marginTop: 10,
         marginLeft: 15,
-        marginRight: 2,
-        /* marginLeft: 3,
-        marginRight: 3,
+        marginRight: 15,
         paddingLeft: 15,
-        paddingTop: 2, */
+        paddingTop: 2,
         borderRadius: 10,
         backgroundColor: theme.itemBackground,
         color: theme.text,
