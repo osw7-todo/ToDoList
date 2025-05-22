@@ -15,7 +15,7 @@ https://expo.dev/@melody2108/to-do-cloud
   * Make custom button
   * Write ReadMe file
   
-- #### 2071042 Lim YeonWoo 임연우
+- #### 2071042 Lim Yeonwoo 임연우
   * Create a skeleton of the entire app using navigation stack and drawer
   * Select/deselct specific/all to-do items
   * Delete the Selected tasks
